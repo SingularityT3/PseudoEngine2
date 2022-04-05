@@ -1,0 +1,54 @@
+Program -> {Block}
+           | Procedure
+           | Function
+
+Block -> {Expression}*
+
+Function -> FUNCTION IDENTIFIER [([BYREF | BYVAL] IDENTIFIER : DataType {, IDENTIFIER : DataType})] RETURNS DataType Block ENDPROCEDURE
+
+Procedure -> PROCEDURE IDENTIFIER [([BYREF | BYVAL] IDENTIFIER : DataType {, IDENTIFIER : DataType})] Block ENDPROCEDURE
+
+Expression -> EvaluationExpression
+              | DECLARE IDENTIFIER : DataType
+              | CONSTANT IDENTIFIER = INTEGER | -INTEGER | REAL | -REAL | BOOLEAN | CHAR | STRING
+              | IDENTIFIER <- EvaluationExpression
+              | IfCondition
+              | WhileLoop
+              | ForLoop
+              | CALL IDENTIFIER[(EvaluationExpression {, EvaluationExpression})]
+              | RETURN EvaluationExpression
+
+ForLoop -> FOR IDENTIFIER <- ArithmeticExpression TO ArithmeticExpression [STEP ArithmeticExpression] Block NEXT [IDENTIFIER]
+
+RepeatUntilLoop -> REPEAT Block UNTIL EvaluationExpression
+
+WhileLoop -> WHILE EvaluationExpression DO Block ENDWHILE
+
+IfCondition -> IF EvaluationExpression THEN Block {ELSE IF EvaluationExpression THEN Block} [ELSE Block] ENDIF
+
+DataType -> L_INTEGER | L_REAL | L_BOOLEAN | L_CHAR | L_STRING
+
+EvaluationExpression -> LogicalExpression {(= | <>) LogicalExpression}
+
+LogicalExpression -> ComparisonExpression {(AND | OR) ComparisonExpression}
+
+ComparisonExpression -> ArithmeticExpression {(> | < | >= | <= | = | <>) ArithmeticExpression}
+                        | NOT ComparisonExpression
+                        | TRUE
+                        | FALSE
+
+StringExpression -> ArithmeticExpression {& ArithmeticExpression}
+
+ArithmeticExpression -> Term {(+ | -) Term}
+
+Term -> Factor {(* | / | DIV | MOD) Factor}
+
+Factor -> Atom | -Atom
+
+Atom -> INTEGER
+        | REAL
+        | IDENTIFIER
+        | CHAR
+        | STRING
+        | (EvaluationExpression)
+        | IDENTIFIER([EvaluationExpression {, EvaluationExpression}])

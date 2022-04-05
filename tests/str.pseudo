@@ -1,0 +1,18 @@
+FUNCTION getName() RETURNS STRING
+    RETURN "ABC"
+ENDFUNCTION
+
+FUNCTION getChar(x : BOOLEAN) RETURNS CHAR
+    IF x THEN
+        RETURN '1'
+    ELSE
+        RETURN '0'
+    ENDIF
+ENDFUNCTION
+
+"Name"
+getName()
+"True"
+getChar(TRUE)
+"False"
+getChar(FALSE)

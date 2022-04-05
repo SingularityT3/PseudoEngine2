@@ -1,0 +1,14 @@
+FUNCTION IsPrime(x : INTEGER) RETURNS BOOLEAN
+    FOR y <- 3 TO x DIV 2 STEP 2
+        IF x MOD y = 0 THEN
+            RETURN FALSE
+        ENDIF
+    NEXT y
+    RETURN TRUE
+ENDFUNCTION
+
+FOR n <- 1 TO 10000 STEP 2
+    IF IsPrime(n) THEN
+        n
+    ENDIF
+NEXT n
