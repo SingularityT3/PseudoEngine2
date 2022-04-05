@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include "psc/context.h"
+#include "psc/scope/context.h"
 #include "nodes/base.h"
 
 namespace PSC {

@@ -1,6 +1,6 @@
 #include <sstream>
 #include "nodes/base.h"
-#include "psc/types.h"
+#include "psc/types/types.h"
 
 Node::Node(const Token &token)
     : token(token)

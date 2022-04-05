@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include <memory>
-#include "psc/types.h"
+#include "psc/types/types.h"
 
 namespace PSC {
     class Variable {

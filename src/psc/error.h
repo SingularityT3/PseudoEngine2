@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 #include <string>
-#include "psc/context.h"
+#include "psc/scope/context.h"
 #include "nodes/base.h"
 #include "tokens.h"
 

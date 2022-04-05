@@ -1,5 +1,5 @@
 #include "psc/error.h"
-#include "nodes/ifStatement.h"
+#include "nodes/selection/ifStatement.h"
 
 IfConditionComponent::IfConditionComponent(Node *condition, PSC::Block &block)
     : condition(condition), block(block)

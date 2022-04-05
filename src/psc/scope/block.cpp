@@ -1,8 +1,8 @@
 #include <iostream>
 #include <limits>
-#include "nodes/function.h"
+#include "nodes/functions/function.h"
 #include "psc/error.h"
-#include "psc/block.h"
+#include "psc/scope/block.h"
 
 using namespace PSC;
 

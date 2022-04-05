@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include "nodes/base.h"
-#include "psc/block.h"
+#include "psc/scope/block.h"
 
 struct IfConditionComponent {
     // nullptr represents ELSE component

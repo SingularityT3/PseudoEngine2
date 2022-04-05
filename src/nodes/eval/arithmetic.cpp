@@ -44,10 +44,10 @@ std::unique_ptr<NodeResult> NegateNode::evaluate(PSC::Context &ctx) {
     }
 
     const PSC::Number &num = nodeResult->get<PSC::Number>();
-    PSC::Number *res = num * PSC::Integer(-1);
+    auto res = num * PSC::Integer(-1);
 
     PSC::DataType type = res->real ? PSC::DT_REAL : PSC::DT_INTEGER;
-    return std::make_unique<NodeResult>(res, type);
+    return std::make_unique<NodeResult>(std::move(res), type);
 }
 
 ArithmeticOperationNode::ArithmeticOperationNode(const Token &token, Node &left, Node &right)
@@ -89,7 +89,7 @@ std::unique_ptr<NodeResult> ArithmeticOperationNode::evaluate(PSC::Context &ctx)
     const PSC::Number &leftNum = leftRes->get<PSC::Number>();
     const PSC::Number &rightNum = rightRes->get<PSC::Number>();
 
-    PSC::Number *resNum;
+    std::unique_ptr<PSC::Number> resNum;
     switch (token.type) {
         case TT_PLUS:
             resNum = leftNum + rightNum;
@@ -114,5 +114,5 @@ std::unique_ptr<NodeResult> ArithmeticOperationNode::evaluate(PSC::Context &ctx)
     }
 
     PSC::DataType type = resNum->real ? PSC::DT_REAL : PSC::DT_INTEGER;
-    return std::make_unique<NodeResult>(resNum, type);
+    return std::make_unique<NodeResult>(std::move(resNum), type);
 }

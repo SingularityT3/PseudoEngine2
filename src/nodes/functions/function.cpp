@@ -1,7 +1,7 @@
 #include "psc/error.h"
-#include "psc/block.h"
+#include "psc/scope/block.h"
 #include "nodes/variable.h"
-#include "nodes/function.h"
+#include "nodes/functions/function.h"
 
 FunctionNode::FunctionNode(const Token &token, PSC::Function *function)
     : Node(token), function(function)

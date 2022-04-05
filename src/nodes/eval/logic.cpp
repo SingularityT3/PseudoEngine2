@@ -1,5 +1,5 @@
 #include "psc/error.h"
-#include "psc/types.h"
+#include "psc/types/types.h"
 #include "nodes/eval/logic.h"
 
 LogicNode::LogicNode(const Token &token, Node &left, Node &right)

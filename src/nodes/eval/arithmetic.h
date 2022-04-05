@@ -1,6 +1,6 @@
 #pragma once
 #include "nodes/base.h"
-#include "psc/types.h"
+#include "psc/types/types.h"
 
 class IntegerNode : public Node {
 private:

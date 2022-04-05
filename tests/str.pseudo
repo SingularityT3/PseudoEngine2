@@ -16,3 +16,8 @@ getName()
 getChar(TRUE)
 "False"
 getChar(FALSE)
+
+
+"Hello" & " " & "World"
+
+"53 * 24 = " & (53 * 24)

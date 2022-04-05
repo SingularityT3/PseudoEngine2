@@ -1,5 +1,5 @@
 #include "psc/error.h"
-#include "psc/types.h"
+#include "psc/types/types.h"
 #include "nodes/eval/comparison.h"
 
 BooleanNode::BooleanNode(const Token &token)
@@ -64,7 +64,7 @@ std::unique_ptr<NodeResult> ComparisonNode::evaluate(PSC::Context &ctx) {
     const PSC::Number &leftNum = leftRes->get<PSC::Number>();
     const PSC::Number &rightNum = rightRes->get<PSC::Number>();
 
-    const PSC::Boolean *res;
+    std::unique_ptr<PSC::Boolean> res;
     switch (token.type) {
         case TT_EQUALS:
             res = leftNum == rightNum;
@@ -88,5 +88,5 @@ std::unique_ptr<NodeResult> ComparisonNode::evaluate(PSC::Context &ctx) {
             throw 0;
     }
 
-    return std::make_unique<NodeResult>(res, PSC::DT_BOOLEAN);
+    return std::make_unique<NodeResult>(std::move(res), PSC::DT_BOOLEAN);
 }

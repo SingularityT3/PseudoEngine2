@@ -1,7 +1,7 @@
 #include "psc/error.h"
-#include "psc/block.h"
+#include "psc/scope/block.h"
 #include "nodes/variable.h"
-#include "nodes/procedure.h"
+#include "nodes/functions/procedure.h"
 
 ProcedureNode::ProcedureNode(const Token &token, PSC::Procedure *procedure)
     : Node(token), procedure(procedure)

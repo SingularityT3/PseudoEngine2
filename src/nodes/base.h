@@ -1,8 +1,8 @@
 #pragma once
 #include <memory>
 #include "tokens.h"
-#include "psc/types.h"
-#include "psc/context.h"
+#include "psc/types/types.h"
+#include "psc/scope/context.h"
 #include "nodes/nodeResult.h"
 
 class Node {

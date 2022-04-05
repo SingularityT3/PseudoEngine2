@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
-#include "psc/types.h"
+#include "psc/types/types.h"
 #include "tokens.h"
 
 namespace PSC {

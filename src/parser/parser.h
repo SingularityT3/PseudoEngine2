@@ -3,7 +3,7 @@
 #include "tokens.h"
 #include "nodes/node.h"
 #include "psc/error.h"
-#include "psc/block.h"
+#include "psc/scope/block.h"
 
 class Parser {
 private:

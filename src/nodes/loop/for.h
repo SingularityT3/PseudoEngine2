@@ -1,6 +1,6 @@
 #pragma once
 #include "nodes/base.h"
-#include "psc/block.h"
+#include "psc/scope/block.h"
 
 class ForLoopNode : public Node {
 private:
