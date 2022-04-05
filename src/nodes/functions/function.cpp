@@ -54,7 +54,7 @@ std::unique_ptr<NodeResult> FunctionCallNode::evaluate(PSC::Context &ctx) {
             }
 
             PSC::Variable *original = ctx.getVariable(accsNode->getToken().value);
-            if (original == nullptr) throw 0;
+            if (original == nullptr) std::abort();
             var = original->createReference(function->parameters[i].name);
         } else {
             var = new PSC::Variable(function->parameters[i].name, argRes->type, false);
@@ -76,7 +76,7 @@ std::unique_ptr<NodeResult> FunctionCallNode::evaluate(PSC::Context &ctx) {
                     var->get<PSC::String>() = argRes->get<PSC::String>();
                     break;
                 default:
-                    throw 0;
+                    std::abort();
             }
         }
 

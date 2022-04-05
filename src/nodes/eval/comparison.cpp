@@ -3,9 +3,10 @@
 #include "nodes/eval/comparison.h"
 
 BooleanNode::BooleanNode(const Token &token)
-    : Node(token),
-    value(token.type == TT_TRUE ? true : (token.type == TT_FALSE ? false : throw 0))
-{}
+    : Node(token), value(token.type == TT_TRUE)
+{
+    if (!this->value && token.type != TT_FALSE) std::abort();
+}
 
 std::unique_ptr<NodeResult> BooleanNode::evaluate(PSC::Context &ctx) {
     return std::make_unique<NodeResult>(new PSC::Boolean(value), PSC::DT_BOOLEAN);
@@ -35,7 +36,7 @@ ComparisonNode::ComparisonNode(const Token &token, Node &left, Node &right)
             op = "<=";
             break;
         default:
-            throw 0;
+            std::abort();
     }
 }
 
@@ -85,7 +86,7 @@ std::unique_ptr<NodeResult> ComparisonNode::evaluate(PSC::Context &ctx) {
             res = leftNum <= rightNum;
             break;
         default:
-            throw 0;
+            std::abort();
     }
 
     return std::make_unique<NodeResult>(std::move(res), PSC::DT_BOOLEAN);

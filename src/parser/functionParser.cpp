@@ -79,8 +79,7 @@ Node *Parser::parseFunctionCall() {
     nodes.push_back(node);
     advance();
 
-    if (currentToken->type != TT_LPAREN)
-        throw 0;
+    if (currentToken->type != TT_LPAREN) std::abort();
     advance();
 
     if (currentToken->type == TT_RPAREN) {

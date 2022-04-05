@@ -52,7 +52,7 @@ std::unique_ptr<NodeResult> CallNode::evaluate(PSC::Context &ctx) {
                 throw PSC::RuntimeError(token, ctx, "Only variables can be used as arguements when passing by reference");
 
             PSC::Variable *original = ctx.getVariable(accsNode->getToken().value);
-            if (original == nullptr) throw 0;
+            if (original == nullptr) std::abort();
             var = original->createReference(procedure->parameters[i].name);
         } else {
             var = new PSC::Variable(procedure->parameters[i].name, argRes->type, false);
@@ -74,7 +74,7 @@ std::unique_ptr<NodeResult> CallNode::evaluate(PSC::Context &ctx) {
                     var->get<PSC::String>() = argRes->get<PSC::String>();
                     break;
                 default:
-                    throw 0;
+                    std::abort();
             }
         }
 

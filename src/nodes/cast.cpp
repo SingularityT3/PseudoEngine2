@@ -27,7 +27,7 @@ std::unique_ptr<NodeResult> CastNode::evaluate(PSC::Context &ctx) {
             result = value->data->toString();
             break;
         default:
-            throw 0;
+            std::abort();
     }
 
     return std::make_unique<NodeResult>(std::move(result), target);

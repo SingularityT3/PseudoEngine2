@@ -31,7 +31,7 @@ std::unique_ptr<Number> Number::operator+(const Number &other) const {
         real_t x = ((Real*) this)->value + (Real&) other;
         return std::make_unique<Real>(x);
     }
-    throw 0;
+    std::abort();
 }
 
 std::unique_ptr<Number> Number::operator-(const Number &other) const {
@@ -55,7 +55,7 @@ std::unique_ptr<Number> Number::operator-(const Number &other) const {
         real_t x = ((Real*) this)->value - (Real&) other;
         return std::make_unique<Real>(x);
     }
-    throw 0;
+    std::abort();
 }
 
 std::unique_ptr<Number> Number::operator*(const Number &other) const {
@@ -79,7 +79,7 @@ std::unique_ptr<Number> Number::operator*(const Number &other) const {
         real_t x = ((Real*) this)->value * (Real&) other;
         return std::make_unique<Real>(x);
     }
-    throw 0;
+    std::abort();
 }
 
 std::unique_ptr<Number> Number::operator/(const Number &other) const {
@@ -103,7 +103,7 @@ std::unique_ptr<Number> Number::operator/(const Number &other) const {
         real_t x = ((Real*) this)->value / (Real&) other;
         return std::make_unique<Real>(x);
     }
-    throw 0;
+    std::abort();
 }
 
 real_t modReal(real_t x, real_t y) {
@@ -133,7 +133,7 @@ std::unique_ptr<Number> Number::operator%(const Number &other) const {
         real_t x = modReal(((Real*) this)->value, (Real&) other);
         return std::make_unique<Real>(x);
     }
-    throw 0;
+    std::abort();
 }
 
 std::unique_ptr<Number> Number::operator|(const Number &other) const {
@@ -157,7 +157,7 @@ std::unique_ptr<Number> Number::operator|(const Number &other) const {
         int_t x = std::floor(((Real*) this)->value / (Real&) other);
         return std::make_unique<Integer>(x);
     }
-    throw 0;
+    std::abort();
 }
 
 
@@ -183,7 +183,7 @@ std::unique_ptr<Boolean> Number::operator==(const Number &other) const {
         bool x = ((Real*) this)->value == ((Real&) other).value;
         return std::make_unique<Boolean>(x);
     }
-    throw 0;
+    std::abort();
 }
 
 std::unique_ptr<Boolean> Number::operator!=(const Number &other) const {
@@ -208,7 +208,7 @@ std::unique_ptr<Boolean> Number::operator!=(const Number &other) const {
         bool x = ((Real*) this)->value != ((Real&) other).value;
         return std::make_unique<Boolean>(x);
     }
-    throw 0;
+    std::abort();
 }
 
 std::unique_ptr<Boolean> Number::operator>(const Number &other) const {
@@ -233,7 +233,7 @@ std::unique_ptr<Boolean> Number::operator>(const Number &other) const {
         bool x = ((Real*) this)->value > (Real&) other;
         return std::make_unique<Boolean>(x);
     }
-    throw 0;
+    std::abort();
 }
 
 std::unique_ptr<Boolean> Number::operator<(const Number &other) const {
@@ -258,7 +258,7 @@ std::unique_ptr<Boolean> Number::operator<(const Number &other) const {
         bool x = ((Real*) this)->value < (Real&) other;
         return std::make_unique<Boolean>(x);
     }
-    throw 0;
+    std::abort();
 }
 
 std::unique_ptr<Boolean> Number::operator>=(const Number &other) const {
@@ -283,7 +283,7 @@ std::unique_ptr<Boolean> Number::operator>=(const Number &other) const {
         bool x = ((Real*) this)->value >= (Real&) other;
         return std::make_unique<Boolean>(x);
     }
-    throw 0;
+    std::abort();
 }
 
 std::unique_ptr<Boolean> Number::operator<=(const Number &other) const {
@@ -308,7 +308,7 @@ std::unique_ptr<Boolean> Number::operator<=(const Number &other) const {
         bool x = ((Real*) this)->value <= (Real&) other;
         return std::make_unique<Boolean>(x);
     }
-    throw 0;
+    std::abort();
 }
 
 

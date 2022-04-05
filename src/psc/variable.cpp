@@ -31,7 +31,7 @@ Variable::Variable(const std::string &name, PSC::DataType type, bool isConstant,
             else data = new PSC::String(*((const PSC::String*) initialData));
             break;
         default:
-            throw 0;
+            std::abort();
     }
 }
 

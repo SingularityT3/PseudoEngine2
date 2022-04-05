@@ -16,7 +16,7 @@ PSC::DataType Parser::getPSCType() {
     } else if (currentToken->value == "STRING") {
         return PSC::DT_STRING;
     } else {
-        throw 0;
+        std::abort();
     }
 }
 

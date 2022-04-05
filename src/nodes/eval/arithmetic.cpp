@@ -72,7 +72,7 @@ ArithmeticOperationNode::ArithmeticOperationNode(const Token &token, Node &left,
             op = "DIV";
             break;
         default:
-            throw 0;
+            std::abort();
     }
 }
 
@@ -110,7 +110,7 @@ std::unique_ptr<NodeResult> ArithmeticOperationNode::evaluate(PSC::Context &ctx)
             resNum = leftNum | rightNum;
             break;
         default:
-            throw 0;
+            std::abort();
     }
 
     PSC::DataType type = resNum->real ? PSC::DT_REAL : PSC::DT_INTEGER;

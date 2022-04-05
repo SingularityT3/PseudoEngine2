@@ -70,7 +70,7 @@ std::unique_ptr<NodeResult> AssignNode::evaluate(PSC::Context &ctx) {
             var->get<PSC::String>() = valueRes->get<PSC::String>();
             break;
         default:
-            throw 0;
+            std::abort();
     }
 
     return std::make_unique<NodeResult>(nullptr, PSC::DT_NONE);
@@ -102,7 +102,7 @@ std::unique_ptr<NodeResult> AccessNode::evaluate(PSC::Context &ctx) {
             data = new PSC::String(var->get<PSC::String>());
             break;
         default:
-            throw 0;
+            std::abort();
     }
 
     return std::make_unique<NodeResult>(data, var->type);

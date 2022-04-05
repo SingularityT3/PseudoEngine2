@@ -13,7 +13,7 @@ LogicNode::LogicNode(const Token &token, Node &left, Node &right)
             op = "OR";
             break;
         default:
-            throw 0;
+            std::abort();
     }
 }
 
@@ -37,7 +37,7 @@ std::unique_ptr<NodeResult> LogicNode::evaluate(PSC::Context &ctx) {
             *res = leftBool || rightBool;
             break;
         default:
-            throw 0;
+            std::abort();
     }
 
     return std::make_unique<NodeResult>(res, PSC::DT_BOOLEAN);
