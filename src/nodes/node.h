@@ -11,3 +11,4 @@
 #include "nodes/loop/for.h"
 #include "nodes/functions/procedure.h"
 #include "nodes/functions/function.h"
+#include "nodes/cast.h"

@@ -70,6 +70,8 @@ private:
 
     Node *parseAtom();
 
+    Node *parseCast();
+
     Node *parseFunctionCall();
 
     template<typename T>

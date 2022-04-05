@@ -52,3 +52,4 @@ Atom -> INTEGER
         | STRING
         | (EvaluationExpression)
         | IDENTIFIER([EvaluationExpression {, EvaluationExpression}])
+        | DataType(EvaluationExpression)

@@ -162,7 +162,29 @@ Node *Parser::parseAtom() {
 
         advance();
         return expr;
+    } else if (currentToken->type == TT_DATA_TYPE) {
+        return parseCast();
     }
 
-    throw PSC::ExpectedTokenError(*currentToken, "Integer, Real or '('");
+    throw PSC::ExpectedTokenError(*currentToken, "value or expression");
+}
+
+Node *Parser::parseCast() {
+    const Token &token = *currentToken;
+    PSC::DataType type = getPSCType();
+    advance();
+
+    if (currentToken->type != TT_LPAREN)
+        throw PSC::ExpectedTokenError(*currentToken, "'('");
+    advance();
+
+    Node *expr = parseEvaluationExpression();
+
+    if (currentToken->type != TT_RPAREN)
+        throw PSC::ExpectedTokenError(*currentToken, "')'");
+    advance();
+
+    CastNode *node = new CastNode(token, *expr, type);
+    nodes.push_back(node);
+    return node;
 }
