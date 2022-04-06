@@ -13,6 +13,7 @@ Expression -> EvaluationExpression
               | CONSTANT IDENTIFIER = INTEGER | -INTEGER | REAL | -REAL | BOOLEAN | CHAR | STRING
               | IDENTIFIER <- EvaluationExpression
               | IfCondition
+              | CaseStatement
               | WhileLoop
               | ForLoop
               | CALL IDENTIFIER[(EvaluationExpression {, EvaluationExpression})]
@@ -24,6 +25,8 @@ RepeatUntilLoop -> REPEAT Block UNTIL EvaluationExpression
 
 WhileLoop -> WHILE EvaluationExpression DO Block ENDWHILE
 
+CaseStatement -> CASE OF IDENTIFIER {Factor[ TO FACTOR] : Block}* [OTHERWISE : Block] ENDCASE
+
 IfCondition -> IF EvaluationExpression THEN Block {ELSE IF EvaluationExpression THEN Block} [ELSE Block] ENDIF
 
 DataType -> L_INTEGER | L_REAL | L_BOOLEAN | L_CHAR | L_STRING
@@ -34,8 +37,6 @@ LogicalExpression -> ComparisonExpression {(AND | OR) ComparisonExpression}
 
 ComparisonExpression -> ArithmeticExpression {(> | < | >= | <= | = | <>) ArithmeticExpression}
                         | NOT ComparisonExpression
-                        | TRUE
-                        | FALSE
 
 StringExpression -> ArithmeticExpression {& ArithmeticExpression}
 
@@ -47,6 +48,8 @@ Factor -> Atom | -Atom
 
 Atom -> INTEGER
         | REAL
+        | TRUE
+        | FALSE
         | IDENTIFIER
         | CHAR
         | STRING

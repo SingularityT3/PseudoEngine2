@@ -19,12 +19,18 @@ private:
 
     PSC::DataType getPSCType();
 
+    bool compareNextType(unsigned int n, TokenType type);
+
     template<std::derived_from<Node> T, typename... Args>
     inline T *create(Args&&... args) {
         T *node = new T(std::forward<Args>(args)...);
         nodes.push_back(node);
         return node;
     }
+
+    enum BlockType {
+        BT_MAIN, BT_CASE, BT_OTHER
+    };
 
 public:
     Parser() = default;
@@ -38,7 +44,7 @@ public:
     void setTokens(const std::vector<Token*> *tokens);
 
 private:
-    PSC::Block *parseBlock(bool main = false);
+    PSC::Block *parseBlock(BlockType blockType = BT_OTHER);
 
     Node *parseFunction();
 
@@ -55,6 +61,8 @@ private:
     Node *parseWhileLoop();
 
     Node *parseIfStatement();
+
+    Node *parseCaseStatement();
 
     Node *parseDeclareExpression();
 

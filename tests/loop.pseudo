@@ -1,0 +1,15 @@
+Counter <- 1
+WHILE Counter <= 3 DO
+
+    FOR i <- 1 TO 3
+
+        AnotherCounter <- 1
+        REPEAT
+            Counter & ", " & i & ", " & AnotherCounter
+            AnotherCounter <- AnotherCounter + 1
+        UNTIL AnotherCounter > 3
+
+    NEXT i
+
+    Counter <- Counter + 1
+ENDWHILE

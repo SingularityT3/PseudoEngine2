@@ -57,6 +57,14 @@ std::unique_ptr<NodeResult> ComparisonNode::evaluate(PSC::Context &ctx) {
             bool comparisonEq = leftRes->get<PSC::Boolean>() == rightRes->get<PSC::Boolean>();
             bool res = (!eq && !comparisonEq) || (eq && comparisonEq);
             return std::make_unique<NodeResult>(new PSC::Boolean(res), PSC::DT_BOOLEAN);
+        } else if (leftRes->type == PSC::DT_CHAR) {
+            bool comparisonEq = leftRes->get<PSC::Char>().value == rightRes->get<PSC::Char>().value;
+            bool res = (!eq && !comparisonEq) || (eq && comparisonEq);
+            return std::make_unique<NodeResult>(new PSC::Boolean(res), PSC::DT_BOOLEAN);
+        } else if (leftRes->type == PSC::DT_STRING) {
+            bool comparisonEq = leftRes->get<PSC::String>().value == rightRes->get<PSC::String>().value;
+            bool res = (!eq && !comparisonEq) || (eq && comparisonEq);
+            return std::make_unique<NodeResult>(new PSC::Boolean(res), PSC::DT_BOOLEAN);
         } else {
             throw PSC::InvalidUsageError(token, ctx, "'" + op + "' operator, operands must be of type Integer, Real or Boolean");
         }

@@ -37,8 +37,6 @@ Node *Parser::parseComparisonExpression() {
         Node *node = parseComparisonExpression();
 
         return create<NotNode>(op, *node);
-    } else if (currentToken->type == TT_TRUE || currentToken->type == TT_FALSE) {
-        return parseLiteral<BooleanNode>();
     }
 
     Node *strExpr = parseStringExpression();
@@ -131,17 +129,19 @@ Node *Parser::parseAtom() {
         return parseLiteral<IntegerNode>();
     } else if (currentToken->type == TT_REAL) {
         return parseLiteral<RealNode>();
+    } else if (currentToken->type == TT_TRUE || currentToken->type == TT_FALSE) {
+        return parseLiteral<BooleanNode>();
     } else if (currentToken->type == TT_CHAR) {
         return parseLiteral<CharNode>();
     } else if (currentToken->type == TT_STRING) {
         return parseLiteral<StringNode>();
     } else if (currentToken->type == TT_IDENTIFIER) {
-        if (idx + 1 >= (int) tokens->size() || (*tokens)[idx + 1]->type != TT_LPAREN) {
+        if (compareNextType(1, TT_LPAREN)) {
+            return parseFunctionCall();
+        } else {
             AccessNode *node = create<AccessNode>(*currentToken);
             advance();
             return node;
-        } else {
-            return parseFunctionCall();
         }
     } else if (currentToken->type == TT_LPAREN) {
         advance();

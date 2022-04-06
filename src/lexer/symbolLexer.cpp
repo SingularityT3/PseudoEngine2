@@ -48,6 +48,16 @@ void Lexer::makeWord() {
         tokens.push_back(new Token(TT_ENDIF, line, startColumn));
     }
 
+    else if (word == "CASE") {
+        tokens.push_back(new Token(TT_CASE, line, startColumn));
+    } else if (word == "OF") {
+        tokens.push_back(new Token(TT_OF, line, startColumn));
+    } else if (word == "OTHERWISE") {
+        tokens.push_back(new Token(TT_OTHERWISE, line, startColumn));
+    } else if (word == "ENDCASE") {
+        tokens.push_back(new Token(TT_ENDCASE, line, startColumn));
+    }
+
     else if (word == "WHILE") {
         tokens.push_back(new Token(TT_WHILE, line, startColumn));
     } else if (word == "DO") {

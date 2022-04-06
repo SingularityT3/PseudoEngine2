@@ -51,6 +51,11 @@ static const char *TT_STR[] = {
     "TT_ELSE",
     "TT_ENDIF",
 
+    "TT_CASE",
+    "TT_OF",
+    "TT_OTHERWISE",
+    "TT_ENDCASE",
+
     "TT_WHILE",
     "TT_DO",
     "TT_ENDWHILE",

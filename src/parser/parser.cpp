@@ -20,6 +20,11 @@ PSC::DataType Parser::getPSCType() {
     }
 }
 
+bool Parser::compareNextType(unsigned int n, TokenType type) {
+    if (idx + n >= tokens->size()) return false;
+    return (*tokens)[idx + n]->type == type;
+}
+
 Parser::Parser(const std::vector<Token*> *tokens)
 {
     setTokens(tokens);
@@ -42,7 +47,7 @@ void Parser::setTokens(const std::vector<Token*> *tokens) {
 }
 
 PSC::Block *Parser::parse() {
-    PSC::Block *block = parseBlock(true);
+    PSC::Block *block = parseBlock(BT_MAIN);
 
     if (currentToken->type != TT_EXPRESSION_END)
         throw PSC::SyntaxError(*currentToken);
@@ -50,7 +55,7 @@ PSC::Block *Parser::parse() {
     return block;
 }
 
-PSC::Block *Parser::parseBlock(bool main) {
+PSC::Block *Parser::parseBlock(BlockType blockType) {
     PSC::Block *block = new PSC::Block();
     blocks.push_back(block);
 
@@ -58,6 +63,8 @@ PSC::Block *Parser::parseBlock(bool main) {
         while (currentToken->type == TT_LINE_END) advance();
         if (currentToken->type == TT_EXPRESSION_END
             || currentToken->type == TT_ENDIF
+            || currentToken->type == TT_OTHERWISE
+            || currentToken->type == TT_ENDCASE
             || currentToken->type == TT_ELSE
             || currentToken->type == TT_ENDWHILE
             || currentToken->type == TT_UNTIL
@@ -66,12 +73,20 @@ PSC::Block *Parser::parseBlock(bool main) {
             || currentToken->type == TT_ENDFUNCTION
         ) break;
 
+        if (blockType == BT_CASE) {
+            if (compareNextType(1, TT_COLON) // <value> :
+                || (currentToken->type == TT_MINUS && compareNextType(2, TT_COLON)) // - <value> :
+                || compareNextType(1, TT_TO) // <value> TO
+                || (currentToken->type == TT_MINUS && compareNextType(2, TT_TO)) // - <value> TO
+            ) break;
+        }
+
         Node *node;
         if (currentToken->type == TT_PROCEDURE) {
-            if (!main) throw PSC::SyntaxError(*currentToken, "Procedures can only be defined in the global scope");
+            if (blockType != BT_MAIN) throw PSC::SyntaxError(*currentToken, "Procedures can only be defined in the global scope");
             node = parseProcedure();
         } else if (currentToken->type == TT_FUNCTION) {
-            if (!main) throw PSC::SyntaxError(*currentToken, "Functions can only be defined in the global scope");
+            if (blockType != BT_MAIN) throw PSC::SyntaxError(*currentToken, "Functions can only be defined in the global scope");
             node = parseFunction();
         } else {
             node = parseExpression();
@@ -93,12 +108,14 @@ Node *Parser::parseExpression() {
     } else if (currentToken->type == TT_CONSTANT) {
         return parseConstDeclareExpression();
     } else if (currentToken->type == TT_IDENTIFIER) {
-        if (idx + 1 >= (int) tokens->size() || (*tokens)[idx + 1]->type != TT_ASSIGNMENT)
-            return parseEvaluationExpression();
-        else
+        if (compareNextType(1, TT_ASSIGNMENT))
             return parseAssignmentExpression();
+        else
+            return parseEvaluationExpression();
     } else if (currentToken->type == TT_IF) {
         return parseIfStatement();
+    } else if (currentToken->type == TT_CASE) {
+        return parseCaseStatement();
     } else if (currentToken->type == TT_WHILE) {
         return parseWhileLoop();
     } else if (currentToken->type == TT_REPEAT) {

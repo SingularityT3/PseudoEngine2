@@ -2,6 +2,7 @@
 
 static const char *multilineKeywords[] = {
     "IF",
+    "CASE",
     "WHILE",
     "REPEAT",
     "FOR",

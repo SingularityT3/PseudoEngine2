@@ -1,0 +1,24 @@
+FOR x <- 1 TO 10
+    IF x MOD 2 = 0 AND x MOD 3 = 0 THEN
+        "FizzBuzz"
+    ELSE IF x MOD 2 = 0 THEN
+        "Fizz"
+    ELSE IF x MOD 3 = 0 THEN
+        "Buzz"
+    ELSE
+        "None"
+    ENDIF
+NEXT x
+
+FOR y <- 1 TO 100
+    CASE OF y
+        1: 1
+        2: 2
+        3: 3
+        4: 4
+        5 TO 10:
+        10: 10
+        11 TO 95.0:
+        OTHERWISE: y 
+    ENDCASE
+NEXT y
