@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include <concepts>
 #include "psc/types/types.h"
 
 struct NodeResult {

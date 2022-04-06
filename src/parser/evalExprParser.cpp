@@ -8,8 +8,7 @@ Node *Parser::parseEvaluationExpression() {
         advance();
 
         Node *otherlogicalExpression = parseLogicalExpression();
-        logicalExpression = new ComparisonNode(op, *logicalExpression, *otherlogicalExpression);
-        nodes.push_back(logicalExpression);
+        logicalExpression = create<ComparisonNode>(op, *logicalExpression, *otherlogicalExpression);
     }
 
     return logicalExpression;
@@ -24,8 +23,7 @@ Node *Parser::parseLogicalExpression() {
 
         Node *otherComparisonExpr = parseComparisonExpression();
 
-        comparisonExpr = new LogicNode(op, *comparisonExpr, *otherComparisonExpr);
-        nodes.push_back(comparisonExpr);
+        comparisonExpr = create<LogicNode>(op, *comparisonExpr, *otherComparisonExpr);
     }
 
     return comparisonExpr;
@@ -37,10 +35,8 @@ Node *Parser::parseComparisonExpression() {
         advance();
 
         Node *node = parseComparisonExpression();
-        node = new NotNode(op, *node);
-        nodes.push_back(node);
 
-        return node;
+        return create<NotNode>(op, *node);
     } else if (currentToken->type == TT_TRUE || currentToken->type == TT_FALSE) {
         return parseLiteral<BooleanNode>();
     }
@@ -60,8 +56,7 @@ Node *Parser::parseComparisonExpression() {
 
         Node *otherStrExpr = parseStringExpression();
 
-        strExpr = new ComparisonNode(op, *strExpr, *otherStrExpr);
-        nodes.push_back(strExpr);
+        strExpr = create<ComparisonNode>(op, *strExpr, *otherStrExpr);
     }
 
     return strExpr;
@@ -76,8 +71,7 @@ Node *Parser::parseStringExpression() {
 
         Node *otherArithmeticExpr = parseArithmeticExpression();
 
-        arithmeticExpr = new StringConcatenationNode(op, *arithmeticExpr, *otherArithmeticExpr);
-        nodes.push_back(arithmeticExpr);
+        arithmeticExpr = create<StringConcatenationNode>(op, *arithmeticExpr, *otherArithmeticExpr);
     }
 
     return arithmeticExpr;
@@ -92,8 +86,7 @@ Node *Parser::parseArithmeticExpression() {
 
         Node *otherTerm = parseTerm();
 
-        term = new ArithmeticOperationNode(op, *term, *otherTerm);
-        nodes.push_back(term);
+        term = create<ArithmeticOperationNode>(op, *term, *otherTerm);
     }
 
     return term;
@@ -113,8 +106,7 @@ Node *Parser::parseTerm() {
 
         Node *otherFactor = parseFactor();
 
-        factor = new ArithmeticOperationNode(op, *factor, *otherFactor);
-        nodes.push_back(factor);
+        factor = create<ArithmeticOperationNode>(op, *factor, *otherFactor);
     }
 
     return factor;
@@ -126,8 +118,7 @@ Node *Parser::parseFactor() {
         advance();
 
         Node *atom = parseAtom();
-        atom = new NegateNode(op, *atom);
-        nodes.push_back(atom);
+        atom = create<NegateNode>(op, *atom);
 
         return atom;
     }
@@ -146,8 +137,7 @@ Node *Parser::parseAtom() {
         return parseLiteral<StringNode>();
     } else if (currentToken->type == TT_IDENTIFIER) {
         if (idx + 1 >= (int) tokens->size() || (*tokens)[idx + 1]->type != TT_LPAREN) {
-            AccessNode *node = new AccessNode(*currentToken);
-            nodes.push_back(node);
+            AccessNode *node = create<AccessNode>(*currentToken);
             advance();
             return node;
         } else {
@@ -184,7 +174,5 @@ Node *Parser::parseCast() {
         throw PSC::ExpectedTokenError(*currentToken, "')'");
     advance();
 
-    CastNode *node = new CastNode(token, *expr, type);
-    nodes.push_back(node);
-    return node;
+    return create<CastNode>(token, *expr, type);
 }

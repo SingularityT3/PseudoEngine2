@@ -7,16 +7,11 @@ ProcedureNode::ProcedureNode(const Token &token, PSC::Procedure *procedure)
     : Node(token), procedure(procedure)
 {}
 
-ProcedureNode::~ProcedureNode() {
-    if (!defined) delete procedure;
-}
-
 std::unique_ptr<NodeResult> ProcedureNode::evaluate(PSC::Context &ctx) {
     if (ctx.getProcedure(procedure->name) != nullptr)
         throw PSC::RedeclarationError(token, ctx, procedure->name);
 
-    ctx.addProcedure(procedure);
-    defined = true;
+    ctx.addProcedure(std::move(procedure));
 
     return std::make_unique<NodeResult>(nullptr, PSC::DT_NONE);
 }

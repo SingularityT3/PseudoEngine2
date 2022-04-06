@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <concepts>
 #include "tokens.h"
 #include "nodes/node.h"
 #include "psc/error.h"
@@ -17,6 +18,13 @@ private:
     void advance();
 
     PSC::DataType getPSCType();
+
+    template<std::derived_from<Node> T, typename... Args>
+    inline T *create(Args&&... args) {
+        T *node = new T(std::forward<Args>(args)...);
+        nodes.push_back(node);
+        return node;
+    }
 
 public:
     Parser() = default;
@@ -74,10 +82,9 @@ private:
 
     Node *parseFunctionCall();
 
-    template<typename T>
-    Node *parseLiteral() {
-        T *node = new T(*currentToken);
-        nodes.push_back(node);
+    template<std::derived_from<Node> T>
+    inline Node *parseLiteral() {
+        T *node = create<T>(*currentToken);
         advance();
         return node;
     }

@@ -4,13 +4,10 @@
 
 class ProcedureNode : public Node {
 private:
-    PSC::Procedure *procedure;
-    bool defined = false;
+    std::unique_ptr<PSC::Procedure> procedure;
 
 public:
     ProcedureNode(const Token &token, PSC::Procedure *procedure);
-
-    ~ProcedureNode();
 
     // Adds procedure to ctx
     std::unique_ptr<NodeResult> evaluate(PSC::Context &ctx) override;

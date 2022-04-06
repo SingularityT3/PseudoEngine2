@@ -7,16 +7,11 @@ FunctionNode::FunctionNode(const Token &token, PSC::Function *function)
     : Node(token), function(function)
 {}
 
-FunctionNode::~FunctionNode() {
-    if (!defined) delete function;
-}
-
 std::unique_ptr<NodeResult> FunctionNode::evaluate(PSC::Context &ctx) {
     if (ctx.getFunction(function->name) != nullptr)
         throw PSC::RedeclarationError(token, ctx, function->name);
 
-    ctx.addFunction(function);
-    defined = true;
+    ctx.addFunction(std::move(function));
 
     return std::make_unique<NodeResult>(nullptr, PSC::DT_NONE);
 }

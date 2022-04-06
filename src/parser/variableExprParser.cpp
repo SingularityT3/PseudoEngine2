@@ -20,9 +20,7 @@ Node *Parser::parseDeclareExpression() {
     PSC::DataType type = getPSCType();
 
     advance();
-    DeclareNode *node = new DeclareNode(op, identifier, type);
-    nodes.push_back(node);
-    return node;
+    return create<DeclareNode>(op, identifier, type);
 }
 
 Node *Parser::parseConstDeclareExpression() {
@@ -58,14 +56,9 @@ Node *Parser::parseConstDeclareExpression() {
         throw PSC::ExpectedTokenError(*currentToken, "Integer, Real or Boolean literal"); 
     }
 
-    if (negative) {
-        value = new NegateNode(minusToken, *value);
-        nodes.push_back(value);
-    }
+    if (negative) value = create<NegateNode>(minusToken, *value);
 
-    Node *node = new ConstDeclareNode(op, *value, identifier);
-    nodes.push_back(node);
-    return node;
+    return create<ConstDeclareNode>(op, *value, identifier);
 }
 
 Node *Parser::parseAssignmentExpression() {
@@ -80,7 +73,5 @@ Node *Parser::parseAssignmentExpression() {
 
     Node *value = parseEvaluationExpression();
 
-    AssignNode *node = new AssignNode(op, *value, identifier);
-    nodes.push_back(node);
-    return node;
+    return create<AssignNode>(op, *value, identifier);
 }

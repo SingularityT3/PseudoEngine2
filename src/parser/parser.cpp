@@ -111,9 +111,7 @@ Node *Parser::parseExpression() {
         const Token &returnToken = *currentToken;
         advance();
         Node *evalExpr = parseEvaluationExpression();
-        ReturnNode *node = new ReturnNode(returnToken, *evalExpr);
-        nodes.push_back(node);
-        return node;
+        return create<ReturnNode>(returnToken, *evalExpr);
     }
 
     return parseEvaluationExpression();

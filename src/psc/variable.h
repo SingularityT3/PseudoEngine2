@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <memory>
+#include <concepts>
 #include "psc/types/types.h"
 
 namespace PSC {

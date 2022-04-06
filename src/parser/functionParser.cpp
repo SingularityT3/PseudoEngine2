@@ -13,8 +13,7 @@ Node *Parser::parseFunction() {
     function->defToken = &functionToken;
     function->byRef = false;
 
-    FunctionNode *node = new FunctionNode(functionToken, function);
-    nodes.push_back(node);
+    FunctionNode *node = create<FunctionNode>(functionToken, function);
 
     if (currentToken->type == TT_LPAREN) {
         advance();
@@ -75,8 +74,7 @@ Node *Parser::parseFunction() {
 }
 
 Node *Parser::parseFunctionCall() {
-    FunctionCallNode *node = new FunctionCallNode(*currentToken);
-    nodes.push_back(node);
+    FunctionCallNode *node = create<FunctionCallNode>(*currentToken);
     advance();
 
     if (currentToken->type != TT_LPAREN) std::abort();

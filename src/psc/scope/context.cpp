@@ -10,20 +10,6 @@ Context::Context(Context *parent, const std::string &name, bool isFunctionCtx, P
     : parent(parent), name(name), isFunctionCtx(isFunctionCtx), returnType(returnType)
 {}
 
-Context::~Context() {
-    for (Variable *v : variables) {
-        delete v;
-    }
-
-    for (Procedure *p : procedures) {
-        delete p;
-    }
-
-    for (Function *f : functions) {
-        delete f;
-    }
-}
-
 Context *Context::getParent() const {
     return parent;
 }
@@ -33,12 +19,12 @@ const std::string &Context::getName() const {
 }
 
 void Context::addVariable(Variable *variable) {
-    variables.push_back(variable);
+    variables.emplace_back(variable);
 }
 
 Variable *Context::getVariable(const std::string &varName) {
-    for (Variable *var : variables) {
-        if (var->name == varName) return var;
+    for (auto &var : variables) {
+        if (var->name == varName) return var.get();
     }
 
     if (parent != nullptr) return parent->getVariable(varName);
@@ -46,14 +32,14 @@ Variable *Context::getVariable(const std::string &varName) {
     return nullptr;
 }
 
-void Context::addProcedure(Procedure *procedure) {
-    procedures.push_back(procedure);
+void Context::addProcedure(std::unique_ptr<Procedure> &&procedure) {
+    procedures.emplace_back(std::move(procedure));
 }
 
 Procedure *Context::getProcedure(const std::string &procedureName) {
-    for (Procedure *procedure : procedures) {
+    for (auto &procedure : procedures) {
         if (procedureName == procedure->name) {
-            return procedure;
+            return procedure.get();
         }
     }
 
@@ -62,14 +48,14 @@ Procedure *Context::getProcedure(const std::string &procedureName) {
     return nullptr;
 }
 
-void Context::addFunction(Function *function) {
-    functions.push_back(function);
+void Context::addFunction(std::unique_ptr<Function> &&function) {
+    functions.emplace_back(std::move(function));
 }
 
 Function *Context::getFunction(const std::string &functionName) {
-    for (Function *function : functions) {
+    for (auto &function : functions) {
         if (functionName == function->name) {
-            return function;
+            return function.get();
         }
     }
 

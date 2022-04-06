@@ -7,8 +7,7 @@ Node *Parser::parseCall() {
     if (currentToken->type != TT_IDENTIFIER)
         throw PSC::ExpectedTokenError(*currentToken, "identifier");
 
-    CallNode *node = new CallNode(callToken, currentToken->value);
-    nodes.push_back(node);
+    CallNode *node = create<CallNode>(callToken, currentToken->value);
     advance();
 
     if (currentToken->type == TT_LPAREN) {
@@ -48,8 +47,7 @@ Node *Parser::parseProcedure() {
     PSC::Procedure *procedure = new PSC::Procedure(identifier.value);
     procedure->byRef = false;
 
-    ProcedureNode *node = new ProcedureNode(procedureToken, procedure);
-    nodes.push_back(node);
+    ProcedureNode *node = create<ProcedureNode>(procedureToken, procedure);
 
     if (currentToken->type == TT_LPAREN) {
         advance();

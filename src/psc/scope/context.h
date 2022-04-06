@@ -12,9 +12,9 @@ namespace PSC {
     private:
         Context *parent;
         std::string name;
-        std::vector<Variable*> variables;
-        std::vector<Procedure*> procedures;
-        std::vector<Function*> functions;
+        std::vector<std::unique_ptr<Variable>> variables;
+        std::vector<std::unique_ptr<Procedure>> procedures;
+        std::vector<std::unique_ptr<Function>> functions;
 
     public:
         const Token *switchToken = nullptr;
@@ -27,8 +27,6 @@ namespace PSC {
 
         Context(Context *parent, const std::string &name, bool isFunctionCtx, PSC::DataType returnType);
 
-        ~Context();
-
         Context *getParent() const;
 
         const std::string &getName() const;
@@ -37,11 +35,11 @@ namespace PSC {
 
         Variable *getVariable(const std::string &varName);
 
-        void addProcedure(Procedure *procedure);
+        void addProcedure(std::unique_ptr<Procedure> &&procedure);
 
         Procedure *getProcedure(const std::string &procedureName);
 
-        void addFunction(Function *function);
+        void addFunction(std::unique_ptr<Function> &&function);
 
         Function *getFunction(const std::string &functionName);
     };

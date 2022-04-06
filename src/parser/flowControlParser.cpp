@@ -41,9 +41,7 @@ Node *Parser::parseForLoop() {
         advance();
     }
 
-    ForLoopNode *node = new ForLoopNode(forToken, iterator, *start, *stop, step, block);
-    nodes.push_back(node);
-    return node;
+    return create<ForLoopNode>(forToken, iterator, *start, *stop, step, block);
 }
 
 Node *Parser::parseRepeatLoop() {
@@ -58,9 +56,7 @@ Node *Parser::parseRepeatLoop() {
 
     Node *condition = parseEvaluationExpression();
 
-    RepeatUntilNode *node = new RepeatUntilNode(repeatToken, *condition, *block);
-    nodes.push_back(node);
-    return node;
+    return create<RepeatUntilNode>(repeatToken, *condition, *block);
 }
 
 Node *Parser::parseWhileLoop() {
@@ -80,9 +76,7 @@ Node *Parser::parseWhileLoop() {
         throw PSC::ExpectedTokenError(*currentToken, "'ENDWHILE'");
     advance();
 
-    WhileLoopNode *node = new WhileLoopNode(whileToken, *condition, *block);
-    nodes.push_back(node);
-    return node;
+    return create<WhileLoopNode>(whileToken, *condition, *block);
 }
 
 Node *Parser::parseIfStatement() {
@@ -98,8 +92,7 @@ Node *Parser::parseIfStatement() {
 
     PSC::Block *block = parseBlock();
 
-    IfStatementNode *ifNode = new IfStatementNode(ifToken);
-    nodes.push_back(ifNode);
+    IfStatementNode *ifNode = create<IfStatementNode>(ifToken);
     ifNode->components.emplace_back(condition, *block);
 
     while (currentToken->type == TT_ELSE) {

@@ -4,13 +4,10 @@
 
 class FunctionNode : public Node {
 private:
-    PSC::Function *function;
-    bool defined = false;
+    std::unique_ptr<PSC::Function> function;
 
 public:
     FunctionNode(const Token &token, PSC::Function *function);
-
-    ~FunctionNode();
 
     // Adds function to ctx
     std::unique_ptr<NodeResult> evaluate(PSC::Context &ctx) override;
