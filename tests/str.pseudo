@@ -10,14 +10,10 @@ FUNCTION getChar(x : BOOLEAN) RETURNS CHAR
     ENDIF
 ENDFUNCTION
 
-"Name"
-getName()
-"True"
-getChar(TRUE)
-"False"
-getChar(FALSE)
+PRINT "Name", getName()
+PRINT "True", getChar(TRUE)
+PRINT "False", getChar(FALSE)
 
+PRINT "Hello" & " " & "World"
 
-"Hello" & " " & "World"
-
-"53 * 24 = " & (53 * 24)
+PRINT "53 * 24 = " & (53 * 24)

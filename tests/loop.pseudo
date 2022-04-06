@@ -5,7 +5,7 @@ WHILE Counter <= 3 DO
 
         AnotherCounter <- 1
         REPEAT
-            Counter & ", " & i & ", " & AnotherCounter
+            PRINT Counter & ", " & i & ", " & AnotherCounter
             AnotherCounter <- AnotherCounter + 1
         UNTIL AnotherCounter > 3
 

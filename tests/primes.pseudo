@@ -9,6 +9,6 @@ ENDFUNCTION
 
 FOR n <- 1 TO 10000 STEP 2
     IF IsPrime(n) THEN
-        n
+        PRINT n
     ENDIF
 NEXT n

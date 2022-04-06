@@ -15,9 +15,7 @@ PROCEDURE Main
     y <- 3
     DECLARE result : INTEGER
     CALL SwapAndSum(x, y, result)
-    x
-    y
-    result
+    PRINT x, y, result
 ENDPROCEDURE
 
 CALL Main()
