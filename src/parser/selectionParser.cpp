@@ -69,6 +69,9 @@ Node *Parser::parseCaseStatement() {
 
             PSC::Block *block = parseBlock(BT_CASE);
             caseNode->addCase(new OtherwiseCaseComponent(*block));
+
+            if (currentToken->type != TT_ENDCASE)
+                throw PSC::ExpectedTokenError(*currentToken, "'ENDCASE'");
             break;
         }
 
