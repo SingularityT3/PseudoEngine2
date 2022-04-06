@@ -1,0 +1,29 @@
+var <- 86
+PRINT 1, 6.25, TRUE, FALSE
+OUTPUT 'a', "Hello World", var
+
+DECLARE i : INTEGER
+DECLARE r : REAL
+DECLARE b : BOOLEAN
+DECLARE c : CHAR
+DECLARE s : STRING
+
+OUTPUT "Integer:"
+READ i
+OUTPUT i
+
+PRINT "Real:"
+INPUT r
+PRINT r
+
+PRINT "Boolean:"
+INPUT b
+PRINT b
+
+PRINT "Char:"
+INPUT c
+PRINT c
+
+PRINT "String:"
+INPUT s
+PRINT s

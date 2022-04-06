@@ -77,6 +77,9 @@ enum TokenType {
     TT_RETURNS,
     TT_RETURN,
 
+    TT_OUTPUT,
+    TT_INPUT,
+
     TT_LINE_END,
     TT_EXPRESSION_END
 };

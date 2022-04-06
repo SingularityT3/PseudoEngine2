@@ -18,6 +18,8 @@ Expression -> EvaluationExpression
               | ForLoop
               | CALL IDENTIFIER[(EvaluationExpression {, EvaluationExpression})]
               | RETURN EvaluationExpression
+              | (OUTPUT | PRINT) EvaluationExpression {, EvaluationExpression}
+              | (INPUT | READ) IDENTIFIER
 
 ForLoop -> FOR IDENTIFIER <- ArithmeticExpression TO ArithmeticExpression [STEP ArithmeticExpression] Block NEXT [IDENTIFIER]
 
@@ -25,7 +27,7 @@ RepeatUntilLoop -> REPEAT Block UNTIL EvaluationExpression
 
 WhileLoop -> WHILE EvaluationExpression DO Block ENDWHILE
 
-CaseStatement -> CASE OF IDENTIFIER {Factor[ TO FACTOR] : Block}* [OTHERWISE : Block] ENDCASE
+CaseStatement -> CASE OF IDENTIFIER {Factor[ TO FACTOR] : Block} [OTHERWISE : Block] ENDCASE
 
 IfCondition -> IF EvaluationExpression THEN Block {ELSE IF EvaluationExpression THEN Block} [ELSE Block] ENDIF
 

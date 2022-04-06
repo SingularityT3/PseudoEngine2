@@ -54,6 +54,10 @@ private:
 
     Node *parseExpression();
 
+    Node *parseOutput();
+
+    Node *parseInput();
+
     Node *parseForLoop();
 
     Node *parseRepeatLoop();

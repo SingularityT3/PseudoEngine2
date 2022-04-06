@@ -104,6 +104,12 @@ void Lexer::makeWord() {
         tokens.push_back(new Token(TT_RETURN, line, startColumn));
     }
 
+    else if (word == "OUTPUT" || word == "PRINT") {
+        tokens.push_back(new Token(TT_OUTPUT, line, startColumn));
+    } else if (word == "INPUT" || word == "READ") {
+        tokens.push_back(new Token(TT_INPUT, line, startColumn));
+    }
+
     else {
         tokens.push_back(new Token(TT_IDENTIFIER, line, startColumn, word));
     }

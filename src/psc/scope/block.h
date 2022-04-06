@@ -8,7 +8,11 @@ namespace PSC {
     private:
         std::vector<Node*> nodes;
 
-        void runNode(Node *node, PSC::Context &ctx);
+        void runNodeREPL(Node *node, PSC::Context &ctx);
+
+        void _run(PSC::Context &ctx);
+
+        void _runREPL(PSC::Context &ctx);
 
     public:
         void addNode(Node *node);

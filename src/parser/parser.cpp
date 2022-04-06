@@ -129,6 +129,10 @@ Node *Parser::parseExpression() {
         advance();
         Node *evalExpr = parseEvaluationExpression();
         return create<ReturnNode>(returnToken, *evalExpr);
+    } else if (currentToken->type == TT_OUTPUT) {
+        return parseOutput();
+    } else if (currentToken->type == TT_INPUT) {
+        return parseInput();
     }
 
     return parseEvaluationExpression();

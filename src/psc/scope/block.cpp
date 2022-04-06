@@ -6,11 +6,13 @@
 
 using namespace PSC;
 
+extern bool REPLMode;
+
 void Block::addNode(Node *node) {
     nodes.push_back(node);
 }
 
-void Block::runNode(Node *node, PSC::Context &ctx) {
+void Block::runNodeREPL(Node *node, PSC::Context &ctx) {
     auto result = node->evaluate(ctx);
 
     switch (result->type) {
@@ -35,9 +37,21 @@ void Block::runNode(Node *node, PSC::Context &ctx) {
     std::cout << std::endl;
 }
 
-void Block::run(PSC::Context &ctx) {
+void Block::_run(PSC::Context &ctx) {
     for (Node *node : nodes) {
-        runNode(node, ctx);
+        node->evaluate(ctx);
         if (ctx.isFunctionCtx && ctx.returnValue != nullptr) break;
     }
+}
+
+void Block::_runREPL(PSC::Context &ctx) {
+    for (Node *node : nodes) {
+        runNodeREPL(node, ctx);
+        if (ctx.isFunctionCtx && ctx.returnValue != nullptr) break;
+    }
+}
+
+void Block::run(PSC::Context &ctx) {
+    if (REPLMode) _runREPL(ctx);
+    else _run(ctx);
 }
