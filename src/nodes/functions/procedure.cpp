@@ -76,7 +76,7 @@ std::unique_ptr<NodeResult> CallNode::evaluate(PSC::Context &ctx) {
         procedureCtx->addVariable(var);
     }
 
-    procedure->block->run(*procedureCtx);
+    procedure->run(*procedureCtx);
     ctx.switchToken = nullptr;
 
     return std::make_unique<NodeResult>(nullptr, PSC::DT_NONE);

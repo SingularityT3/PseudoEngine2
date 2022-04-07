@@ -27,8 +27,8 @@ bool runFile() {
         PSC::Block *block = parser.parse();
         std::cout.precision(10);
 
-        PSC::Context globalCtx(nullptr, GLOBAL_CTX_NAME);
-        block->run(globalCtx);
+        auto globalCtx = PSC::Context::createGlobalContext();
+        block->run(*globalCtx);
     } catch (const PSC::Error &e) {
         e.print();
         return false;

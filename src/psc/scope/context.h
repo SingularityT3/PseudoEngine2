@@ -27,6 +27,8 @@ namespace PSC {
 
         Context(Context *parent, const std::string &name, bool isFunctionCtx, PSC::DataType returnType);
 
+        static std::unique_ptr<Context> createGlobalContext();
+
         Context *getParent() const;
 
         const std::string &getName() const;

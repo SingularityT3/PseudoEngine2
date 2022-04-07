@@ -1,3 +1,4 @@
+#include "psc/builtinFunctions.h"
 #include "context.h"
 
 using namespace PSC;
@@ -9,6 +10,23 @@ Context::Context(Context *parent, const std::string &name)
 Context::Context(Context *parent, const std::string &name, bool isFunctionCtx, PSC::DataType returnType)
     : parent(parent), name(name), isFunctionCtx(isFunctionCtx), returnType(returnType)
 {}
+
+std::unique_ptr<Context> Context::createGlobalContext() {
+    auto ctx = std::make_unique<Context>(nullptr, "Program");
+
+    ctx->functions.reserve(6);
+
+    ctx->addFunction(std::make_unique<PSC::BuiltinFnLength>());
+    ctx->addFunction(std::make_unique<PSC::BuiltinFnRight>());
+    ctx->addFunction(std::make_unique<PSC::BuiltinFnMid>());
+
+    ctx->addFunction(std::make_unique<PSC::BuiltinFnLCase>());
+    ctx->addFunction(std::make_unique<PSC::BuiltinFnUCase>());
+
+    ctx->addFunction(std::make_unique<PSC::BuiltinFnRand>());
+
+    return ctx;
+}
 
 Context *Context::getParent() const {
     return parent;

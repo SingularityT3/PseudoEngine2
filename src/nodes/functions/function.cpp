@@ -78,7 +78,7 @@ std::unique_ptr<NodeResult> FunctionCallNode::evaluate(PSC::Context &ctx) {
         functionCtx->addVariable(var);
     }
 
-    function->block->run(*functionCtx);
+    function->run(*functionCtx);
     if (!functionCtx->returnValue)
         throw PSC::RuntimeError(*(function->defToken), *functionCtx, "Missing RETURN statement");
 

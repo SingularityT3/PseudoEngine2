@@ -6,6 +6,7 @@
 
 namespace PSC {
     class Block;
+    class Context;
 
     struct Parameter {
         const std::string name;
@@ -17,10 +18,12 @@ namespace PSC {
     struct Procedure {
         const std::string name;
         std::vector<Parameter> parameters;
-        bool byRef;
+        bool byRef = false;
         PSC::Block *block;
 
         Procedure(const std::string &name);
+
+        virtual void run(PSC::Context &ctx);
     };
 
     struct Function : public Procedure {

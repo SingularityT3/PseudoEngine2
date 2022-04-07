@@ -15,7 +15,7 @@ bool startREPL() {
 
     Lexer lexer;
     Parser parser;
-    PSC::Context globalCtx(nullptr, GLOBAL_CTX_NAME);
+    auto globalCtx = PSC::Context::createGlobalContext();
 
     while (true) {
         std::cout << "> " << std::flush;
@@ -45,7 +45,7 @@ bool startREPL() {
             PSC::Block *block = parser.parse();
 
             std::cout.precision(10);
-            block->run(globalCtx);
+            block->run(*globalCtx);
         } catch (const PSC::Error &e) {
             e.print();
         }
