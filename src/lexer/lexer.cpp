@@ -48,7 +48,14 @@ const std::vector<Token*> Lexer::makeTokens() {
         } else if (currentChar == '*') {
             tokens.push_back(new Token(TT_STAR, line, column));
         } else if (currentChar == '/') {
-            tokens.push_back(new Token(TT_SLASH, line, column));
+            advance();
+            if (idx >= (int) expr->size() || currentChar != '/') {
+                tokens.push_back(new Token(TT_SLASH, line, column));
+            } else {
+                int commentLine = line;
+                while (line == commentLine && idx < (int) expr->size()) advance();
+            }
+            continue;
         } else if (currentChar == '(') {
             tokens.push_back(new Token(TT_LPAREN, line, column));
         } else if (currentChar == ')') {
