@@ -94,6 +94,8 @@ private:
 
     Node *parseFunctionCall();
 
+    Node *parseModDivFn();
+
     template<std::derived_from<Node> T>
     inline Node *parseLiteral() {
         T *node = create<T>(*currentToken);

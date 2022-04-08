@@ -154,9 +154,33 @@ Node *Parser::parseAtom() {
         return expr;
     } else if (currentToken->type == TT_DATA_TYPE) {
         return parseCast();
+    } else if ((currentToken->type == TT_MOD || currentToken->type == TT_DIV) && compareNextType(1, TT_LPAREN)) {
+        return parseModDivFn();
     }
 
     throw PSC::ExpectedTokenError(*currentToken, "value or expression");
+}
+
+Node *Parser::parseModDivFn() {
+    const Token &token = *currentToken;
+    advance();
+
+    if (currentToken->type != TT_LPAREN) std::abort();
+    advance();
+
+    Node *expr = parseEvaluationExpression();
+
+    if (currentToken->type != TT_COMMA)
+        throw PSC::ExpectedTokenError(*currentToken, "','");
+    advance();
+
+    Node *otherExpr = parseEvaluationExpression();
+
+    if (currentToken->type != TT_RPAREN)
+        throw PSC::ExpectedTokenError(*currentToken, "')'");
+    advance();
+
+    return create<ArithmeticOperationNode>(token, *expr, *otherExpr);
 }
 
 Node *Parser::parseCast() {

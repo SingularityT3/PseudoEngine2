@@ -58,3 +58,4 @@ Atom -> INTEGER
         | (EvaluationExpression)
         | IDENTIFIER([EvaluationExpression {, EvaluationExpression}])
         | DataType(EvaluationExpression)
+        | (MOD | DIV) (EvaluationExpression, EvaluationExpression)
