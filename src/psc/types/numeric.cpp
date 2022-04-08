@@ -393,5 +393,6 @@ std::unique_ptr<Char> Real::toChar() const {
 std::unique_ptr<String> Real::toString() const {
     std::string s = std::to_string(value);
     s.erase(s.find_last_not_of('0') + 1);
+    if (s.back() == '.') s.erase(s.size() - 1);
     return std::make_unique<String>(s);
 }

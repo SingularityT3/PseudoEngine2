@@ -48,7 +48,9 @@ target_sources(PseudoEngine2 PRIVATE
     src/psc/scope/context.cpp
     src/psc/variable.cpp
     src/psc/procedure.cpp
-    src/psc/builtinFunctions.cpp
+    src/psc/builtinFunctions/string.cpp
+    src/psc/builtinFunctions/char.cpp
+    src/psc/builtinFunctions/numeric.cpp
     src/psc/error.cpp
     
     src/repl.cpp

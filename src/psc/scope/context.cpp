@@ -1,4 +1,4 @@
-#include "psc/builtinFunctions.h"
+#include "psc/builtinFunctions/functions.h"
 #include "context.h"
 
 using namespace PSC;
@@ -14,16 +14,26 @@ Context::Context(Context *parent, const std::string &name, bool isFunctionCtx, P
 std::unique_ptr<Context> Context::createGlobalContext() {
     auto ctx = std::make_unique<Context>(nullptr, "Program");
 
-    ctx->functions.reserve(6);
+    ctx->functions.reserve(15);
 
-    ctx->addFunction(std::make_unique<PSC::BuiltinFnLength>());
-    ctx->addFunction(std::make_unique<PSC::BuiltinFnRight>());
-    ctx->addFunction(std::make_unique<PSC::BuiltinFnMid>());
+    ctx->addFunction(std::move(std::make_unique<PSC::BuiltinFnLength>()));
+    ctx->addFunction(std::move(std::make_unique<PSC::BuiltinFnRight>()));
+    ctx->addFunction(std::move(std::make_unique<PSC::BuiltinFnMid>()));
+    ctx->addFunction(std::move(std::make_unique<PSC::BuiltinFnLeft>()));
+    ctx->addFunction(std::move(std::make_unique<PSC::BuiltinFnToUpper>()));
+    ctx->addFunction(std::move(std::make_unique<PSC::BuiltinFnToLower>()));
 
-    ctx->addFunction(std::make_unique<PSC::BuiltinFnLCase>());
-    ctx->addFunction(std::make_unique<PSC::BuiltinFnUCase>());
+    ctx->addFunction(std::move(std::make_unique<PSC::BuiltinFnNumToStr>()));
+    ctx->addFunction(std::move(std::make_unique<PSC::BuiltinFnStrToNum>()));
+    ctx->addFunction(std::move(std::make_unique<PSC::BuiltinFnIsNum>()));
 
-    ctx->addFunction(std::make_unique<PSC::BuiltinFnRand>());
+    ctx->addFunction(std::move(std::make_unique<PSC::BuiltinFnLCase>()));
+    ctx->addFunction(std::move(std::make_unique<PSC::BuiltinFnUCase>()));
+    ctx->addFunction(std::move(std::make_unique<PSC::BuiltinFnASC>()));
+    ctx->addFunction(std::move(std::make_unique<PSC::BuiltinFnCHR>()));
+
+    ctx->addFunction(std::move(std::make_unique<PSC::BuiltinFnRand>()));
+    ctx->addFunction(std::move(std::make_unique<PSC::BuiltinFnInt>()));
 
     return ctx;
 }

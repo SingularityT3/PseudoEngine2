@@ -1,0 +1,219 @@
+#include "psc/variable.h"
+#include "psc/scope/context.h"
+#include "psc/builtinFunctions/functions.h"
+
+PSC::BuiltinFnLength::BuiltinFnLength()
+    : Function("LENGTH")
+{
+    returnType = PSC::DT_INTEGER;
+    parameters.emplace_back("String", PSC::DT_STRING);
+}
+
+void PSC::BuiltinFnLength::run(PSC::Context &ctx) {
+    PSC::Variable *var = ctx.getVariable("String");
+    if (var == nullptr || var->type != PSC::DT_STRING) std::abort();
+
+    int_t len = var->get<PSC::String>().value.size();
+    auto ret = std::make_unique<PSC::Integer>(len);
+
+    ctx.returnValue = std::make_unique<NodeResult>(std::move(ret), PSC::DT_INTEGER);
+}
+
+
+PSC::BuiltinFnRight::BuiltinFnRight()
+    : Function("RIGHT")
+{
+    returnType = PSC::DT_STRING;
+    parameters.reserve(2);
+    parameters.emplace_back("String", PSC::DT_STRING);
+    parameters.emplace_back("x", PSC::DT_INTEGER);
+}
+
+void PSC::BuiltinFnRight::run(PSC::Context &ctx) {
+    PSC::Variable *str = ctx.getVariable("String");
+    if (str == nullptr || str->type != PSC::DT_STRING) std::abort();
+
+    PSC::Variable *x = ctx.getVariable("x");
+    if (x == nullptr || x->type != PSC::DT_INTEGER) std::abort();
+
+    int_t xVal = x->get<PSC::Integer>().value;
+    std::string &strVal = str->get<PSC::String>().value;
+    int strLen = strVal.size();
+    auto ret = std::make_unique<PSC::String>();
+
+    int start = strLen - xVal;
+    for (int i = start > 0 ? start : 0; i < strLen; i++) {
+        ret->value += strVal[i];
+    }
+
+    ctx.returnValue = std::make_unique<NodeResult>(std::move(ret), PSC::DT_STRING);
+}
+
+
+PSC::BuiltinFnMid::BuiltinFnMid()
+    : Function("MID")
+{
+    returnType = PSC::DT_STRING;
+    parameters.reserve(3);
+    parameters.emplace_back("String", PSC::DT_STRING);
+    parameters.emplace_back("x", PSC::DT_INTEGER);
+    parameters.emplace_back("y", PSC::DT_INTEGER);
+}
+
+void PSC::BuiltinFnMid::run(PSC::Context &ctx) {
+    PSC::Variable *str = ctx.getVariable("String");
+    if (str == nullptr || str->type != PSC::DT_STRING) std::abort();
+
+    PSC::Variable *x = ctx.getVariable("x");
+    if (x == nullptr || x->type != PSC::DT_INTEGER) std::abort();
+
+    PSC::Variable *y = ctx.getVariable("y");
+    if (y == nullptr || y->type != PSC::DT_INTEGER) std::abort();
+
+
+    auto ret = std::make_unique<PSC::String>();
+    std::string &strVal = str->get<PSC::String>().value;
+
+    int_t xVal = x->get<PSC::Integer>().value - 1;
+    if (xVal < 0) xVal = 0;
+    int_t yVal = y->get<PSC::Integer>().value;
+    if (yVal < 0) yVal = 0;
+
+    ret->value = std::move(strVal.substr(xVal, yVal));
+
+    ctx.returnValue = std::make_unique<NodeResult>(std::move(ret), PSC::DT_STRING);
+}
+
+
+PSC::BuiltinFnLeft::BuiltinFnLeft()
+    : Function("LEFT")
+{
+    returnType = PSC::DT_STRING;
+    parameters.reserve(2);
+    parameters.emplace_back("String", PSC::DT_STRING);
+    parameters.emplace_back("x", PSC::DT_INTEGER);
+}
+
+void PSC::BuiltinFnLeft::run(PSC::Context &ctx) {
+    PSC::Variable *str = ctx.getVariable("String");
+    if (str == nullptr || str->type != PSC::DT_STRING) std::abort();
+
+    PSC::Variable *x = ctx.getVariable("x");
+    if (x == nullptr || x->type != PSC::DT_INTEGER) std::abort();
+
+    int_t xVal = x->get<PSC::Integer>().value;
+    if (xVal < 0) xVal = 0;
+    std::string &strVal = str->get<PSC::String>().value;
+
+    auto ret = std::make_unique<PSC::String>();
+    ret->value = std::move(strVal.substr(0, xVal));
+
+    ctx.returnValue = std::make_unique<NodeResult>(std::move(ret), PSC::DT_STRING);
+}
+
+
+PSC::BuiltinFnToUpper::BuiltinFnToUpper()
+    : Function("TO_UPPER")
+{
+    returnType = PSC::DT_STRING;
+    parameters.emplace_back("String", PSC::DT_STRING);
+}
+
+void PSC::BuiltinFnToUpper::run(PSC::Context &ctx) {
+    PSC::Variable *str = ctx.getVariable("String");
+    if (str == nullptr || str->type != PSC::DT_STRING) std::abort();
+
+    auto ret = std::make_unique<PSC::String>();
+
+    ret->value = str->get<PSC::String>().value;
+    std::transform(ret->value.begin(), ret->value.end(), ret->value.begin(), toupper);
+
+    ctx.returnValue = std::make_unique<NodeResult>(std::move(ret), PSC::DT_STRING);
+}
+
+
+PSC::BuiltinFnToLower::BuiltinFnToLower()
+    : Function("TO_LOWER")
+{
+    returnType = PSC::DT_STRING;
+    parameters.emplace_back("String", PSC::DT_STRING);
+}
+
+void PSC::BuiltinFnToLower::run(PSC::Context &ctx) {
+    PSC::Variable *str = ctx.getVariable("String");
+    if (str == nullptr || str->type != PSC::DT_STRING) std::abort();
+
+    auto ret = std::make_unique<PSC::String>();
+
+    ret->value = str->get<PSC::String>().value;
+    std::transform(ret->value.begin(), ret->value.end(), ret->value.begin(), tolower);
+
+    ctx.returnValue = std::make_unique<NodeResult>(std::move(ret), PSC::DT_STRING);
+}
+
+
+PSC::BuiltinFnNumToStr::BuiltinFnNumToStr()
+    : Function("NUM_TO_STR")
+{
+    returnType = PSC::DT_STRING;
+    parameters.emplace_back("x", PSC::DT_REAL);
+}
+
+void PSC::BuiltinFnNumToStr::run(PSC::Context &ctx) {
+    PSC::Variable *x = ctx.getVariable("x");
+    if (x == nullptr || x->type != PSC::DT_REAL) std::abort();
+
+    auto ret = x->get<PSC::Real>().toString();
+
+    ctx.returnValue = std::make_unique<NodeResult>(std::move(ret), PSC::DT_STRING);
+}
+
+
+PSC::BuiltinFnStrToNum::BuiltinFnStrToNum()
+    : Function("STR_TO_NUM")
+{
+    returnType = PSC::DT_REAL;
+    parameters.emplace_back("String", PSC::DT_STRING);
+}
+
+void PSC::BuiltinFnStrToNum::run(PSC::Context &ctx) {
+    PSC::Variable *str = ctx.getVariable("String");
+    if (str == nullptr || str->type != PSC::DT_STRING) std::abort();
+
+    auto ret = str->get<PSC::String>().toReal();
+
+    ctx.returnValue = std::make_unique<NodeResult>(std::move(ret), PSC::DT_REAL);
+}
+
+
+PSC::BuiltinFnIsNum::BuiltinFnIsNum()
+    : Function("IS_NUM")
+{
+    returnType = PSC::DT_BOOLEAN;
+    parameters.emplace_back("String", PSC::DT_STRING);
+}
+
+void PSC::BuiltinFnIsNum::run(PSC::Context &ctx) {
+    PSC::Variable *str = ctx.getVariable("String");
+    if (str == nullptr || str->type != PSC::DT_STRING) std::abort();
+
+    std::string &strVal = str->get<PSC::String>().value;
+    auto ret = std::make_unique<PSC::Boolean>(true);
+    bool decimal = false;
+
+    for (char &c : strVal) {
+        if (c == '.') {
+            if (decimal) {
+                ret->value = false;
+                break;
+            } else {
+                decimal = true;
+            }
+        } else if (c < '0' || c > '9') {
+            ret->value = false;
+            break;
+        }
+    }
+
+    ctx.returnValue = std::make_unique<NodeResult>(std::move(ret), PSC::DT_BOOLEAN);
+}

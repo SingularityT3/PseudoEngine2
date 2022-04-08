@@ -1,0 +1,22 @@
+PRINT "LEGNTH(\"ABCDEFG\"): " & LENGTH("ABCDEFG")
+PRINT "LEFT(\"ABCDEFG\", 3): " & LEFT("ABCDEFG", 3)
+PRINT "RIGHT(\"ABCDEFG\", 2): " & RIGHT("ABCDEFG", 2)
+PRINT "MID(\"ABCDEFG\", 4, 2): " & MID("ABCDEFG", 4, 2)
+PRINT "TO_UPPER(\"ThiS 1s a T3st 112!\"): " & TO_UPPER("ThiS 1s a T3st!")
+PRINT "TO_LOWER(\"ThiS 1s a T3st 112!\"): " & TO_LOWER("ThiS 1s a T3st!")
+
+PRINT "NUM_TO_STR(245.78): " & NUM_TO_STR(245.78)
+PRINT "STR_TO_NUM(\"56\"): " & STR_TO_NUM("56")
+PRINT "IS_NUM(\"2.412\"): " & IS_NUM("2.412")
+PRINT "IS_NUM(\"2.412.13\"): " & IS_NUM("2.412.13")
+PRINT "IS_NUM(\"nan\"): " & IS_NUM("nan")
+
+PRINT "LCASE('W'): " & LCASE('W')
+PRINT "LCASE('a'): " & LCASE('a')
+PRINT "UCASE('s'): " & UCASE('s')
+PRINT "UCASE('D'): " & UCASE('D')
+PRINT "ASC('A'): " & ASC('A')
+PRINT "CHR(99): " & CHR(99)
+
+PRINT "INT(92.235): " & INT(92.235)
+PRINT "RAND(1011): " & RAND(1011)
