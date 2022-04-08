@@ -40,14 +40,12 @@ void Block::runNodeREPL(Node *node, PSC::Context &ctx) {
 void Block::_run(PSC::Context &ctx) {
     for (Node *node : nodes) {
         node->evaluate(ctx);
-        if (ctx.isFunctionCtx && ctx.returnValue != nullptr) break;
     }
 }
 
 void Block::_runREPL(PSC::Context &ctx) {
     for (Node *node : nodes) {
         runNodeREPL(node, ctx);
-        if (ctx.isFunctionCtx && ctx.returnValue != nullptr) break;
     }
 }
 

@@ -2,6 +2,8 @@
 #include "nodes/base.h"
 #include "psc/procedure.h"
 
+class ReturnErrSignal {};
+
 class FunctionNode : public Node {
 private:
     std::unique_ptr<PSC::Function> function;

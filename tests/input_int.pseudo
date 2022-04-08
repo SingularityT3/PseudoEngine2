@@ -1,0 +1,22 @@
+FUNCTION InputInt() RETURNS INTEGER
+    DECLARE s : STRING
+    DECLARE x : REAL
+    DECLARE y : INTEGER
+    WHILE TRUE DO
+        INPUT s
+        IF NOT IS_NUM(s) THEN
+            OUTPUT "Invalid Number"
+        ELSE 
+            x <- STR_TO_NUM(s)
+            y <- INT(x)
+            IF y = x THEN
+                RETURN y
+            ELSE
+                OUTPUT "Number must be an integer"
+            ENDIF
+        ENDIF
+    ENDWHILE
+ENDFUNCTION
+
+a <- InputInt()
+PRINT "Got integer: " & a

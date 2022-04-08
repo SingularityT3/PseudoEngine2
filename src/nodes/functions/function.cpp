@@ -78,7 +78,10 @@ std::unique_ptr<NodeResult> FunctionCallNode::evaluate(PSC::Context &ctx) {
         functionCtx->addVariable(var);
     }
 
-    function->run(*functionCtx);
+    try {
+        function->run(*functionCtx);
+    } catch (ReturnErrSignal &e) {}
+
     if (!functionCtx->returnValue)
         throw PSC::RuntimeError(*(function->defToken), *functionCtx, "Missing RETURN statement");
 
@@ -96,5 +99,5 @@ std::unique_ptr<NodeResult> ReturnNode::evaluate(PSC::Context &ctx) {
     if (ctx.returnValue->type != ctx.returnType)
         throw PSC::RuntimeError(token, ctx, "Invalid return type");
 
-    return std::make_unique<NodeResult>(nullptr, PSC::DT_NONE);
+    throw ReturnErrSignal();
 }
