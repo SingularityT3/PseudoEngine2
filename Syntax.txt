@@ -9,9 +9,8 @@ Function -> FUNCTION IDENTIFIER [([BYREF | BYVAL] IDENTIFIER : DataType {, IDENT
 Procedure -> PROCEDURE IDENTIFIER [([BYREF | BYVAL] IDENTIFIER : DataType {, IDENTIFIER : DataType})] Block ENDPROCEDURE
 
 Expression -> EvaluationExpression
-              | DECLARE IDENTIFIER : DataType
+              | DECLARE IDENTIFIER : [ARRAY[EvaluationExpression:EvaluationExpression {EvaluationExpression:EvaluationExpression}] OF] DataType
               | CONSTANT IDENTIFIER = INTEGER | -INTEGER | REAL | -REAL | BOOLEAN | CHAR | STRING
-              | IDENTIFIER <- EvaluationExpression
               | IfCondition
               | CaseStatement
               | WhileLoop
@@ -52,10 +51,13 @@ Atom -> INTEGER
         | REAL
         | TRUE
         | FALSE
-        | IDENTIFIER
         | CHAR
         | STRING
-        | (EvaluationExpression)
-        | IDENTIFIER([EvaluationExpression {, EvaluationExpression}])
-        | DataType(EvaluationExpression)
         | (MOD | DIV) (EvaluationExpression, EvaluationExpression)
+        | DataType(EvaluationExpression)
+        | (EvaluationExpression)
+        | IDENTIFIER
+        | IDENTIFIER <- EvaluationExpression
+        | IDENTIFIER[ArithmeticExpression:ArithmeticExpression {, ArithmeticExpression:ArithmeticExpression}] <- EvaluationExpression
+        | IDENTIFIER([EvaluationExpression {, EvaluationExpression}])
+        | IDENTIFIER[ArithmeticExpression {, ArithmeticExpression}]

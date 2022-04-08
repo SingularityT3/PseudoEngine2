@@ -27,6 +27,7 @@ target_sources(PseudoEngine2 PRIVATE
     src/nodes/selection/ifStatement.cpp
     src/nodes/selection/case.cpp
     src/nodes/variable.cpp
+    src/nodes/array.cpp
     src/nodes/cast.cpp
     src/nodes/io.cpp
     src/nodes/nodeResult.cpp
@@ -47,6 +48,7 @@ target_sources(PseudoEngine2 PRIVATE
     src/psc/scope/block.cpp
     src/psc/scope/context.cpp
     src/psc/variable.cpp
+    src/psc/array.cpp
     src/psc/procedure.cpp
     src/psc/builtinFunctions/string.cpp
     src/psc/builtinFunctions/char.cpp

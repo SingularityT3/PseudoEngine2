@@ -6,6 +6,7 @@
 #include "psc/error.h"
 #include "psc/scope/block.h"
 
+// TODO: Arrays
 class Parser {
 private:
     const std::vector<Token*> *tokens;

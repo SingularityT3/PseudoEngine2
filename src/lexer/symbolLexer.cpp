@@ -36,6 +36,8 @@ void Lexer::makeWord() {
         tokens.push_back(new Token(TT_CONSTANT, line, startColumn));
     } else if (word == "INTEGER" || word == "REAL" || word == "BOOLEAN" || word == "CHAR" || word == "STRING") {
         tokens.push_back(new Token(TT_DATA_TYPE, line, startColumn, word));
+    } else if (word == "ARRAY") {
+        tokens.push_back(new Token(TT_ARRAY, line, startColumn));
     }
 
     else if (word == "IF") {

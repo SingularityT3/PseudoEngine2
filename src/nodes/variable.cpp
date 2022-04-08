@@ -49,7 +49,6 @@ std::unique_ptr<NodeResult> AssignNode::evaluate(PSC::Context &ctx) {
 
     PSC::InvalidUsageError err(token, ctx, "assignment operator: incompatible data types");
 
-    // TODO: casting
     if (var->type != valueRes->type)
         throw err;
 
@@ -83,7 +82,6 @@ std::unique_ptr<NodeResult> AccessNode::evaluate(PSC::Context &ctx) {
     if (var == nullptr)
         throw PSC::NotDefinedError(token, ctx, "Identifier '" + token.value + "'");
 
-    // TODO: Optimize to avoid copying
     PSC::Value *data;
     switch (var->type) {
         case PSC::DT_INTEGER:

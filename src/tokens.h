@@ -43,6 +43,9 @@ enum TokenType {
     TT_IDENTIFIER,
 
     TT_DATA_TYPE,
+    TT_ARRAY,
+    TT_LSQRBRACKET,
+    TT_RSQRBRACKET,
 
     TT_IF,
     TT_THEN,

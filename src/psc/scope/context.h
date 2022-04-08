@@ -4,6 +4,7 @@
 #include <memory>
 #include "tokens.h"
 #include "psc/variable.h"
+#include "psc/array.h"
 #include "psc/procedure.h"
 #include "nodes/nodeResult.h"
 
@@ -13,6 +14,7 @@ namespace PSC {
         Context *parent;
         std::string name;
         std::vector<std::unique_ptr<Variable>> variables;
+        std::vector<std::unique_ptr<Array>> arrays;
         std::vector<std::unique_ptr<Procedure>> procedures;
         std::vector<std::unique_ptr<Function>> functions;
 
@@ -44,5 +46,9 @@ namespace PSC {
         void addFunction(std::unique_ptr<Function> &&function);
 
         Function *getFunction(const std::string &functionName);
+
+        void addArray(std::unique_ptr<Array> &&array);
+
+        Array *getArray(const std::string &arrayName);
     };
 }

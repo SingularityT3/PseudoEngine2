@@ -91,3 +91,19 @@ Function *Context::getFunction(const std::string &functionName) {
 
     return nullptr;
 }
+
+void Context::addArray(std::unique_ptr<Array> &&array) {
+    arrays.emplace_back(std::move(array));
+}
+
+Array *Context::getArray(const std::string &arrayName) {
+    for (auto &array : arrays) {
+        if (arrayName == array->name) {
+            return array.get();
+        }
+    }
+
+    if (parent != nullptr) return parent->getArray(arrayName);
+
+    return nullptr;
+}

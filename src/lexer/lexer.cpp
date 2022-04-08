@@ -60,6 +60,10 @@ const std::vector<Token*> Lexer::makeTokens() {
             tokens.push_back(new Token(TT_LPAREN, line, column));
         } else if (currentChar == ')') {
             tokens.push_back(new Token(TT_RPAREN, line, column));
+        } else if (currentChar == '[') {
+            tokens.push_back(new Token(TT_LSQRBRACKET, line, column));
+        } else if (currentChar == ']') {
+            tokens.push_back(new Token(TT_RSQRBRACKET, line, column));
         } else if (currentChar == '=') {
             tokens.push_back(new Token(TT_EQUALS, line, column));
         } else if (currentChar == ':') {

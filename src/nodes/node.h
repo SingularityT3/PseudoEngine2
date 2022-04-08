@@ -1,6 +1,7 @@
 #pragma once
 #include "nodes/base.h"
 #include "nodes/variable.h"
+#include "nodes/array.h"
 #include "nodes/cast.h"
 #include "nodes/io.h"
 
