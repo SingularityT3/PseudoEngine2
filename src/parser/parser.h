@@ -6,7 +6,6 @@
 #include "psc/error.h"
 #include "psc/scope/block.h"
 
-// TODO: Arrays
 class Parser {
 private:
     const std::vector<Token*> *tokens;
@@ -73,6 +72,8 @@ private:
 
     Node *parseConstDeclareExpression();
 
+    Node *parseArrayDeclare(const Token &declareToken, const Token &identifier);
+
     Node *parseAssignmentExpression();
 
     Node *parseEvaluationExpression();
@@ -94,6 +95,8 @@ private:
     Node *parseCast();
 
     Node *parseFunctionCall();
+
+    Node *parseArrayOperation();
 
     Node *parseModDivFn();
 

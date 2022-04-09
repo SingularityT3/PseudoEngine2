@@ -7,7 +7,7 @@ ArrayDimension::ArrayDimension(int n, int_t lowerBound, int_t upperBound)
 {}
 
 int_t ArrayDimension::getSize() {
-    return upperBound - lowerBound;
+    return (upperBound - lowerBound) + 1;
 }
 
 bool ArrayDimension::isValidIndex(int_t idx) {
@@ -55,7 +55,7 @@ Value &Array::getElement(const std::vector<int_t> &index) {
     unsigned long prevSize = 1;
 
     for (unsigned int i = 0; i < index.size(); i++) {
-        realIndex += index[i] * prevSize;
+        realIndex += (index[i] - dimensions[i].lowerBound) * prevSize;
         prevSize *= dimensions[i].getSize();
     }
 

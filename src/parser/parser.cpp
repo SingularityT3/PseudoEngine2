@@ -107,11 +107,6 @@ Node *Parser::parseExpression() {
         return parseDeclareExpression();
     } else if (currentToken->type == TT_CONSTANT) {
         return parseConstDeclareExpression();
-    } else if (currentToken->type == TT_IDENTIFIER) {
-        if (compareNextType(1, TT_ASSIGNMENT))
-            return parseAssignmentExpression();
-        else
-            return parseEvaluationExpression();
     } else if (currentToken->type == TT_IF) {
         return parseIfStatement();
     } else if (currentToken->type == TT_CASE) {

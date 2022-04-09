@@ -58,6 +58,6 @@ Atom -> INTEGER
         | (EvaluationExpression)
         | IDENTIFIER
         | IDENTIFIER <- EvaluationExpression
-        | IDENTIFIER[ArithmeticExpression:ArithmeticExpression {, ArithmeticExpression:ArithmeticExpression}] <- EvaluationExpression
         | IDENTIFIER([EvaluationExpression {, EvaluationExpression}])
+        | IDENTIFIER[ArithmeticExpression:ArithmeticExpression {, ArithmeticExpression:ArithmeticExpression}] <- EvaluationExpression
         | IDENTIFIER[ArithmeticExpression {, ArithmeticExpression}]

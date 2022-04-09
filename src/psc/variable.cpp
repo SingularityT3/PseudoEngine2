@@ -6,7 +6,11 @@ Variable::Variable(const std::string &name, Variable *v)
     : data(v->data), reference(true), name(name), type(v->type), isConstant(v->isConstant)
 {}
 
-Variable::Variable(const std::string &name, PSC::DataType type, bool isConstant, const void *initialData)
+Variable::Variable(const std::string &name, PSC::DataType type, Value *data)
+    : data(data), reference(true), name(name), type(type), isConstant(false)
+{}
+
+Variable::Variable(const std::string &name, PSC::DataType type, bool isConstant, const Value *initialData)
     : reference(false), name(name), type(type), isConstant(isConstant)
 {
     switch (type) {
@@ -46,4 +50,8 @@ void Variable::set(Value *data) {
 
 Variable *Variable::createReference(const std::string &refName) {
     return new Variable(refName, this);
+}
+
+Variable *Variable::createArrayElementReference(const std::string &refName, PSC::DataType type, Value *value) {
+    return new Variable(refName, type, value);
 }

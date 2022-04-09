@@ -14,6 +14,9 @@ Node *Parser::parseDeclareExpression() {
         throw PSC::ExpectedTokenError(*currentToken, "':'");
     advance();
 
+    if (currentToken->type == TT_ARRAY)
+        return parseArrayDeclare(op, identifier);
+
     if (currentToken->type != TT_DATA_TYPE)
         throw PSC::ExpectedTokenError(*currentToken, "data type");
 

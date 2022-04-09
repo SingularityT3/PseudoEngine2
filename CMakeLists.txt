@@ -35,6 +35,7 @@ target_sources(PseudoEngine2 PRIVATE
 
     src/parser/evalExprParser.cpp
     src/parser/variableExprParser.cpp
+    src/parser/arrayOperationParser.cpp
     src/parser/procedureParser.cpp
     src/parser/functionParser.cpp
     src/parser/selectionParser.cpp

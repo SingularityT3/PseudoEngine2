@@ -10,14 +10,18 @@ namespace PSC {
         Value *data;
         bool reference;
 
+        // Reference constructor
         Variable(const std::string &name, Variable *v);
+
+        // Array element reference constructor
+        Variable(const std::string &name, PSC::DataType type, Value *data);
 
     public:
         const std::string name;
         const PSC::DataType type;
         const bool isConstant;
 
-        Variable(const std::string &name, PSC::DataType type, bool isConstant, const void *initialData = nullptr);
+        Variable(const std::string &name, PSC::DataType type, bool isConstant, const Value *initialData = nullptr);
 
         ~Variable();
 
@@ -27,5 +31,7 @@ namespace PSC {
         T &get() { return *((T*) data); }
 
         Variable *createReference(const std::string &refName);
+
+        static Variable *createArrayElementReference(const std::string &refName, PSC::DataType type, PSC::Value *value);
     };
 }

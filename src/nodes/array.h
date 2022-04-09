@@ -1,39 +1,40 @@
 #pragma once
 #include <vector>
+#include <utility>
 #include "nodes/base.h"
 #include "psc/array.h"
 
 class ArrayDeclareNode : public Node {
 private:
-    std::unique_ptr<PSC::Array> array;
+    const std::string name;
+    const PSC::DataType type;
+    std::vector<Node*> bounds;
 
 public:
-    ArrayDeclareNode(const Token &token, std::unique_ptr<PSC::Array> &&array);
+    ArrayDeclareNode(const Token &token, const std::string &name, PSC::DataType type, std::vector<Node*> &&bounds);
 
     std::unique_ptr<NodeResult> evaluate(PSC::Context &ctx) override;
 };
 
 class ArrayAccessNode : public Node {
 private:
-    std::string arrayName;
-
-public:
     std::vector<Node*> indices;
 
-    ArrayAccessNode(const Token &token, const std::string &arrayName);
+public:
+    ArrayAccessNode(const Token &token, std::vector<Node*> &&indices);
+
+    std::pair<PSC::Value*, PSC::DataType> getValue(PSC::Context &ctx);
 
     std::unique_ptr<NodeResult> evaluate(PSC::Context &ctx) override;
 };
 
-class ArrayAssignNode : public Node {
+class ArrayAssignNode : public UnaryNode {
 private:
     std::string arrayName;
+    std::vector<Node*> indices;
 
 public:
-    std::vector<Node*> indices;
-    Node *node;
-
-    ArrayAssignNode(const Token &token, const std::string &arrayName);
+    ArrayAssignNode(const Token &token, Node &node, const std::string &arrayName, std::vector<Node*> &&indices);
 
     std::unique_ptr<NodeResult> evaluate(PSC::Context &ctx) override;
 };

@@ -1,6 +1,7 @@
 #include "psc/error.h"
 #include "psc/scope/block.h"
 #include "nodes/variable.h"
+#include "nodes/array.h"
 #include "nodes/functions/procedure.h"
 
 ProcedureNode::ProcedureNode(const Token &token, PSC::Procedure *procedure)
@@ -43,12 +44,17 @@ std::unique_ptr<NodeResult> CallNode::evaluate(PSC::Context &ctx) {
         PSC::Variable *var;
         if (procedure->byRef) {
             AccessNode *accsNode = dynamic_cast<AccessNode*>(args[i]);
-            if (!accsNode)
-                throw PSC::RuntimeError(token, ctx, "Only variables can be used as arguements when passing by reference");
+            ArrayAccessNode *arrAccsNode = dynamic_cast<ArrayAccessNode*>(args[i]);
+            if (!accsNode && !arrAccsNode)
+                throw PSC::RuntimeError(token, ctx, "Only variables and array elements can be used as arguements when passing by reference");
 
-            PSC::Variable *original = ctx.getVariable(accsNode->getToken().value);
-            if (original == nullptr) std::abort();
-            var = original->createReference(procedure->parameters[i].name);
+            if (accsNode) {
+                PSC::Variable *original = ctx.getVariable(accsNode->getToken().value);
+                if (original == nullptr) std::abort();
+                var = original->createReference(procedure->parameters[i].name);
+            } else {
+                var = PSC::Variable::createArrayElementReference(procedure->parameters[i].name, argRes->type, arrAccsNode->getValue(ctx).first);
+            }
         } else {
             var = new PSC::Variable(procedure->parameters[i].name, argRes->type, false);
 

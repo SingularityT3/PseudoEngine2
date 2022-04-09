@@ -138,6 +138,10 @@ Node *Parser::parseAtom() {
     } else if (currentToken->type == TT_IDENTIFIER) {
         if (compareNextType(1, TT_LPAREN)) {
             return parseFunctionCall();
+        } else if (compareNextType(1, TT_ASSIGNMENT)) {
+            return parseAssignmentExpression();
+        } else if (compareNextType(1, TT_LSQRBRACKET)) {
+            return parseArrayOperation();
         } else {
             AccessNode *node = create<AccessNode>(*currentToken);
             advance();

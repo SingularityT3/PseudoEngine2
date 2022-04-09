@@ -1,6 +1,7 @@
 #include "psc/error.h"
 #include "psc/scope/block.h"
 #include "nodes/variable.h"
+#include "nodes/array.h"
 #include "nodes/functions/function.h"
 
 FunctionNode::FunctionNode(const Token &token, PSC::Function *function)
@@ -44,13 +45,18 @@ std::unique_ptr<NodeResult> FunctionCallNode::evaluate(PSC::Context &ctx) {
         PSC::Variable *var;
         if (function->byRef) {
             AccessNode *accsNode = dynamic_cast<AccessNode*>(args[i]);
+            ArrayAccessNode *arrAccsNode = dynamic_cast<ArrayAccessNode*>(args[i]);
             if (!accsNode) {
                 throw PSC::RuntimeError(token, ctx, "Only variables can be used as arguements when passing by reference");
             }
 
-            PSC::Variable *original = ctx.getVariable(accsNode->getToken().value);
-            if (original == nullptr) std::abort();
-            var = original->createReference(function->parameters[i].name);
+            if (accsNode) {
+                PSC::Variable *original = ctx.getVariable(accsNode->getToken().value);
+                if (original == nullptr) std::abort();
+                var = original->createReference(function->parameters[i].name);
+            } else {
+                var = PSC::Variable::createArrayElementReference(function->parameters[i].name, argRes->type, arrAccsNode->getValue(ctx).first);
+            }
         } else {
             var = new PSC::Variable(function->parameters[i].name, argRes->type, false);
 
