@@ -12,7 +12,7 @@ void Lexer::advance() {
     column++;
 }
 
-Lexer::Lexer(const std::string *expr)
+Lexer::Lexer(std::string *expr)
 {
     setExpr(expr);
 }
@@ -23,7 +23,8 @@ Lexer::~Lexer() {
     }
 }
 
-void Lexer::setExpr(const std::string *expr) {
+void Lexer::setExpr(std::string *expr) {
+    expr->erase(std::remove(expr->begin(), expr->end(), '\r'), expr->end());
     this->expr = expr;
     idx = -1;
     currentChar = 0;

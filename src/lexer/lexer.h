@@ -27,11 +27,11 @@ private:
 public:
     Lexer() = default;
 
-    Lexer(const std::string *expr);
+    Lexer(std::string *expr);
 
     ~Lexer();
 
-    void setExpr(const std::string *expr);
+    void setExpr(std::string *expr);
 
     const std::vector<Token*> makeTokens();
 };
