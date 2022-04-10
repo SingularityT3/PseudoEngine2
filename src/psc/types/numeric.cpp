@@ -108,7 +108,7 @@ std::unique_ptr<Number> Number::operator/(const Number &other) const {
 
 real_t modReal(real_t x, real_t y) {
     real_t z = x / y;
-    z -= std::floor(z);
+    z -= floor(z);
     return z * y;
 }
 
@@ -144,17 +144,17 @@ std::unique_ptr<Number> Number::operator|(const Number &other) const {
     }
     
     else if (type == mergeType(false, true)) { // int, real
-        int_t x = std::floor(((Integer*) this)->value / (Real&) other);
+        int_t x = floor(((Integer*) this)->value / (Real&) other);
         return std::make_unique<Integer>(x);
     }
     
     else if (type == mergeType(true, false)) { // real, int
-        int_t x = std::floor(((Real*) this)->value / (Integer&) other);
+        int_t x = floor(((Real*) this)->value / (Integer&) other);
         return std::make_unique<Integer>(x);
     }
     
     else if (type == mergeType(true, true)) { // real, real
-        int_t x = std::floor(((Real*) this)->value / (Real&) other);
+        int_t x = floor(((Real*) this)->value / (Real&) other);
         return std::make_unique<Integer>(x);
     }
     std::abort();
