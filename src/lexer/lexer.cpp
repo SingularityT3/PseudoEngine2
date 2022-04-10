@@ -6,9 +6,9 @@ void Lexer::advance() {
         column = 0;
     }
 
-    if (idx >= expr->size()) return;
+    if (++idx >= expr->size()) return;
 
-    currentChar = (*expr)[idx++];
+    currentChar = (*expr)[idx];
     column++;
 }
 
@@ -26,7 +26,7 @@ Lexer::~Lexer() {
 void Lexer::setExpr(std::string *expr) {
     expr->erase(std::remove(expr->begin(), expr->end(), '\r'), expr->end());
     this->expr = expr;
-    idx = 0;
+    idx = SIZE_MAX; // overflow to 0 on advance()
     currentChar = 0;
     line = 1;
     column = 0;

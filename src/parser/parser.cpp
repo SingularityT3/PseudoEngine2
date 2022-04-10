@@ -1,8 +1,7 @@
 #include "parser/parser.h"
 
 void Parser::advance() {
-    if (idx < tokens->size()) currentToken = (*tokens)[idx];
-    idx++;
+    if (++idx < tokens->size()) currentToken = (*tokens)[idx];
 }
 
 PSC::DataType Parser::getPSCType() {
@@ -42,7 +41,7 @@ Parser::~Parser() {
 
 void Parser::setTokens(const std::vector<Token*> *tokens) {
     this->tokens = tokens;
-    idx = 0;
+    idx = SIZE_MAX; // overflow to 0 on advance()
     advance();
     nodes.reserve(tokens->size() * 0.6);
 }
