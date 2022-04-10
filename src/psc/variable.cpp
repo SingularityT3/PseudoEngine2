@@ -14,23 +14,23 @@ Variable::Variable(const std::string &name, PSC::DataType type, bool isConstant,
     : reference(false), name(name), type(type), isConstant(isConstant)
 {
     switch (type) {
-        case PSC::DT_INTEGER:
+        case PSC::DataType::INTEGER:
             if (initialData == nullptr) data = new PSC::Integer();
             else data = new PSC::Integer(*((const PSC::Integer*) initialData));
             break;
-        case PSC::DT_REAL:
+        case PSC::DataType::REAL:
             if (initialData == nullptr) data = new PSC::Real();
             else data = new PSC::Real(*((const PSC::Real*) initialData));
             break;
-        case PSC::DT_BOOLEAN:
+        case PSC::DataType::BOOLEAN:
             if (initialData == nullptr) data = new PSC::Boolean();
             else data = new PSC::Boolean(*((const PSC::Boolean*) initialData));
             break;
-        case PSC::DT_CHAR:
+        case PSC::DataType::CHAR:
             if (initialData == nullptr) data = new PSC::Char();
             else data = new PSC::Char(*((const PSC::Char*) initialData));
             break;
-        case PSC::DT_STRING:
+        case PSC::DataType::STRING:
             if (initialData == nullptr) data = new PSC::String();
             else data = new PSC::String(*((const PSC::String*) initialData));
             break;

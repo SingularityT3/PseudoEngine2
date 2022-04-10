@@ -3,13 +3,13 @@
 #include "nodes/eval/comparison.h"
 
 BooleanNode::BooleanNode(const Token &token)
-    : Node(token), value(token.type == TT_TRUE)
+    : Node(token), value(token.type == TokenType::TRUE)
 {
-    if (!this->value && token.type != TT_FALSE) std::abort();
+    if (!this->value && token.type != TokenType::FALSE) std::abort();
 }
 
 std::unique_ptr<NodeResult> BooleanNode::evaluate(PSC::Context &ctx) {
-    return std::make_unique<NodeResult>(new PSC::Boolean(value), PSC::DT_BOOLEAN);
+    return std::make_unique<NodeResult>(new PSC::Boolean(value), PSC::DataType::BOOLEAN);
 }
 
 
@@ -17,22 +17,22 @@ ComparisonNode::ComparisonNode(const Token &token, Node &left, Node &right)
     : BinaryNode(token, left, right)
 {
     switch (token.type) {
-        case TT_EQUALS:
+        case TokenType::EQUALS:
             op = "=";
             break;
-        case TT_NOT_EQUALS:
+        case TokenType::NOT_EQUALS:
             op = "<>";
             break;
-        case TT_GREATER:
+        case TokenType::GREATER:
             op = ">";
             break;
-        case TT_LESSER:
+        case TokenType::LESSER:
             op = "<";
             break;
-        case TT_GREATER_EQUAL:
+        case TokenType::GREATER_EQUAL:
             op = ">=";
             break;
-        case TT_LESSER_EQUAL:
+        case TokenType::LESSER_EQUAL:
             op = "<=";
             break;
         default:
@@ -44,27 +44,27 @@ std::unique_ptr<NodeResult> ComparisonNode::evaluate(PSC::Context &ctx) {
     auto leftRes = left.evaluate(ctx);
     auto rightRes = right.evaluate(ctx);
 
-    if ((leftRes->type != PSC::DT_INTEGER && leftRes->type != PSC::DT_REAL)
-        || (rightRes->type != PSC::DT_INTEGER && rightRes->type != PSC::DT_REAL)
+    if ((leftRes->type != PSC::DataType::INTEGER && leftRes->type != PSC::DataType::REAL)
+        || (rightRes->type != PSC::DataType::INTEGER && rightRes->type != PSC::DataType::REAL)
     ) {
-        bool eq = token.type == TT_EQUALS;
-        if (!eq && token.type != TT_NOT_EQUALS)
+        bool eq = token.type == TokenType::EQUALS;
+        if (!eq && token.type != TokenType::NOT_EQUALS)
             throw PSC::InvalidUsageError(token, ctx, "'" + op + "' operator, operands must be of type Integer or Real");
 
         if (leftRes->type != rightRes->type) {
-            return std::make_unique<NodeResult>(new PSC::Boolean(!eq), PSC::DT_BOOLEAN);
-        } else if (leftRes->type == PSC::DT_BOOLEAN) {
+            return std::make_unique<NodeResult>(new PSC::Boolean(!eq), PSC::DataType::BOOLEAN);
+        } else if (leftRes->type == PSC::DataType::BOOLEAN) {
             bool comparisonEq = leftRes->get<PSC::Boolean>() == rightRes->get<PSC::Boolean>();
             bool res = (!eq && !comparisonEq) || (eq && comparisonEq);
-            return std::make_unique<NodeResult>(new PSC::Boolean(res), PSC::DT_BOOLEAN);
-        } else if (leftRes->type == PSC::DT_CHAR) {
+            return std::make_unique<NodeResult>(new PSC::Boolean(res), PSC::DataType::BOOLEAN);
+        } else if (leftRes->type == PSC::DataType::CHAR) {
             bool comparisonEq = leftRes->get<PSC::Char>().value == rightRes->get<PSC::Char>().value;
             bool res = (!eq && !comparisonEq) || (eq && comparisonEq);
-            return std::make_unique<NodeResult>(new PSC::Boolean(res), PSC::DT_BOOLEAN);
-        } else if (leftRes->type == PSC::DT_STRING) {
+            return std::make_unique<NodeResult>(new PSC::Boolean(res), PSC::DataType::BOOLEAN);
+        } else if (leftRes->type == PSC::DataType::STRING) {
             bool comparisonEq = leftRes->get<PSC::String>().value == rightRes->get<PSC::String>().value;
             bool res = (!eq && !comparisonEq) || (eq && comparisonEq);
-            return std::make_unique<NodeResult>(new PSC::Boolean(res), PSC::DT_BOOLEAN);
+            return std::make_unique<NodeResult>(new PSC::Boolean(res), PSC::DataType::BOOLEAN);
         } else {
             throw PSC::InvalidUsageError(token, ctx, "'" + op + "' operator, operands must be of type Integer, Real or Boolean");
         }
@@ -75,27 +75,27 @@ std::unique_ptr<NodeResult> ComparisonNode::evaluate(PSC::Context &ctx) {
 
     std::unique_ptr<PSC::Boolean> res;
     switch (token.type) {
-        case TT_EQUALS:
+        case TokenType::EQUALS:
             res = leftNum == rightNum;
             break;
-        case TT_NOT_EQUALS:
+        case TokenType::NOT_EQUALS:
             res = leftNum != rightNum;
             break;
-        case TT_GREATER:
+        case TokenType::GREATER:
             res = leftNum > rightNum;
             break;
-        case TT_LESSER:
+        case TokenType::LESSER:
             res = leftNum < rightNum;
             break;
-        case TT_GREATER_EQUAL:
+        case TokenType::GREATER_EQUAL:
             res = leftNum >= rightNum;
             break;
-        case TT_LESSER_EQUAL:
+        case TokenType::LESSER_EQUAL:
             res = leftNum <= rightNum;
             break;
         default:
             std::abort();
     }
 
-    return std::make_unique<NodeResult>(std::move(res), PSC::DT_BOOLEAN);
+    return std::make_unique<NodeResult>(std::move(res), PSC::DataType::BOOLEAN);
 }

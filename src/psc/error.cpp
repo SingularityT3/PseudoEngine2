@@ -32,7 +32,7 @@ SyntaxError::SyntaxError(const Token &token, const std::string &info)
 {}
 
 LexerError::LexerError(int line, int column, const std::string &info)
-    : SyntaxError(t, info), t(TT_CHAR, line, column)
+    : SyntaxError(t, info), t(TokenType::CHAR, line, column)
 {}
 
 inline std::string invalidCharMsg(char c) {
@@ -101,13 +101,13 @@ inline std::string conditionTypeErrorMessage(TokenType type) {
     std::stringstream msg;
     msg << "Invalid condition for ";
     switch (type) {
-        case TT_IF:
+        case TokenType::IF:
             msg << "IF statement";
             break;
-        case TT_WHILE:
+        case TokenType::WHILE:
             msg << "WHILE loop";
             break;
-        case TT_REPEAT:
+        case TokenType::REPEAT:
             msg << "REPEAT loop";
             break;
         default:

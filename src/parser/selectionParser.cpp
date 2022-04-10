@@ -6,8 +6,8 @@ Node *Parser::parseIfStatement() {
 
     Node *condition = parseEvaluationExpression();
 
-    if (currentToken->type == TT_LINE_END) advance();
-    if (currentToken->type != TT_THEN)
+    if (currentToken->type == TokenType::LINE_END) advance();
+    if (currentToken->type != TokenType::THEN)
         throw PSC::ExpectedTokenError(*currentToken, "'THEN'");
     advance();
 
@@ -16,14 +16,14 @@ Node *Parser::parseIfStatement() {
     IfStatementNode *ifNode = create<IfStatementNode>(ifToken);
     ifNode->components.emplace_back(condition, *block);
 
-    while (currentToken->type == TT_ELSE) {
+    while (currentToken->type == TokenType::ELSE) {
         advance();
-        if (currentToken->type == TT_IF) {
+        if (currentToken->type == TokenType::IF) {
             advance();
             condition = parseEvaluationExpression();
 
-            if (currentToken->type == TT_LINE_END) advance();
-            if (currentToken->type != TT_THEN)
+            if (currentToken->type == TokenType::LINE_END) advance();
+            if (currentToken->type != TokenType::THEN)
                 throw PSC::ExpectedTokenError(*currentToken, "'THEN'");
             advance();
 
@@ -36,7 +36,7 @@ Node *Parser::parseIfStatement() {
         }
     }
 
-    if (currentToken->type != TT_ENDIF)
+    if (currentToken->type != TokenType::ENDIF)
         throw PSC::ExpectedTokenError(*currentToken, "'ENDIF'");
     advance();
 
@@ -47,30 +47,30 @@ Node *Parser::parseCaseStatement() {
     const Token &caseToken = *currentToken;
     advance();
 
-    if (currentToken->type != TT_OF)
+    if (currentToken->type != TokenType::OF)
         throw PSC::ExpectedTokenError(*currentToken, "'OF'");
     advance();
 
-    if (currentToken->type != TT_IDENTIFIER)
+    if (currentToken->type != TokenType::IDENTIFIER)
         throw PSC::ExpectedTokenError(*currentToken, "IDENTIFIER");
     AccessNode *variable = create<AccessNode>(*currentToken);
     advance();
 
-    if (currentToken->type == TT_LINE_END) advance();
+    if (currentToken->type == TokenType::LINE_END) advance();
 
     CaseNode *caseNode = create<CaseNode>(caseToken, *variable);
-    while (currentToken->type != TT_ENDCASE) {
-        if (currentToken->type == TT_OTHERWISE) {
+    while (currentToken->type != TokenType::ENDCASE) {
+        if (currentToken->type == TokenType::OTHERWISE) {
             advance();
 
-            if (currentToken->type != TT_COLON)
+            if (currentToken->type != TokenType::COLON)
                 throw PSC::ExpectedTokenError(*currentToken, "':'");
             advance();
 
-            PSC::Block *block = parseBlock(BT_CASE);
+            PSC::Block *block = parseBlock(BlockType::CASE);
             caseNode->addCase(new OtherwiseCaseComponent(*block));
 
-            if (currentToken->type != TT_ENDCASE)
+            if (currentToken->type != TokenType::ENDCASE)
                 throw PSC::ExpectedTokenError(*currentToken, "'ENDCASE'");
             break;
         }
@@ -78,16 +78,16 @@ Node *Parser::parseCaseStatement() {
         Node *factor = parseFactor();
         Node *otherFactor = nullptr;
 
-        if (currentToken->type == TT_TO) {
+        if (currentToken->type == TokenType::TO) {
             advance();
             otherFactor = parseFactor();
         }
 
-        if (currentToken->type != TT_COLON)
+        if (currentToken->type != TokenType::COLON)
             throw PSC::ExpectedTokenError(*currentToken, "':'");
         advance();
 
-        PSC::Block *block = parseBlock(BT_CASE);
+        PSC::Block *block = parseBlock(BlockType::CASE);
 
         CaseComponent *component;
         if (otherFactor == nullptr) {

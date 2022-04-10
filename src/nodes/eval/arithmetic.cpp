@@ -6,7 +6,7 @@ IntegerNode::IntegerNode(const Token &token)
 {}
 
 std::unique_ptr<NodeResult> IntegerNode::evaluate(PSC::Context &ctx) {
-    return std::make_unique<NodeResult>(new PSC::Integer(valueInt), PSC::DT_INTEGER);
+    return std::make_unique<NodeResult>(new PSC::Integer(valueInt), PSC::DataType::INTEGER);
 }
 
 
@@ -15,7 +15,7 @@ RealNode::RealNode(const Token &token)
 {}
 
 std::unique_ptr<NodeResult> RealNode::evaluate(PSC::Context &ctx) {
-    return std::make_unique<NodeResult>(new PSC::Real(valueReal), PSC::DT_REAL);
+    return std::make_unique<NodeResult>(new PSC::Real(valueReal), PSC::DataType::REAL);
 }
 
 
@@ -24,7 +24,7 @@ CharNode::CharNode(const Token &token)
 {}
 
 std::unique_ptr<NodeResult> CharNode::evaluate(PSC::Context &ctx) {
-    return std::make_unique<NodeResult>(new PSC::Char(valueChar), PSC::DT_CHAR);
+    return std::make_unique<NodeResult>(new PSC::Char(valueChar), PSC::DataType::CHAR);
 }
 
 StringNode::StringNode(const Token &token)
@@ -32,43 +32,43 @@ StringNode::StringNode(const Token &token)
 {}
 
 std::unique_ptr<NodeResult> StringNode::evaluate(PSC::Context &ctx) {
-    return std::make_unique<NodeResult>(new PSC::String(valueStr), PSC::DT_STRING);
+    return std::make_unique<NodeResult>(new PSC::String(valueStr), PSC::DataType::STRING);
 }
 
 
 std::unique_ptr<NodeResult> NegateNode::evaluate(PSC::Context &ctx) {
     auto nodeResult = node.evaluate(ctx);
 
-    if (nodeResult->type != PSC::DT_INTEGER && nodeResult->type != PSC::DT_REAL) {
+    if (nodeResult->type != PSC::DataType::INTEGER && nodeResult->type != PSC::DataType::REAL) {
         throw PSC::InvalidUsageError(token, ctx, "'-' operator, operand must be of type Integer or Real");
     }
 
     const PSC::Number &num = nodeResult->get<PSC::Number>();
     auto res = num * PSC::Integer(-1);
 
-    PSC::DataType type = res->real ? PSC::DT_REAL : PSC::DT_INTEGER;
+    PSC::DataType type = res->real ? PSC::DataType::REAL : PSC::DataType::INTEGER;
     return std::make_unique<NodeResult>(std::move(res), type);
 }
 
 ArithmeticOperationNode::ArithmeticOperationNode(const Token &token, Node &left, Node &right)
     : BinaryNode(token, left, right) {
     switch (token.type) {
-        case TT_PLUS:
+        case TokenType::PLUS:
             op = "+";
             break;
-        case TT_MINUS:
+        case TokenType::MINUS:
             op = "-";
             break;
-        case TT_STAR:
+        case TokenType::STAR:
             op = "*";
             break;
-        case TT_SLASH:
+        case TokenType::SLASH:
             op = "/";
             break;
-        case TT_MOD:
+        case TokenType::MOD:
             op = "MOD";
             break;
-        case TT_DIV:
+        case TokenType::DIV:
             op = "DIV";
             break;
         default:
@@ -80,8 +80,8 @@ std::unique_ptr<NodeResult> ArithmeticOperationNode::evaluate(PSC::Context &ctx)
     auto leftRes = left.evaluate(ctx);
     auto rightRes = right.evaluate(ctx);
 
-    if ((leftRes->type != PSC::DT_INTEGER && leftRes->type != PSC::DT_REAL)
-        || (rightRes->type != PSC::DT_INTEGER && rightRes->type != PSC::DT_REAL)
+    if ((leftRes->type != PSC::DataType::INTEGER && leftRes->type != PSC::DataType::REAL)
+        || (rightRes->type != PSC::DataType::INTEGER && rightRes->type != PSC::DataType::REAL)
     ) {
         throw PSC::InvalidUsageError(token, ctx, "'" + op + "' operator, operands must be of type Integer or Real");
     }
@@ -91,28 +91,28 @@ std::unique_ptr<NodeResult> ArithmeticOperationNode::evaluate(PSC::Context &ctx)
 
     std::unique_ptr<PSC::Number> resNum;
     switch (token.type) {
-        case TT_PLUS:
+        case TokenType::PLUS:
             resNum = leftNum + rightNum;
             break;
-        case TT_MINUS:
+        case TokenType::MINUS:
             resNum = leftNum - rightNum;
             break;
-        case TT_STAR:
+        case TokenType::STAR:
             resNum = leftNum * rightNum;
             break;
-        case TT_SLASH:
+        case TokenType::SLASH:
             resNum = leftNum / rightNum;
             break;
-        case TT_MOD:
+        case TokenType::MOD:
             resNum = leftNum % rightNum;
             break;
-        case TT_DIV:
+        case TokenType::DIV:
             resNum = leftNum | rightNum;
             break;
         default:
             std::abort();
     }
 
-    PSC::DataType type = resNum->real ? PSC::DT_REAL : PSC::DT_INTEGER;
+    PSC::DataType type = resNum->real ? PSC::DataType::REAL : PSC::DataType::INTEGER;
     return std::make_unique<NodeResult>(std::move(resNum), type);
 }

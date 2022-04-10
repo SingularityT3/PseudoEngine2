@@ -11,19 +11,19 @@ std::unique_ptr<NodeResult> CastNode::evaluate(PSC::Context &ctx) {
 
     std::unique_ptr<PSC::Value> result;
     switch(target) {
-        case PSC::DT_INTEGER:
+        case PSC::DataType::INTEGER:
             result = value->data->toInteger();
             break;
-        case PSC::DT_REAL:
+        case PSC::DataType::REAL:
             result = value->data->toReal();
             break;
-        case PSC::DT_BOOLEAN:
+        case PSC::DataType::BOOLEAN:
             result = value->data->toBoolean();
             break;
-        case PSC::DT_CHAR:
+        case PSC::DataType::CHAR:
             result = value->data->toChar();
             break;
-        case PSC::DT_STRING:
+        case PSC::DataType::STRING:
             result = value->data->toString();
             break;
         default:

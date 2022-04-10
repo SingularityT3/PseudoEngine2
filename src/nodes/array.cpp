@@ -18,11 +18,11 @@ std::unique_ptr<NodeResult> ArrayDeclareNode::evaluate(PSC::Context &ctx) {
 
     for (int i = 0; i < (int) bounds.size(); i += 2) {
         auto lowerRes = bounds[i]->evaluate(ctx);
-        if (lowerRes->type != PSC::DT_INTEGER)
+        if (lowerRes->type != PSC::DataType::INTEGER)
             throw PSC::RuntimeError(bounds[i]->getToken(), ctx, "Array indices must be of type INTEGER");
 
         auto upperRes = bounds[i + 1]->evaluate(ctx);
-        if (upperRes->type != PSC::DT_INTEGER)
+        if (upperRes->type != PSC::DataType::INTEGER)
             throw PSC::RuntimeError(bounds[i + 1]->getToken(), ctx, "Array indices must be of type INTEGER");
 
         const PSC::int_t &lower = lowerRes->get<PSC::Integer>().value;
@@ -37,7 +37,7 @@ std::unique_ptr<NodeResult> ArrayDeclareNode::evaluate(PSC::Context &ctx) {
     array->init();
     ctx.addArray(std::move(array));
 
-    return std::make_unique<NodeResult>(nullptr, PSC::DT_NONE);
+    return std::make_unique<NodeResult>(nullptr, PSC::DataType::NONE);
 }
 
 
@@ -60,7 +60,7 @@ std::pair<PSC::Value*, PSC::DataType> ArrayAccessNode::getValue(PSC::Context &ct
         Node *index = indices[i];
         auto result = index->evaluate(ctx);
 
-        if (result->type != PSC::DT_INTEGER)
+        if (result->type != PSC::DataType::INTEGER)
             throw PSC::RuntimeError(index->getToken(), ctx, "Array indices must be of type INTEGER");
 
         PSC::int_t x = result->get<PSC::Integer>().value;
@@ -80,19 +80,19 @@ std::unique_ptr<NodeResult> ArrayAccessNode::evaluate(PSC::Context &ctx) {
 
     std::unique_ptr<PSC::Value> ret;
     switch (type) {
-        case PSC::DT_INTEGER:
+        case PSC::DataType::INTEGER:
             ret = std::make_unique<PSC::Integer>(*((PSC::Integer*) value));
             break;
-        case PSC::DT_REAL:
+        case PSC::DataType::REAL:
             ret = std::make_unique<PSC::Real>(*((PSC::Real*) value));
             break;
-        case PSC::DT_BOOLEAN:
+        case PSC::DataType::BOOLEAN:
             ret = std::make_unique<PSC::Boolean>(*((PSC::Boolean*) value));
             break;
-        case PSC::DT_CHAR:
+        case PSC::DataType::CHAR:
             ret = std::make_unique<PSC::Char>(*((PSC::Char*) value));
             break;
-        case PSC::DT_STRING:
+        case PSC::DataType::STRING:
             ret = std::make_unique<PSC::String>(*((PSC::String*) value));
             break;
         default:
@@ -124,7 +124,7 @@ std::unique_ptr<NodeResult> ArrayAssignNode::evaluate(PSC::Context &ctx) {
         Node *index = indices[i];
         auto result = index->evaluate(ctx);
 
-        if (result->type != PSC::DT_INTEGER)
+        if (result->type != PSC::DataType::INTEGER)
             throw PSC::RuntimeError(index->getToken(), ctx, "Array indices must be of type INTEGER");
 
         PSC::int_t x = result->get<PSC::Integer>().value;
@@ -141,24 +141,24 @@ std::unique_ptr<NodeResult> ArrayAssignNode::evaluate(PSC::Context &ctx) {
         throw PSC::InvalidUsageError(token, ctx, "assignment operator: incompatible data types");
 
     switch (array->type) {
-        case PSC::DT_INTEGER:   
+        case PSC::DataType::INTEGER:   
             ((PSC::Integer&) value).value = assignValue->get<PSC::Integer>().value;
             break;
-        case PSC::DT_REAL:   
+        case PSC::DataType::REAL:   
             ((PSC::Real&) value).value = assignValue->get<PSC::Real>().value;
             break;
-        case PSC::DT_BOOLEAN:   
+        case PSC::DataType::BOOLEAN:   
             ((PSC::Boolean&) value).value = assignValue->get<PSC::Boolean>().value;
             break;
-        case PSC::DT_CHAR:   
+        case PSC::DataType::CHAR:   
             ((PSC::Char&) value).value = assignValue->get<PSC::Char>().value;
             break;
-        case PSC::DT_STRING:   
+        case PSC::DataType::STRING:   
             ((PSC::String&) value).value = assignValue->get<PSC::String>().value;
             break;
         default:
             std::abort();
     }
 
-    return std::make_unique<NodeResult>(nullptr, PSC::DT_NONE);
+    return std::make_unique<NodeResult>(nullptr, PSC::DataType::NONE);
 }

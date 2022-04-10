@@ -11,7 +11,7 @@ std::unique_ptr<NodeResult> DeclareNode::evaluate(PSC::Context &ctx) {
 
     ctx.addVariable(new PSC::Variable(identifier.value, type, false));
 
-    return std::make_unique<NodeResult>(nullptr, PSC::DT_NONE);
+    return std::make_unique<NodeResult>(nullptr, PSC::DataType::NONE);
 }
 
 
@@ -27,7 +27,7 @@ std::unique_ptr<NodeResult> ConstDeclareNode::evaluate(PSC::Context &ctx) {
 
     ctx.addVariable(new PSC::Variable(identifier.value, value->type, true, value->data.get()));
 
-    return std::make_unique<NodeResult>(nullptr, PSC::DT_NONE);
+    return std::make_unique<NodeResult>(nullptr, PSC::DataType::NONE);
 }
 
 
@@ -53,26 +53,26 @@ std::unique_ptr<NodeResult> AssignNode::evaluate(PSC::Context &ctx) {
         throw err;
 
     switch (var->type) {
-        case PSC::DT_INTEGER:
+        case PSC::DataType::INTEGER:
             var->get<PSC::Integer>() = valueRes->get<PSC::Integer>();
             break;
-        case PSC::DT_REAL:
+        case PSC::DataType::REAL:
             var->get<PSC::Real>() = valueRes->get<PSC::Real>();
             break;
-        case PSC::DT_BOOLEAN:
+        case PSC::DataType::BOOLEAN:
             var->get<PSC::Boolean>() = valueRes->get<PSC::Boolean>();
             break;
-        case PSC::DT_CHAR:
+        case PSC::DataType::CHAR:
             var->get<PSC::Char>() = valueRes->get<PSC::Char>();
             break;
-        case PSC::DT_STRING:
+        case PSC::DataType::STRING:
             var->get<PSC::String>() = valueRes->get<PSC::String>();
             break;
         default:
             std::abort();
     }
 
-    return std::make_unique<NodeResult>(nullptr, PSC::DT_NONE);
+    return std::make_unique<NodeResult>(nullptr, PSC::DataType::NONE);
 }
 
 
@@ -84,19 +84,19 @@ std::unique_ptr<NodeResult> AccessNode::evaluate(PSC::Context &ctx) {
 
     PSC::Value *data;
     switch (var->type) {
-        case PSC::DT_INTEGER:
+        case PSC::DataType::INTEGER:
             data = new PSC::Integer(var->get<PSC::Integer>());
             break;
-        case PSC::DT_REAL:
+        case PSC::DataType::REAL:
             data = new PSC::Real(var->get<PSC::Real>());
             break;
-        case PSC::DT_BOOLEAN:
+        case PSC::DataType::BOOLEAN:
             data = new PSC::Boolean(var->get<PSC::Boolean>());
             break;
-        case PSC::DT_CHAR:
+        case PSC::DataType::CHAR:
             data = new PSC::Char(var->get<PSC::Char>());
             break;
-        case PSC::DT_STRING:
+        case PSC::DataType::STRING:
             data = new PSC::String(var->get<PSC::String>());
             break;
         default:

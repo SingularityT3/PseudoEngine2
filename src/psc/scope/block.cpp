@@ -16,22 +16,22 @@ void Block::runNodeREPL(Node *node, PSC::Context &ctx) {
     auto result = node->evaluate(ctx);
 
     switch (result->type) {
-        case PSC::DT_INTEGER:
+        case PSC::DataType::INTEGER:
             std::cout << result->get<PSC::Integer>();
             break;
-        case PSC::DT_REAL:
+        case PSC::DataType::REAL:
             std::cout << result->get<PSC::Real>();
             break;
-        case PSC::DT_BOOLEAN:
+        case PSC::DataType::BOOLEAN:
             std::cout << (result->get<PSC::Boolean>() ? "TRUE" : "FALSE");
             break;
-        case PSC::DT_CHAR:
+        case PSC::DataType::CHAR:
             std::cout << "'" << result->get<PSC::Char>() << "'";
             break;
-        case PSC::DT_STRING:
+        case PSC::DataType::STRING:
             std::cout << "\"" << result->get<PSC::String>().value << "\"";
             break;
-        case PSC::DT_NONE:
+        case PSC::DataType::NONE:
             return;
     }
     std::cout << std::endl;

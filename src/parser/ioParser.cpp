@@ -7,7 +7,7 @@ Node *Parser::parseOutput() {
     Node *expr = parseEvaluationExpression();
     outputNode->nodes.push_back(expr);
 
-    while (currentToken->type == TT_COMMA) {
+    while (currentToken->type == TokenType::COMMA) {
         advance();
 
         expr = parseEvaluationExpression();
@@ -21,7 +21,7 @@ Node *Parser::parseInput() {
     const Token &inputToken = *currentToken;
     advance();
 
-    if (currentToken->type != TT_IDENTIFIER)
+    if (currentToken->type != TokenType::IDENTIFIER)
         throw PSC::ExpectedTokenError(*currentToken, "variable");
 
     InputNode *inputNode = create<InputNode>(inputToken, *currentToken);

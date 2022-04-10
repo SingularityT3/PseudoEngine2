@@ -9,12 +9,12 @@ std::unique_ptr<NodeResult> WhileLoopNode::evaluate(PSC::Context &ctx) {
     while (true) {
         auto conditionRes = node.evaluate(ctx);
 
-        if (conditionRes->type != PSC::DT_BOOLEAN)
+        if (conditionRes->type != PSC::DataType::BOOLEAN)
             throw PSC::ConditionTypeError(token, ctx);
 
         if (!conditionRes->get<PSC::Boolean>()) break;
         block.run(ctx);
     }
 
-    return std::make_unique<NodeResult>(nullptr, PSC::DT_NONE);
+    return std::make_unique<NodeResult>(nullptr, PSC::DataType::NONE);
 }

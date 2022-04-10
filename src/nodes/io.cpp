@@ -7,29 +7,29 @@ std::unique_ptr<NodeResult> OutputNode::evaluate(PSC::Context &ctx) {
         auto result = node->evaluate(ctx);
 
         switch (result->type) {
-            case PSC::DT_INTEGER:
+            case PSC::DataType::INTEGER:
                 std::cout << result->get<PSC::Integer>();
                 break;
-            case PSC::DT_REAL:
+            case PSC::DataType::REAL:
                 std::cout << result->get<PSC::Real>();
                 break;
-            case PSC::DT_BOOLEAN:
+            case PSC::DataType::BOOLEAN:
                 std::cout << (result->get<PSC::Boolean>() ? "TRUE" : "FALSE");
                 break;
-            case PSC::DT_CHAR:
+            case PSC::DataType::CHAR:
                 std::cout << result->get<PSC::Char>();
                 break;
-            case PSC::DT_STRING:
+            case PSC::DataType::STRING:
                 std::cout << result->get<PSC::String>().value;
                 break;
-            case PSC::DT_NONE:
+            case PSC::DataType::NONE:
                 std::cout.flush();
                 throw PSC::RuntimeError(node->getToken(), ctx, "Expected a value for OUTPUT/PRINT");
         }
     }
     std::cout << std::endl;
 
-    return std::make_unique<NodeResult>(nullptr, PSC::DT_NONE);
+    return std::make_unique<NodeResult>(nullptr, PSC::DataType::NONE);
 }
 
 
@@ -45,24 +45,24 @@ std::unique_ptr<NodeResult> InputNode::evaluate(PSC::Context &ctx) {
     std::getline(std::cin, inputStr.value);
 
     switch (var->type) {
-        case PSC::DT_INTEGER:
+        case PSC::DataType::INTEGER:
             var->get<PSC::Integer>() = inputStr.toInteger()->value;
             break;
-        case PSC::DT_REAL:
+        case PSC::DataType::REAL:
             var->get<PSC::Real>() = inputStr.toReal()->value;
             break;
-        case PSC::DT_BOOLEAN:
+        case PSC::DataType::BOOLEAN:
             var->get<PSC::Boolean>() = (inputStr.value == "TRUE");
             break;
-        case PSC::DT_CHAR:
+        case PSC::DataType::CHAR:
             var->get<PSC::Char>() = inputStr.value.front();
             break;
-        case PSC::DT_STRING:
+        case PSC::DataType::STRING:
             var->get<PSC::String>().value = std::move(inputStr.value);
             break;
         default:
             std::abort();
     }
 
-    return std::make_unique<NodeResult>(nullptr, PSC::DT_NONE);
+    return std::make_unique<NodeResult>(nullptr, PSC::DataType::NONE);
 }

@@ -9,5 +9,5 @@ std::unique_ptr<NodeResult> StringConcatenationNode::evaluate(PSC::Context &ctx)
 
     auto res = (*leftStr) & (*rightStr);
 
-    return std::make_unique<NodeResult>(std::move(res), PSC::DT_STRING);
+    return std::make_unique<NodeResult>(std::move(res), PSC::DataType::STRING);
 }

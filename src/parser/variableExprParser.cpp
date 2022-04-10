@@ -4,20 +4,20 @@ Node *Parser::parseDeclareExpression() {
     const Token &op = *currentToken;
     advance();
 
-    if (currentToken->type != TT_IDENTIFIER)
+    if (currentToken->type != TokenType::IDENTIFIER)
         throw PSC::ExpectedTokenError(*currentToken, "identifier");
 
     const Token &identifier = *currentToken;
     advance();
 
-    if (currentToken->type != TT_COLON)
+    if (currentToken->type != TokenType::COLON)
         throw PSC::ExpectedTokenError(*currentToken, "':'");
     advance();
 
-    if (currentToken->type == TT_ARRAY)
+    if (currentToken->type == TokenType::ARRAY)
         return parseArrayDeclare(op, identifier);
 
-    if (currentToken->type != TT_DATA_TYPE)
+    if (currentToken->type != TokenType::DATA_TYPE)
         throw PSC::ExpectedTokenError(*currentToken, "data type");
 
     PSC::DataType type = getPSCType();
@@ -30,30 +30,30 @@ Node *Parser::parseConstDeclareExpression() {
     const Token &op = *currentToken;
     advance();
 
-    if (currentToken->type != TT_IDENTIFIER)
+    if (currentToken->type != TokenType::IDENTIFIER)
         throw PSC::ExpectedTokenError(*currentToken, "identifier");
 
     const Token &identifier = *currentToken;
     advance();
 
-    if (currentToken->type != TT_EQUALS)
+    if (currentToken->type != TokenType::EQUALS)
         throw PSC::ExpectedTokenError(*currentToken, "'='");
     advance();
 
     Node *value;
     const Token &minusToken = *currentToken;
-    bool negative = currentToken->type == TT_MINUS;
+    bool negative = currentToken->type == TokenType::MINUS;
     if (negative) advance();
 
-    if (currentToken->type == TT_INTEGER) {
+    if (currentToken->type == TokenType::INTEGER) {
         value = parseLiteral<IntegerNode>();
-    } else if (currentToken->type == TT_REAL) {
+    } else if (currentToken->type == TokenType::REAL) {
         value = parseLiteral<RealNode>();
-    } else if (currentToken->type == TT_TRUE || currentToken->type == TT_FALSE) {
+    } else if (currentToken->type == TokenType::TRUE || currentToken->type == TokenType::FALSE) {
         value = parseLiteral<BooleanNode>();
-    } else if (currentToken->type == TT_CHAR) {
+    } else if (currentToken->type == TokenType::CHAR) {
         value = parseLiteral<CharNode>();
-    } else if (currentToken->type == TT_STRING) {
+    } else if (currentToken->type == TokenType::STRING) {
         value = parseLiteral<StringNode>();
     } else {
         throw PSC::ExpectedTokenError(*currentToken, "Integer, Real or Boolean literal"); 
@@ -68,7 +68,7 @@ Node *Parser::parseAssignmentExpression() {
     const Token &identifier = *currentToken;
     advance();
 
-    if (currentToken->type != TT_ASSIGNMENT)
+    if (currentToken->type != TokenType::ASSIGNMENT)
         throw PSC::ExpectedTokenError(*currentToken, "'<-'");
 
     const Token &op = *currentToken;

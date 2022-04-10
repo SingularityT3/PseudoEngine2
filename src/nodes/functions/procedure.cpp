@@ -14,7 +14,7 @@ std::unique_ptr<NodeResult> ProcedureNode::evaluate(PSC::Context &ctx) {
 
     ctx.addProcedure(std::move(procedure));
 
-    return std::make_unique<NodeResult>(nullptr, PSC::DT_NONE);
+    return std::make_unique<NodeResult>(nullptr, PSC::DataType::NONE);
 }
 
 
@@ -59,19 +59,19 @@ std::unique_ptr<NodeResult> CallNode::evaluate(PSC::Context &ctx) {
             var = new PSC::Variable(procedure->parameters[i].name, argRes->type, false);
 
             switch (var->type) {
-                case PSC::DT_INTEGER:
+                case PSC::DataType::INTEGER:
                     var->get<PSC::Integer>() = argRes->get<PSC::Integer>();
                     break;
-                case PSC::DT_REAL:
+                case PSC::DataType::REAL:
                     var->get<PSC::Real>() = argRes->get<PSC::Real>();
                     break;
-                case PSC::DT_BOOLEAN:
+                case PSC::DataType::BOOLEAN:
                     var->get<PSC::Boolean>() = argRes->get<PSC::Boolean>();
                     break;
-                case PSC::DT_CHAR:
+                case PSC::DataType::CHAR:
                     var->get<PSC::Char>() = argRes->get<PSC::Char>();
                     break;
-                case PSC::DT_STRING:
+                case PSC::DataType::STRING:
                     var->get<PSC::String>() = argRes->get<PSC::String>();
                     break;
                 default:
@@ -85,5 +85,5 @@ std::unique_ptr<NodeResult> CallNode::evaluate(PSC::Context &ctx) {
     procedure->run(*procedureCtx);
     ctx.switchToken = nullptr;
 
-    return std::make_unique<NodeResult>(nullptr, PSC::DT_NONE);
+    return std::make_unique<NodeResult>(nullptr, PSC::DataType::NONE);
 }

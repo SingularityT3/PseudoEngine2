@@ -28,8 +28,8 @@ private:
         return node;
     }
 
-    enum BlockType {
-        BT_MAIN, BT_CASE, BT_OTHER
+    enum class BlockType {
+        MAIN, CASE, OTHER
     };
 
 public:
@@ -44,7 +44,7 @@ public:
     void setTokens(const std::vector<Token*> *tokens);
 
 private:
-    PSC::Block *parseBlock(BlockType blockType = BT_OTHER);
+    PSC::Block *parseBlock(BlockType blockType = BlockType::OTHER);
 
     Node *parseFunction();
 

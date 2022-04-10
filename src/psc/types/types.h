@@ -6,8 +6,8 @@ namespace PSC {
     typedef long int_t;
     typedef double real_t;
 
-    enum DataType {
-        DT_NONE, DT_INTEGER, DT_REAL, DT_BOOLEAN, DT_CHAR, DT_STRING
+    enum class DataType {
+        NONE, INTEGER, REAL, BOOLEAN, CHAR, STRING
     };
 
     class Integer;

@@ -4,7 +4,7 @@
 using namespace PSC;
 
 Context::Context(Context *parent, const std::string &name)
-    : Context(parent, name, false, PSC::DT_NONE)
+    : Context(parent, name, false, PSC::DataType::NONE)
 {}
 
 Context::Context(Context *parent, const std::string &name, bool isFunctionCtx, PSC::DataType returnType)

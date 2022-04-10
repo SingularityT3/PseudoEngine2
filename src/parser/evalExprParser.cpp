@@ -3,7 +3,7 @@
 Node *Parser::parseEvaluationExpression() {
     Node *logicalExpression = parseLogicalExpression();
 
-    while (currentToken->type == TT_EQUALS || currentToken->type == TT_NOT_EQUALS) {
+    while (currentToken->type == TokenType::EQUALS || currentToken->type == TokenType::NOT_EQUALS) {
         const Token &op = *currentToken;
         advance();
 
@@ -17,7 +17,7 @@ Node *Parser::parseEvaluationExpression() {
 Node *Parser::parseLogicalExpression() {
     Node *comparisonExpr = parseComparisonExpression();
 
-    while (currentToken->type == TT_AND || currentToken->type == TT_OR) {
+    while (currentToken->type == TokenType::AND || currentToken->type == TokenType::OR) {
         const Token &op = *currentToken;
         advance();
 
@@ -30,7 +30,7 @@ Node *Parser::parseLogicalExpression() {
 }
 
 Node *Parser::parseComparisonExpression() {
-    if (currentToken->type == TT_NOT) {
+    if (currentToken->type == TokenType::NOT) {
         const Token &op = *currentToken;
         advance();
 
@@ -42,12 +42,12 @@ Node *Parser::parseComparisonExpression() {
     Node *strExpr = parseStringExpression();
 
     while (
-        currentToken->type == TT_EQUALS
-        || currentToken->type == TT_NOT_EQUALS
-        || currentToken->type == TT_GREATER
-        || currentToken->type == TT_LESSER
-        || currentToken->type == TT_GREATER_EQUAL
-        || currentToken->type == TT_LESSER_EQUAL
+        currentToken->type == TokenType::EQUALS
+        || currentToken->type == TokenType::NOT_EQUALS
+        || currentToken->type == TokenType::GREATER
+        || currentToken->type == TokenType::LESSER
+        || currentToken->type == TokenType::GREATER_EQUAL
+        || currentToken->type == TokenType::LESSER_EQUAL
     ) {
         const Token &op = *currentToken;
         advance();
@@ -63,7 +63,7 @@ Node *Parser::parseComparisonExpression() {
 Node *Parser::parseStringExpression() {
     Node *arithmeticExpr = parseArithmeticExpression();
 
-    while (currentToken->type == TT_AMPERSAND) {
+    while (currentToken->type == TokenType::AMPERSAND) {
         const Token &op = *currentToken;
         advance();
 
@@ -78,7 +78,7 @@ Node *Parser::parseStringExpression() {
 Node *Parser::parseArithmeticExpression() {
     Node *term = parseTerm();
 
-    while (currentToken->type == TT_PLUS || currentToken->type == TT_MINUS) {
+    while (currentToken->type == TokenType::PLUS || currentToken->type == TokenType::MINUS) {
         const Token &op = *currentToken;
         advance();
 
@@ -94,10 +94,10 @@ Node *Parser::parseTerm() {
     Node *factor = parseFactor();
 
     while (
-        currentToken->type == TT_STAR
-        || currentToken->type == TT_SLASH
-        || currentToken->type == TT_DIV
-        || currentToken->type == TT_MOD
+        currentToken->type == TokenType::STAR
+        || currentToken->type == TokenType::SLASH
+        || currentToken->type == TokenType::DIV
+        || currentToken->type == TokenType::MOD
     ) {
         const Token &op = *currentToken;
         advance();
@@ -111,7 +111,7 @@ Node *Parser::parseTerm() {
 }
 
 Node *Parser::parseFactor() {
-    if (currentToken->type == TT_MINUS) {
+    if (currentToken->type == TokenType::MINUS) {
         const Token &op = *currentToken;
         advance();
 
@@ -125,40 +125,40 @@ Node *Parser::parseFactor() {
 }
 
 Node *Parser::parseAtom() {
-    if (currentToken->type == TT_INTEGER) {
+    if (currentToken->type == TokenType::INTEGER) {
         return parseLiteral<IntegerNode>();
-    } else if (currentToken->type == TT_REAL) {
+    } else if (currentToken->type == TokenType::REAL) {
         return parseLiteral<RealNode>();
-    } else if (currentToken->type == TT_TRUE || currentToken->type == TT_FALSE) {
+    } else if (currentToken->type == TokenType::TRUE || currentToken->type == TokenType::FALSE) {
         return parseLiteral<BooleanNode>();
-    } else if (currentToken->type == TT_CHAR) {
+    } else if (currentToken->type == TokenType::CHAR) {
         return parseLiteral<CharNode>();
-    } else if (currentToken->type == TT_STRING) {
+    } else if (currentToken->type == TokenType::STRING) {
         return parseLiteral<StringNode>();
-    } else if (currentToken->type == TT_IDENTIFIER) {
-        if (compareNextType(1, TT_LPAREN)) {
+    } else if (currentToken->type == TokenType::IDENTIFIER) {
+        if (compareNextType(1, TokenType::LPAREN)) {
             return parseFunctionCall();
-        } else if (compareNextType(1, TT_ASSIGNMENT)) {
+        } else if (compareNextType(1, TokenType::ASSIGNMENT)) {
             return parseAssignmentExpression();
-        } else if (compareNextType(1, TT_LSQRBRACKET)) {
+        } else if (compareNextType(1, TokenType::LSQRBRACKET)) {
             return parseArrayOperation();
         } else {
             AccessNode *node = create<AccessNode>(*currentToken);
             advance();
             return node;
         }
-    } else if (currentToken->type == TT_LPAREN) {
+    } else if (currentToken->type == TokenType::LPAREN) {
         advance();
         Node *expr = parseEvaluationExpression();
 
-        if (currentToken->type != TT_RPAREN)
+        if (currentToken->type != TokenType::RPAREN)
             throw PSC::ExpectedTokenError(*currentToken, "')'");
 
         advance();
         return expr;
-    } else if (currentToken->type == TT_DATA_TYPE) {
+    } else if (currentToken->type == TokenType::DATA_TYPE) {
         return parseCast();
-    } else if ((currentToken->type == TT_MOD || currentToken->type == TT_DIV) && compareNextType(1, TT_LPAREN)) {
+    } else if ((currentToken->type == TokenType::MOD || currentToken->type == TokenType::DIV) && compareNextType(1, TokenType::LPAREN)) {
         return parseModDivFn();
     }
 
@@ -169,18 +169,18 @@ Node *Parser::parseModDivFn() {
     const Token &token = *currentToken;
     advance();
 
-    if (currentToken->type != TT_LPAREN) std::abort();
+    if (currentToken->type != TokenType::LPAREN) std::abort();
     advance();
 
     Node *expr = parseEvaluationExpression();
 
-    if (currentToken->type != TT_COMMA)
+    if (currentToken->type != TokenType::COMMA)
         throw PSC::ExpectedTokenError(*currentToken, "','");
     advance();
 
     Node *otherExpr = parseEvaluationExpression();
 
-    if (currentToken->type != TT_RPAREN)
+    if (currentToken->type != TokenType::RPAREN)
         throw PSC::ExpectedTokenError(*currentToken, "')'");
     advance();
 
@@ -192,13 +192,13 @@ Node *Parser::parseCast() {
     PSC::DataType type = getPSCType();
     advance();
 
-    if (currentToken->type != TT_LPAREN)
+    if (currentToken->type != TokenType::LPAREN)
         throw PSC::ExpectedTokenError(*currentToken, "'('");
     advance();
 
     Node *expr = parseEvaluationExpression();
 
-    if (currentToken->type != TT_RPAREN)
+    if (currentToken->type != TokenType::RPAREN)
         throw PSC::ExpectedTokenError(*currentToken, "')'");
     advance();
 

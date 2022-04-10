@@ -4,7 +4,7 @@ Node *Parser::parseFunction() {
     const Token &functionToken = *currentToken;
     advance();
 
-    if (currentToken->type != TT_IDENTIFIER)
+    if (currentToken->type != TokenType::IDENTIFIER)
         throw PSC::ExpectedTokenError(*currentToken, "identifier");
     const Token &identifier = *currentToken;
     advance();
@@ -15,33 +15,33 @@ Node *Parser::parseFunction() {
 
     FunctionNode *node = create<FunctionNode>(functionToken, function);
 
-    if (currentToken->type == TT_LPAREN) {
+    if (currentToken->type == TokenType::LPAREN) {
         advance();
 
-        if (currentToken->type == TT_BYREF) {
+        if (currentToken->type == TokenType::BYREF) {
             function->byRef = true;
             advance();
-        } else if (currentToken->type == TT_BYVAL) {
+        } else if (currentToken->type == TokenType::BYVAL) {
             advance();
         }
 
-        while (currentToken->type != TT_RPAREN) {
+        while (currentToken->type != TokenType::RPAREN) {
             if (function->parameters.size() > 0) {
-                if (currentToken->type != TT_COMMA)
+                if (currentToken->type != TokenType::COMMA)
                     throw PSC::ExpectedTokenError(*currentToken, "','");
                 advance();
             }
 
-            if (currentToken->type != TT_IDENTIFIER)
+            if (currentToken->type != TokenType::IDENTIFIER)
                 throw PSC::ExpectedTokenError(*currentToken, "identifier or ')'");
             const std::string &paramName = currentToken->value;
             advance();
 
-            if (currentToken->type != TT_COLON)
+            if (currentToken->type != TokenType::COLON)
                 throw PSC::ExpectedTokenError(*currentToken, "':'");
             advance();
 
-            if (currentToken->type != TT_DATA_TYPE)
+            if (currentToken->type != TokenType::DATA_TYPE)
                 throw PSC::ExpectedTokenError(*currentToken, "data type");
 
             PSC::DataType type = getPSCType();
@@ -52,19 +52,19 @@ Node *Parser::parseFunction() {
         advance();
     }
 
-    if (currentToken->type == TT_LINE_END) advance();
-    if (currentToken->type != TT_RETURNS)
+    if (currentToken->type == TokenType::LINE_END) advance();
+    if (currentToken->type != TokenType::RETURNS)
         throw PSC::ExpectedTokenError(*currentToken, "'RETURNS'");
     advance();
 
-    if (currentToken->type != TT_DATA_TYPE)
+    if (currentToken->type != TokenType::DATA_TYPE)
         throw PSC::ExpectedTokenError(*currentToken, "data type");
 
     function->returnType = getPSCType();
     advance();
 
     PSC::Block *block = parseBlock();
-    if (currentToken->type != TT_ENDFUNCTION)
+    if (currentToken->type != TokenType::ENDFUNCTION)
         throw PSC::ExpectedTokenError(*currentToken, "'ENDFUNCTION'");
     advance();
 
@@ -77,23 +77,23 @@ Node *Parser::parseFunctionCall() {
     FunctionCallNode *node = create<FunctionCallNode>(*currentToken);
     advance();
 
-    if (currentToken->type != TT_LPAREN) std::abort();
+    if (currentToken->type != TokenType::LPAREN) std::abort();
     advance();
 
-    if (currentToken->type == TT_RPAREN) {
+    if (currentToken->type == TokenType::RPAREN) {
         advance();
     } else {
         Node *evalExpr = parseEvaluationExpression();
         node->args.push_back(evalExpr);
 
-        while (currentToken->type == TT_COMMA) {
+        while (currentToken->type == TokenType::COMMA) {
             advance();
 
             evalExpr = parseEvaluationExpression();
             node->args.push_back(evalExpr);
         }
 
-        if (currentToken->type != TT_RPAREN)
+        if (currentToken->type != TokenType::RPAREN)
             throw PSC::ExpectedTokenError(*currentToken, "')'");
         advance();
     }

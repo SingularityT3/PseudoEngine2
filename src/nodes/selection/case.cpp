@@ -13,24 +13,24 @@ EqualsCaseComponent::EqualsCaseComponent(PSC::Block &block, Node &node)
 bool EqualsCaseComponent::match(const NodeResult &value, PSC::Context &ctx) {
     auto res = node.evaluate(ctx);
 
-    if (value.type == PSC::DT_REAL && res->type == PSC::DT_INTEGER)
+    if (value.type == PSC::DataType::REAL && res->type == PSC::DataType::INTEGER)
         return value.get<PSC::Real>().value == res->get<PSC::Integer>().value;
 
-    if (value.type == PSC::DT_INTEGER && res->type == PSC::DT_REAL)
+    if (value.type == PSC::DataType::INTEGER && res->type == PSC::DataType::REAL)
         return value.get<PSC::Integer>().value == res->get<PSC::Real>().value;
 
     if (value.type != res->type) return false;
 
     switch (value.type) {
-        case PSC::DT_INTEGER:
+        case PSC::DataType::INTEGER:
             return value.get<PSC::Integer>().value == res->get<PSC::Integer>().value;
-        case PSC::DT_REAL:
+        case PSC::DataType::REAL:
             return value.get<PSC::Real>().value == res->get<PSC::Real>().value;
-        case PSC::DT_BOOLEAN:
+        case PSC::DataType::BOOLEAN:
             return value.get<PSC::Boolean>().value == res->get<PSC::Boolean>().value;
-        case PSC::DT_CHAR:
+        case PSC::DataType::CHAR:
             return value.get<PSC::Char>().value == res->get<PSC::Char>().value;
-        case PSC::DT_STRING:
+        case PSC::DataType::STRING:
             return value.get<PSC::String>().value == res->get<PSC::String>().value;
         default: ;
     }
@@ -44,22 +44,22 @@ RangeCaseComponent::RangeCaseComponent(PSC::Block &block, Node &lowerBound, Node
 
 bool RangeCaseComponent::match(const NodeResult &value, PSC::Context &ctx) {
     PSC::real_t testValue;
-    if (value.type == PSC::DT_INTEGER) testValue = value.get<PSC::Integer>().value;
-    else if (value.type == PSC::DT_REAL) testValue = value.get<PSC::Real>().value;
+    if (value.type == PSC::DataType::INTEGER) testValue = value.get<PSC::Integer>().value;
+    else if (value.type == PSC::DataType::REAL) testValue = value.get<PSC::Real>().value;
     else return false;
 
     PSC::real_t lowerVal;
     auto lower = lowerBound.evaluate(ctx);
 
-    if (lower->type == PSC::DT_INTEGER) lowerVal = lower->get<PSC::Integer>().value;
-    else if (lower->type == PSC::DT_REAL) lowerVal = lower->get<PSC::Real>().value;
+    if (lower->type == PSC::DataType::INTEGER) lowerVal = lower->get<PSC::Integer>().value;
+    else if (lower->type == PSC::DataType::REAL) lowerVal = lower->get<PSC::Real>().value;
     else throw PSC::RuntimeError(lowerBound.getToken(), ctx, "Lower bound must be of type INTEGER or REAL");
 
     PSC::real_t upperVal;
     auto upper = upperBound.evaluate(ctx);
 
-    if (upper->type == PSC::DT_INTEGER) upperVal = upper->get<PSC::Integer>().value;
-    else if (upper->type == PSC::DT_REAL) upperVal = upper->get<PSC::Real>().value;
+    if (upper->type == PSC::DataType::INTEGER) upperVal = upper->get<PSC::Integer>().value;
+    else if (upper->type == PSC::DataType::REAL) upperVal = upper->get<PSC::Real>().value;
     else throw PSC::RuntimeError(upperBound.getToken(), ctx, "Upper bound must be of type INTEGER or REAL");
 
     return (lowerVal <= testValue) && (testValue <= upperVal);
@@ -89,5 +89,5 @@ std::unique_ptr<NodeResult> CaseNode::evaluate(PSC::Context &ctx) {
         }
     }
 
-    return std::make_unique<NodeResult>(nullptr, PSC::DT_NONE);
+    return std::make_unique<NodeResult>(nullptr, PSC::DataType::NONE);
 }

@@ -1,10 +1,10 @@
 #include "parser/parser.h"
 
 Node *Parser::parseArrayDeclare(const Token &declareToken, const Token &identifier) {
-    if (currentToken->type != TT_ARRAY) std::abort();
+    if (currentToken->type != TokenType::ARRAY) std::abort();
     advance();
 
-    if (currentToken->type != TT_LSQRBRACKET)
+    if (currentToken->type != TokenType::LSQRBRACKET)
         throw PSC::ExpectedTokenError(*currentToken, "'['");
     advance();
 
@@ -13,7 +13,7 @@ Node *Parser::parseArrayDeclare(const Token &declareToken, const Token &identifi
     while (true) {
         Node *lowerBound = parseArithmeticExpression();
 
-        if (currentToken->type != TT_COLON)
+        if (currentToken->type != TokenType::COLON)
             throw PSC::ExpectedTokenError(*currentToken, "':'");
         advance();
 
@@ -22,19 +22,19 @@ Node *Parser::parseArrayDeclare(const Token &declareToken, const Token &identifi
         bounds.push_back(lowerBound);
         bounds.push_back(upperBound);
 
-        if (currentToken->type == TT_COMMA) advance();
+        if (currentToken->type == TokenType::COMMA) advance();
         else break;
     }
 
-    if (currentToken->type != TT_RSQRBRACKET)
+    if (currentToken->type != TokenType::RSQRBRACKET)
         throw PSC::ExpectedTokenError(*currentToken, "']'");
     advance();
 
-    if (currentToken->type != TT_OF)
+    if (currentToken->type != TokenType::OF)
         throw PSC::ExpectedTokenError(*currentToken, "'OF'");
     advance();
 
-    if (currentToken->type != TT_DATA_TYPE)
+    if (currentToken->type != TokenType::DATA_TYPE)
         throw PSC::ExpectedTokenError(*currentToken, "data type");
 
     PSC::DataType type = getPSCType();
@@ -47,7 +47,7 @@ Node *Parser::parseArrayOperation() {
     const Token &identifier = *currentToken;
     advance();
 
-    if (currentToken->type != TT_LSQRBRACKET) std::abort();
+    if (currentToken->type != TokenType::LSQRBRACKET) std::abort();
     advance();
 
     std::vector<Node*> indices;
@@ -56,15 +56,15 @@ Node *Parser::parseArrayOperation() {
         Node *index = parseArithmeticExpression();
         indices.push_back(index);
 
-        if (currentToken->type == TT_COMMA) advance();
+        if (currentToken->type == TokenType::COMMA) advance();
         else break;
     }
 
-    if (currentToken->type != TT_RSQRBRACKET)
+    if (currentToken->type != TokenType::RSQRBRACKET)
         throw PSC::ExpectedTokenError(*currentToken, "']'");
     advance();
 
-    if (currentToken->type == TT_ASSIGNMENT) {
+    if (currentToken->type == TokenType::ASSIGNMENT) {
         const Token &op = *currentToken;
         advance();
         Node *node = parseEvaluationExpression();

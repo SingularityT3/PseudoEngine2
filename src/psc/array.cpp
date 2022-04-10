@@ -28,19 +28,19 @@ void Array::init() {
     data.reserve(size);
 
     switch (type) {
-        case PSC::DT_INTEGER:
+        case PSC::DataType::INTEGER:
             _init<PSC::Integer>();
             break;
-        case PSC::DT_REAL:
+        case PSC::DataType::REAL:
             _init<PSC::Real>();
             break;
-        case PSC::DT_BOOLEAN:
+        case PSC::DataType::BOOLEAN:
             _init<PSC::Boolean>();
             break;
-        case PSC::DT_CHAR:
+        case PSC::DataType::CHAR:
             _init<PSC::Char>();
             break;
-        case PSC::DT_STRING:
+        case PSC::DataType::STRING:
             _init<PSC::String>();
             break;
         default:

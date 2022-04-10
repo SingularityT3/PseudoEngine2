@@ -6,15 +6,15 @@ void Parser::advance() {
 
 PSC::DataType Parser::getPSCType() {
     if (currentToken->value == "INTEGER") {
-        return PSC::DT_INTEGER;
+        return PSC::DataType::INTEGER;
     } else if (currentToken->value == "REAL") {
-        return PSC::DT_REAL;
+        return PSC::DataType::REAL;
     } else if (currentToken->value == "BOOLEAN") {
-        return PSC::DT_BOOLEAN;
+        return PSC::DataType::BOOLEAN;
     } else if (currentToken->value == "CHAR") {
-        return PSC::DT_CHAR;
+        return PSC::DataType::CHAR;
     } else if (currentToken->value == "STRING") {
-        return PSC::DT_STRING;
+        return PSC::DataType::STRING;
     } else {
         std::abort();
     }
@@ -47,9 +47,9 @@ void Parser::setTokens(const std::vector<Token*> *tokens) {
 }
 
 PSC::Block *Parser::parse() {
-    PSC::Block *block = parseBlock(BT_MAIN);
+    PSC::Block *block = parseBlock(BlockType::MAIN);
 
-    if (currentToken->type != TT_EXPRESSION_END)
+    if (currentToken->type != TokenType::EXPRESSION_END)
         throw PSC::SyntaxError(*currentToken);
 
     return block;
@@ -60,33 +60,33 @@ PSC::Block *Parser::parseBlock(BlockType blockType) {
     blocks.push_back(block);
 
     while (true) {
-        while (currentToken->type == TT_LINE_END) advance();
-        if (currentToken->type == TT_EXPRESSION_END
-            || currentToken->type == TT_ENDIF
-            || currentToken->type == TT_OTHERWISE
-            || currentToken->type == TT_ENDCASE
-            || currentToken->type == TT_ELSE
-            || currentToken->type == TT_ENDWHILE
-            || currentToken->type == TT_UNTIL
-            || currentToken->type == TT_NEXT
-            || currentToken->type == TT_ENDPROCEDURE
-            || currentToken->type == TT_ENDFUNCTION
+        while (currentToken->type == TokenType::LINE_END) advance();
+        if (currentToken->type == TokenType::EXPRESSION_END
+            || currentToken->type == TokenType::ENDIF
+            || currentToken->type == TokenType::OTHERWISE
+            || currentToken->type == TokenType::ENDCASE
+            || currentToken->type == TokenType::ELSE
+            || currentToken->type == TokenType::ENDWHILE
+            || currentToken->type == TokenType::UNTIL
+            || currentToken->type == TokenType::NEXT
+            || currentToken->type == TokenType::ENDPROCEDURE
+            || currentToken->type == TokenType::ENDFUNCTION
         ) break;
 
-        if (blockType == BT_CASE) {
-            if (compareNextType(1, TT_COLON) // <value> :
-                || (currentToken->type == TT_MINUS && compareNextType(2, TT_COLON)) // - <value> :
-                || compareNextType(1, TT_TO) // <value> TO
-                || (currentToken->type == TT_MINUS && compareNextType(2, TT_TO)) // - <value> TO
+        if (blockType == BlockType::CASE) {
+            if (compareNextType(1, TokenType::COLON) // <value> :
+                || (currentToken->type == TokenType::MINUS && compareNextType(2, TokenType::COLON)) // - <value> :
+                || compareNextType(1, TokenType::TO) // <value> TO
+                || (currentToken->type == TokenType::MINUS && compareNextType(2, TokenType::TO)) // - <value> TO
             ) break;
         }
 
         Node *node;
-        if (currentToken->type == TT_PROCEDURE) {
-            if (blockType != BT_MAIN) throw PSC::SyntaxError(*currentToken, "Procedures can only be defined in the global scope");
+        if (currentToken->type == TokenType::PROCEDURE) {
+            if (blockType != BlockType::MAIN) throw PSC::SyntaxError(*currentToken, "Procedures can only be defined in the global scope");
             node = parseProcedure();
-        } else if (currentToken->type == TT_FUNCTION) {
-            if (blockType != BT_MAIN) throw PSC::SyntaxError(*currentToken, "Functions can only be defined in the global scope");
+        } else if (currentToken->type == TokenType::FUNCTION) {
+            if (blockType != BlockType::MAIN) throw PSC::SyntaxError(*currentToken, "Functions can only be defined in the global scope");
             node = parseFunction();
         } else {
             node = parseExpression();
@@ -94,7 +94,7 @@ PSC::Block *Parser::parseBlock(BlockType blockType) {
 
         block->addNode(node);
 
-        if (currentToken->type != TT_LINE_END && currentToken->type != TT_EXPRESSION_END) {
+        if (currentToken->type != TokenType::LINE_END && currentToken->type != TokenType::EXPRESSION_END) {
             throw PSC::SyntaxError(*currentToken);
         }
     }
@@ -103,30 +103,30 @@ PSC::Block *Parser::parseBlock(BlockType blockType) {
 }
 
 Node *Parser::parseExpression() {
-    if (currentToken->type == TT_DECLARE) {
+    if (currentToken->type == TokenType::DECLARE) {
         return parseDeclareExpression();
-    } else if (currentToken->type == TT_CONSTANT) {
+    } else if (currentToken->type == TokenType::CONSTANT) {
         return parseConstDeclareExpression();
-    } else if (currentToken->type == TT_IF) {
+    } else if (currentToken->type == TokenType::IF) {
         return parseIfStatement();
-    } else if (currentToken->type == TT_CASE) {
+    } else if (currentToken->type == TokenType::CASE) {
         return parseCaseStatement();
-    } else if (currentToken->type == TT_WHILE) {
+    } else if (currentToken->type == TokenType::WHILE) {
         return parseWhileLoop();
-    } else if (currentToken->type == TT_REPEAT) {
+    } else if (currentToken->type == TokenType::REPEAT) {
         return parseRepeatLoop();
-    } else if (currentToken->type == TT_FOR) {
+    } else if (currentToken->type == TokenType::FOR) {
         return parseForLoop();
-    } else if (currentToken->type == TT_CALL) {
+    } else if (currentToken->type == TokenType::CALL) {
         return parseCall();
-    } else if (currentToken->type == TT_RETURN) {
+    } else if (currentToken->type == TokenType::RETURN) {
         const Token &returnToken = *currentToken;
         advance();
         Node *evalExpr = parseEvaluationExpression();
         return create<ReturnNode>(returnToken, *evalExpr);
-    } else if (currentToken->type == TT_OUTPUT) {
+    } else if (currentToken->type == TokenType::OUTPUT) {
         return parseOutput();
-    } else if (currentToken->type == TT_INPUT) {
+    } else if (currentToken->type == TokenType::INPUT) {
         return parseInput();
     }
 

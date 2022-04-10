@@ -13,23 +13,23 @@ ForLoopNode::ForLoopNode(const Token &token, const Token &identifier, Node &star
 std::unique_ptr<NodeResult> ForLoopNode::evaluate(PSC::Context &ctx) {
     PSC::Variable *iterator = ctx.getVariable(identifier.value);
     if (iterator == nullptr) {
-        iterator = new PSC::Variable(identifier.value, PSC::DT_INTEGER, false);
+        iterator = new PSC::Variable(identifier.value, PSC::DataType::INTEGER, false);
         ctx.addVariable(iterator);
     }
 
-    if (iterator->type != PSC::DT_INTEGER)
+    if (iterator->type != PSC::DataType::INTEGER)
         throw PSC::RuntimeError(token, ctx, "Iterator variable must be of type INTEGER");
 
 
     auto startRes = start.evaluate(ctx);
 
-    if (startRes->type != PSC::DT_INTEGER)
+    if (startRes->type != PSC::DataType::INTEGER)
         throw PSC::RuntimeError(token, ctx, "Start value of FOR loop iterator must be of type INTEGER");
 
 
     auto stopRes = stop.evaluate(ctx);
 
-    if (stopRes->type != PSC::DT_INTEGER)
+    if (stopRes->type != PSC::DataType::INTEGER)
         throw PSC::RuntimeError(token, ctx, "Stop value of FOR loop iterator must be of type INTEGER");
 
 
@@ -37,7 +37,7 @@ std::unique_ptr<NodeResult> ForLoopNode::evaluate(PSC::Context &ctx) {
     if (step != nullptr) {
         auto stepRes = step->evaluate(ctx);
 
-        if (stepRes->type != PSC::DT_INTEGER)
+        if (stepRes->type != PSC::DataType::INTEGER)
             throw PSC::RuntimeError(token, ctx, "Step value of FOR loop iterator must be of type INTEGER");
 
         stepValue = stepRes->get<PSC::Integer>();
@@ -59,5 +59,5 @@ std::unique_ptr<NodeResult> ForLoopNode::evaluate(PSC::Context &ctx) {
         block->run(ctx);
     }
 
-    return std::make_unique<NodeResult>(nullptr, PSC::DT_NONE);
+    return std::make_unique<NodeResult>(nullptr, PSC::DataType::NONE);
 }

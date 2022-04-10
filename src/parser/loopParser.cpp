@@ -4,25 +4,25 @@ Node *Parser::parseForLoop() {
     const Token &forToken = *currentToken;
     advance();
 
-    if (currentToken->type != TT_IDENTIFIER)
+    if (currentToken->type != TokenType::IDENTIFIER)
         throw PSC::ExpectedTokenError(*currentToken, "identifier");
     const Token &iterator = *currentToken;
     advance();
 
-    if (currentToken->type != TT_ASSIGNMENT)
+    if (currentToken->type != TokenType::ASSIGNMENT)
         throw PSC::ExpectedTokenError(*currentToken, "'<-'");
     advance();
 
     Node *start = parseArithmeticExpression();
 
-    if (currentToken->type != TT_TO)
+    if (currentToken->type != TokenType::TO)
         throw PSC::ExpectedTokenError(*currentToken, "'TO'");
     advance();
 
     Node *stop = parseArithmeticExpression();
 
     Node *step;
-    if (currentToken->type == TT_STEP) {
+    if (currentToken->type == TokenType::STEP) {
         advance();
         step = parseArithmeticExpression();
     } else {
@@ -31,11 +31,11 @@ Node *Parser::parseForLoop() {
 
     PSC::Block *block = parseBlock();
 
-    if (currentToken->type != TT_NEXT)
+    if (currentToken->type != TokenType::NEXT)
         throw PSC::ExpectedTokenError(*currentToken, "'NEXT'");
     advance();
 
-    if (currentToken->type == TT_IDENTIFIER) {
+    if (currentToken->type == TokenType::IDENTIFIER) {
         if (currentToken->value != iterator.value)
             throw PSC::ExpectedTokenError(*currentToken, "'" + iterator.value + "'");
         advance();
@@ -50,7 +50,7 @@ Node *Parser::parseRepeatLoop() {
 
     PSC::Block *block = parseBlock();
 
-    if (currentToken->type != TT_UNTIL)
+    if (currentToken->type != TokenType::UNTIL)
         throw PSC::ExpectedTokenError(*currentToken, "'UNTIL'");
     advance();
 
@@ -65,14 +65,14 @@ Node *Parser::parseWhileLoop() {
 
     Node *condition = parseEvaluationExpression();
 
-    if (currentToken->type == TT_LINE_END) advance();
-    if (currentToken->type != TT_DO)
+    if (currentToken->type == TokenType::LINE_END) advance();
+    if (currentToken->type != TokenType::DO)
         throw PSC::ExpectedTokenError(*currentToken, "'DO'");
     advance();
 
     PSC::Block *block = parseBlock();
 
-    if (currentToken->type != TT_ENDWHILE)
+    if (currentToken->type != TokenType::ENDWHILE)
         throw PSC::ExpectedTokenError(*currentToken, "'ENDWHILE'");
     advance();
 
