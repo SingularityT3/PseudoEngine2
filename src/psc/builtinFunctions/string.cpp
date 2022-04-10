@@ -14,7 +14,7 @@ void PSC::BuiltinFnLength::run(PSC::Context &ctx) {
     PSC::Variable *var = ctx.getVariable("String");
     if (var == nullptr || var->type != PSC::DataType::STRING) std::abort();
 
-    int_t len = var->get<PSC::String>().value.size();
+    int_t len = (int_t) var->get<PSC::String>().value.size();
     auto ret = std::make_unique<PSC::Integer>(len);
 
     ctx.returnValue = std::make_unique<NodeResult>(std::move(ret), PSC::DataType::INTEGER);
@@ -39,11 +39,11 @@ void PSC::BuiltinFnRight::run(PSC::Context &ctx) {
 
     int_t xVal = x->get<PSC::Integer>().value;
     std::string &strVal = str->get<PSC::String>().value;
-    int strLen = strVal.size();
+    size_t strLen = strVal.size();
     auto ret = std::make_unique<PSC::String>();
 
-    int start = strLen - xVal;
-    for (int i = start > 0 ? start : 0; i < strLen; i++) {
+    size_t start = strLen - xVal;
+    for (size_t i = start > 0 ? start : 0; i < strLen; i++) {
         ret->value += strVal[i];
     }
 
