@@ -8,7 +8,7 @@ BooleanNode::BooleanNode(const Token &token)
     if (!this->value && token.type != TokenType::FALSE) std::abort();
 }
 
-std::unique_ptr<NodeResult> BooleanNode::evaluate(PSC::Context &ctx) {
+std::unique_ptr<NodeResult> BooleanNode::evaluate(PSC::Context&) {
     return std::make_unique<NodeResult>(new PSC::Boolean(value), PSC::DataType::BOOLEAN);
 }
 

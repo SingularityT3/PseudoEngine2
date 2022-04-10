@@ -5,7 +5,7 @@ IntegerNode::IntegerNode(const Token &token)
     : Node(token), valueInt(std::stol(token.value))
 {}
 
-std::unique_ptr<NodeResult> IntegerNode::evaluate(PSC::Context &ctx) {
+std::unique_ptr<NodeResult> IntegerNode::evaluate(PSC::Context&) {
     return std::make_unique<NodeResult>(new PSC::Integer(valueInt), PSC::DataType::INTEGER);
 }
 
@@ -14,7 +14,7 @@ RealNode::RealNode(const Token &token)
     : Node(token), valueReal(std::stod(token.value))
 {}
 
-std::unique_ptr<NodeResult> RealNode::evaluate(PSC::Context &ctx) {
+std::unique_ptr<NodeResult> RealNode::evaluate(PSC::Context&) {
     return std::make_unique<NodeResult>(new PSC::Real(valueReal), PSC::DataType::REAL);
 }
 
@@ -23,7 +23,7 @@ CharNode::CharNode(const Token &token)
     : Node(token), valueChar(token.value[0])
 {}
 
-std::unique_ptr<NodeResult> CharNode::evaluate(PSC::Context &ctx) {
+std::unique_ptr<NodeResult> CharNode::evaluate(PSC::Context&) {
     return std::make_unique<NodeResult>(new PSC::Char(valueChar), PSC::DataType::CHAR);
 }
 
@@ -31,7 +31,7 @@ StringNode::StringNode(const Token &token)
     : Node(token), valueStr(token.value)
 {}
 
-std::unique_ptr<NodeResult> StringNode::evaluate(PSC::Context &ctx) {
+std::unique_ptr<NodeResult> StringNode::evaluate(PSC::Context&) {
     return std::make_unique<NodeResult>(new PSC::String(valueStr), PSC::DataType::STRING);
 }
 

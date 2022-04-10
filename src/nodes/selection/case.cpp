@@ -70,7 +70,7 @@ OtherwiseCaseComponent::OtherwiseCaseComponent(PSC::Block &block)
     : CaseComponent(block)
 {}
 
-bool OtherwiseCaseComponent::match(const NodeResult &value, PSC::Context &ctx) {
+bool OtherwiseCaseComponent::match(const NodeResult&, PSC::Context&) {
     return true;
 }
 

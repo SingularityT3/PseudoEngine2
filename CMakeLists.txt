@@ -12,7 +12,7 @@ target_include_directories(PseudoEngine2 PRIVATE src)
 if(MSVC)
     target_compile_options(PseudoEngine2 PRIVATE /Wall /WX)
 else()
-    target_compile_options(PseudoEngine2 PRIVATE -Wall -Wextra -Wno-unused-parameter -pedantic -Werror)
+    target_compile_options(PseudoEngine2 PRIVATE -Wall -Wextra -pedantic -Werror)
 endif()
 
 target_sources(PseudoEngine2 PRIVATE 
