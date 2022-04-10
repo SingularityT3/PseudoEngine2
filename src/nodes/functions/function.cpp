@@ -28,14 +28,14 @@ std::unique_ptr<NodeResult> FunctionCallNode::evaluate(PSC::Context &ctx) {
     if (function == nullptr)
         throw PSC::NotDefinedError(token, ctx, "Function '" + functionName + "'");
 
-    int nArgs = function->parameters.size();
-    if ((int) args.size() != nArgs)
+    size_t nArgs = function->parameters.size();
+    if (args.size() != nArgs)
         throw PSC::InvalidArgsError(token, ctx);
 
     auto functionCtx = std::make_unique<PSC::Context>(&ctx, functionName, true, function->returnType);
     ctx.switchToken = &token;
 
-    for (int i = 0; i < (int) args.size(); i++) {
+    for (size_t i = 0; i < args.size(); i++) {
         std::unique_ptr<NodeResult> argRes = args[i]->evaluate(ctx);
 
         if (function->parameters[i].type != argRes->type) {
@@ -86,7 +86,7 @@ std::unique_ptr<NodeResult> FunctionCallNode::evaluate(PSC::Context &ctx) {
 
     try {
         function->run(*functionCtx);
-    } catch (ReturnErrSignal &e) {}
+    } catch (ReturnErrSignal&) {}
 
     if (!functionCtx->returnValue)
         throw PSC::RuntimeError(*(function->defToken), *functionCtx, "Missing RETURN statement");

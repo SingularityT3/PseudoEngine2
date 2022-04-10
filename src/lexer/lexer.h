@@ -12,7 +12,7 @@ private:
     char currentChar;
     int line;
     int column;
-    int idx;
+    size_t idx;
 
     void advance();
 

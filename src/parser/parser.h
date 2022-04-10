@@ -13,7 +13,7 @@ private:
     std::vector<PSC::Block*> blocks;
 
     const Token *currentToken;
-    int idx;
+    size_t idx;
 
     void advance();
 

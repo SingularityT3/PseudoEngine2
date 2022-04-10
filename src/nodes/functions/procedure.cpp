@@ -28,14 +28,14 @@ std::unique_ptr<NodeResult> CallNode::evaluate(PSC::Context &ctx) {
     if (procedure == nullptr)
         throw PSC::NotDefinedError(token, ctx, "Procedure '" + procedureName + "'");
 
-    int nArgs = procedure->parameters.size();
-    if ((int) args.size() != nArgs)
+    size_t nArgs = procedure->parameters.size();
+    if (args.size() != nArgs)
         throw PSC::InvalidArgsError(token, ctx);
 
     auto procedureCtx = std::make_unique<PSC::Context>(&ctx, procedureName);
     ctx.switchToken = &token;
 
-    for (int i = 0; i < (int) args.size(); i++) {
+    for (size_t i = 0; i < args.size(); i++) {
         std::unique_ptr<NodeResult> argRes = args[i]->evaluate(ctx);
 
         if (procedure->parameters[i].type != argRes->type)

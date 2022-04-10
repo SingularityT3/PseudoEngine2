@@ -16,7 +16,7 @@ std::unique_ptr<NodeResult> ArrayDeclareNode::evaluate(PSC::Context &ctx) {
 
     auto array = std::make_unique<PSC::Array>(name, type);
 
-    for (int i = 0; i < (int) bounds.size(); i += 2) {
+    for (size_t i = 0; i < bounds.size(); i += 2) {
         auto lowerRes = bounds[i]->evaluate(ctx);
         if (lowerRes->type != PSC::DataType::INTEGER)
             throw PSC::RuntimeError(bounds[i]->getToken(), ctx, "Array indices must be of type INTEGER");
@@ -56,7 +56,7 @@ std::pair<PSC::Value*, PSC::DataType> ArrayAccessNode::getValue(PSC::Context &ct
     std::vector<PSC::int_t> evaluatedIndices;
     evaluatedIndices.reserve(indices.size());
 
-    for (int i = 0; i < (int) indices.size(); i++) {
+    for (size_t i = 0; i < indices.size(); i++) {
         Node *index = indices[i];
         auto result = index->evaluate(ctx);
 
@@ -120,7 +120,7 @@ std::unique_ptr<NodeResult> ArrayAssignNode::evaluate(PSC::Context &ctx) {
     std::vector<PSC::int_t> evaluatedIndices;
     evaluatedIndices.reserve(indices.size());
 
-    for (int i = 0; i < (int) indices.size(); i++) {
+    for (size_t i = 0; i < indices.size(); i++) {
         Node *index = indices[i];
         auto result = index->evaluate(ctx);
 

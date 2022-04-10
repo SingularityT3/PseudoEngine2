@@ -5,7 +5,7 @@ void Lexer::makeWord() {
     int startIdx = idx;
     int startColumn = column;
 
-    for ( ; idx < (int) expr->size(); advance()) {
+    for ( ; idx < expr->size(); advance()) {
         if (!isalnum(currentChar) && currentChar != '_') {
             break;
         }
@@ -122,7 +122,7 @@ void Lexer::makeNumber() {
     int startColumn = column;
     bool decimal = false;
 
-    for ( ; idx < (int) expr->size(); advance()) {
+    for ( ; idx < expr->size(); advance()) {
         if (currentChar == '.' && !decimal) {
             decimal = true;
             continue;
@@ -152,7 +152,7 @@ char escSeqFmt(char code) {
 }
 
 void Lexer::makeChar() {
-    if (idx + 2 >= (int) expr->size()) 
+    if (idx + 2 >= expr->size()) 
         throw PSC::LexerError(line, column, "Char must contain at least once character");
 
     int startColumn = column;
@@ -169,7 +169,7 @@ void Lexer::makeChar() {
         c = currentChar;
     }
 
-    if (idx + 1 >= (int) expr->size() || (*expr)[idx + 1] != '\'')
+    if (idx + 1 >= expr->size() || (*expr)[idx + 1] != '\'')
         throw PSC::ExpectedQuotesError(line, column, false);
     advance();
     advance();
@@ -184,7 +184,7 @@ void Lexer::makeString() {
     advance();
 
     std::string str;
-    while (currentChar != '"' && idx < (int) expr->size()) {
+    while (currentChar != '"' && idx < expr->size()) {
         if (currentChar == '\\') {
             advance();
             char c = escSeqFmt(currentChar);
@@ -196,7 +196,7 @@ void Lexer::makeString() {
         advance();
     }
 
-    if (idx >= (int) expr->size() || currentChar != '"')
+    if (idx >= expr->size() || currentChar != '"')
         throw PSC::ExpectedQuotesError(line, column, true);
     advance();
 
