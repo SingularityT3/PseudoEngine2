@@ -25,7 +25,7 @@ namespace PSC {
 
         ~Variable();
 
-        void set(Value *data);
+        void set(Value *_data);
 
         template<std::derived_from<PSC::Value> T>
         T &get() { return *((T*) data); }

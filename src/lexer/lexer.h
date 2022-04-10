@@ -31,7 +31,7 @@ public:
 
     ~Lexer();
 
-    void setExpr(std::string *expr);
+    void setExpr(std::string *_expr);
 
     const std::vector<Token*> makeTokens();
 };

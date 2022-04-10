@@ -24,9 +24,9 @@ Lexer::~Lexer() {
     }
 }
 
-void Lexer::setExpr(std::string *expr) {
-    expr->erase(std::remove(expr->begin(), expr->end(), '\r'), expr->end());
-    this->expr = expr;
+void Lexer::setExpr(std::string *_expr) {
+    _expr->erase(std::remove(_expr->begin(), _expr->end(), '\r'), _expr->end());
+    expr = expr;
     idx = SIZE_MAX; // overflow to 0 on advance()
     currentChar = 0;
     line = 1;
@@ -35,7 +35,7 @@ void Lexer::setExpr(std::string *expr) {
 }
 
 const std::vector<Token*> Lexer::makeTokens() {
-    int reserve = expr->size() / 10;
+    size_t reserve = expr->size() / 10;
     if (reserve < 1) reserve = 1;
     tokens.reserve(reserve);
 

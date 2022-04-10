@@ -39,11 +39,11 @@ Parser::~Parser() {
     }
 }
 
-void Parser::setTokens(const std::vector<Token*> *tokens) {
-    this->tokens = tokens;
+void Parser::setTokens(const std::vector<Token*> *_tokens) {
+    tokens = _tokens;
     idx = SIZE_MAX; // overflow to 0 on advance()
     advance();
-    nodes.reserve(tokens->size() * 0.6);
+    nodes.reserve(tokens->size() / 2);
 }
 
 PSC::Block *Parser::parse() {

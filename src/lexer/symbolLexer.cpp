@@ -2,7 +2,7 @@
 #include "lexer/lexer.h"
 
 void Lexer::makeWord() {
-    int startIdx = idx;
+    size_t startIdx = idx;
     int startColumn = column;
 
     for ( ; idx < expr->size(); advance()) {

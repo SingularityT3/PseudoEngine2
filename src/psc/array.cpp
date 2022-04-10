@@ -51,10 +51,10 @@ void Array::init() {
 Value &Array::getElement(const std::vector<int_t> &index) {
     if (index.size() != dimensions.size()) std::abort();
 
-    unsigned long realIndex = 0;
-    unsigned long prevSize = 1;
+    size_t realIndex = 0;
+    size_t prevSize = 1;
 
-    for (unsigned int i = 0; i < index.size(); i++) {
+    for (size_t i = 0; i < index.size(); i++) {
         realIndex += (index[i] - dimensions[i].lowerBound) * prevSize;
         prevSize *= dimensions[i].getSize();
     }

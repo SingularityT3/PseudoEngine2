@@ -9,6 +9,8 @@ public:
 
     CaseComponent(PSC::Block &block);
 
+    virtual ~CaseComponent() = default;
+
     virtual bool match(const NodeResult &value, PSC::Context &ctx) = 0;
 };
 

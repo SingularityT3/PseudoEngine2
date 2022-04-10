@@ -41,7 +41,7 @@ public:
 
     PSC::Block *parse();
 
-    void setTokens(const std::vector<Token*> *tokens);
+    void setTokens(const std::vector<Token*> *_tokens);
 
 private:
     PSC::Block *parseBlock(BlockType blockType = BlockType::OTHER);

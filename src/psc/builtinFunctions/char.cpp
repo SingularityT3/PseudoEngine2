@@ -15,7 +15,7 @@ void PSC::BuiltinFnLCase::run(PSC::Context &ctx) {
     if (ch == nullptr || ch->type != PSC::DataType::CHAR) std::abort();
 
     auto ret = std::make_unique<PSC::Char>();
-    ret->value = std::tolower(ch->get<PSC::Char>().value);
+    ret->value = (char) std::tolower(ch->get<PSC::Char>().value);
 
     ctx.returnValue = std::make_unique<NodeResult>(std::move(ret), PSC::DataType::CHAR);
 }
@@ -33,7 +33,7 @@ void PSC::BuiltinFnUCase::run(PSC::Context &ctx) {
     if (ch == nullptr || ch->type != PSC::DataType::CHAR) std::abort();
 
     auto ret = std::make_unique<PSC::Char>();
-    ret->value = std::toupper(ch->get<PSC::Char>().value);
+    ret->value = (char) std::toupper(ch->get<PSC::Char>().value);
 
     ctx.returnValue = std::make_unique<NodeResult>(std::move(ret), PSC::DataType::CHAR);
 }

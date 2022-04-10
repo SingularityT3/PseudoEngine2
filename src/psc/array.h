@@ -23,8 +23,8 @@ namespace PSC {
 
         template<std::derived_from<Value> T>
         void _init() {
-            unsigned long size = data.capacity();
-            for (unsigned long i = 0; i < size; i++) {
+            size_t size = data.capacity();
+            for (size_t i = 0; i < size; i++) {
                 data.emplace_back(new T());
             }
         }

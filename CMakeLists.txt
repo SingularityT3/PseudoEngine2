@@ -10,7 +10,7 @@ add_executable(PseudoEngine2)
 target_include_directories(PseudoEngine2 PRIVATE src)
 
 if(MSVC)
-    target_compile_options(PseudoEngine2 PRIVATE /Wall /WX)
+    string(REPLACE "/W3" "/W4" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 else()
     target_compile_options(PseudoEngine2 PRIVATE -Wall -Wextra -pedantic -Werror)
 endif()

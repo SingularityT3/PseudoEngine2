@@ -43,9 +43,9 @@ Variable::~Variable() {
     if (!reference) delete data;
 }
 
-void Variable::set(Value *data) {
+void Variable::set(Value *_data) {
     delete data;
-    this->data = data;
+    data = _data;
 }
 
 Variable *Variable::createReference(const std::string &refName) {
