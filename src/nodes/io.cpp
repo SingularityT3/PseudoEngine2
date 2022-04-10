@@ -26,9 +26,8 @@ std::unique_ptr<NodeResult> OutputNode::evaluate(PSC::Context &ctx) {
                 std::cout.flush();
                 throw PSC::RuntimeError(node->getToken(), ctx, "Expected a value for OUTPUT/PRINT");
         }
-        std::cout << "\n";
     }
-    std::cout.flush();
+    std::cout << std::endl;
 
     return std::make_unique<NodeResult>(nullptr, PSC::DT_NONE);
 }
