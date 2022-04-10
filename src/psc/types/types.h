@@ -71,6 +71,8 @@ namespace PSC {
 
         Integer(int_t value);
 
+        Integer(const PSC::Integer&) = default;
+
         operator int_t() const;
 
         void operator=(int_t x);
@@ -95,6 +97,8 @@ namespace PSC {
         Real();
 
         Real(real_t value);
+
+        Real(const Real&) = default;
 
         operator real_t() const;
 
@@ -121,6 +125,8 @@ namespace PSC {
 
         Boolean(bool value);
 
+        Boolean(const Boolean&) = default;
+
         operator bool() const;
 
         void operator=(bool x);
@@ -146,6 +152,8 @@ namespace PSC {
 
         Char(char value);
 
+        Char(const Char&) = default;
+
         operator char() const;
 
         void operator=(char x);
@@ -170,6 +178,8 @@ namespace PSC {
         String() = default;
 
         String(const std::string &value);
+
+        String(const String&) = default;
 
         void operator=(const std::string &x);
 

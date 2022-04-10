@@ -8,7 +8,12 @@ project(PseudoEngine2 VERSION 0.1)
 add_executable(PseudoEngine2)
 
 target_include_directories(PseudoEngine2 PRIVATE src)
-target_compile_options(PseudoEngine2 PRIVATE -Wall -Werror)
+
+if(MSVC)
+    target_compile_options(PseudoEngine2 PRIVATE /Wall /WX)
+else()
+    target_compile_options(PseudoEngine2 PRIVATE -Wall -Wextra -Wno-unused-parameter -pedantic -Werror)
+endif()
 
 target_sources(PseudoEngine2 PRIVATE 
     src/lexer/symbolLexer.cpp
