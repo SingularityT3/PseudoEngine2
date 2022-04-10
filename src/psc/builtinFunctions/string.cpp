@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "psc/variable.h"
 #include "psc/scope/context.h"
 #include "psc/builtinFunctions/functions.h"
