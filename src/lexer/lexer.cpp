@@ -26,7 +26,7 @@ Lexer::~Lexer() {
 
 void Lexer::setExpr(std::string *_expr) {
     _expr->erase(std::remove(_expr->begin(), _expr->end(), '\r'), _expr->end());
-    expr = expr;
+    expr = _expr;
     idx = SIZE_MAX; // overflow to 0 on advance()
     currentChar = 0;
     line = 1;
