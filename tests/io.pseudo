@@ -1,6 +1,6 @@
 var <- 86
-PRINT 1, 6.25, TRUE, FALSE
-OUTPUT 'a', "Hello World", var
+PRINT 1, ' ', 6.25, ' ', TRUE, ' ', FALSE
+OUTPUT 'a', "\nHello World ", var
 
 DECLARE i : INTEGER
 DECLARE r : REAL
