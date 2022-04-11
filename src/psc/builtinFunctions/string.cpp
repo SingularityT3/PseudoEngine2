@@ -80,7 +80,7 @@ void PSC::BuiltinFnMid::run(PSC::Context &ctx) {
     int_t yVal = y->get<PSC::Integer>().value;
     if (yVal < 0) yVal = 0;
 
-    ret->value = std::move(strVal.substr(xVal, yVal));
+    ret->value = strVal.substr(xVal, yVal);
 
     ctx.returnValue = std::make_unique<NodeResult>(std::move(ret), PSC::DataType::STRING);
 }
@@ -107,7 +107,7 @@ void PSC::BuiltinFnLeft::run(PSC::Context &ctx) {
     std::string &strVal = str->get<PSC::String>().value;
 
     auto ret = std::make_unique<PSC::String>();
-    ret->value = std::move(strVal.substr(0, xVal));
+    ret->value = strVal.substr(0, xVal);
 
     ctx.returnValue = std::make_unique<NodeResult>(std::move(ret), PSC::DataType::STRING);
 }
