@@ -55,7 +55,7 @@ std::unique_ptr<NodeResult> ForLoopNode::evaluate(PSC::Context &ctx) {
 
     for (iteratorValue = startValue;
         (stepNegative && iteratorValue.value >= stopValue) || (!stepNegative && iteratorValue.value <= stopValue);
-        iteratorValue = iteratorValue.value + stepValue
+        iteratorValue.value += stepValue
     ) {
         try {
             block->run(ctx);
