@@ -106,40 +106,44 @@ PSC::Block *Parser::parseBlock(BlockType blockType) {
 }
 
 Node *Parser::parseExpression() {
-    if (currentToken->type == TokenType::DECLARE) {
-        return parseDeclareExpression();
-    } else if (currentToken->type == TokenType::CONSTANT) {
-        return parseConstDeclareExpression();
-    } else if (currentToken->type == TokenType::IF) {
-        return parseIfStatement();
-    } else if (currentToken->type == TokenType::CASE) {
-        return parseCaseStatement();
-    } else if (currentToken->type == TokenType::WHILE) {
-        return parseWhileLoop();
-    } else if (currentToken->type == TokenType::REPEAT) {
-        return parseRepeatLoop();
-    } else if (currentToken->type == TokenType::FOR) {
-        return parseForLoop();
-    } else if (currentToken->type == TokenType::CALL) {
-        return parseCall();
-    } else if (currentToken->type == TokenType::RETURN) {
-        const Token &returnToken = *currentToken;
-        advance();
-        Node *evalExpr = parseEvaluationExpression();
-        return create<ReturnNode>(returnToken, *evalExpr);
-    } else if (currentToken->type == TokenType::BREAK) {
-        const Token &breakToken = *currentToken;
-        advance();
-        return create<BreakNode>(breakToken);
-    } else if (currentToken->type == TokenType::CONTINUE) {
-        const Token &continueToken = *currentToken;
-        advance();
-        return create<ContinueNode>(continueToken);
-    } else if (currentToken->type == TokenType::OUTPUT) {
-        return parseOutput();
-    } else if (currentToken->type == TokenType::INPUT) {
-        return parseInput();
+    switch (currentToken->type) {
+        case TokenType::DECLARE:
+            return parseDeclareExpression();
+        case TokenType::CONSTANT:
+            return parseConstDeclareExpression();
+        case TokenType::IF:
+            return parseIfStatement();
+        case TokenType::CASE:
+            return parseCaseStatement();
+        case TokenType::WHILE:
+            return parseWhileLoop();
+        case TokenType::REPEAT:
+            return parseRepeatLoop();
+        case TokenType::FOR:
+            return parseForLoop();
+        case TokenType::CALL:
+            return parseCall();
+        case TokenType::OUTPUT:
+            return parseOutput();
+        case TokenType::INPUT:
+            return parseInput();
+        case TokenType::RETURN: {
+            const Token &returnToken = *currentToken;
+            advance();
+            Node *evalExpr = parseEvaluationExpression();
+            return create<ReturnNode>(returnToken, *evalExpr);
+        }
+        case TokenType::BREAK: {
+            const Token &breakToken = *currentToken;
+            advance();
+            return create<BreakNode>(breakToken);
+        }
+        case TokenType::CONTINUE: {
+            const Token &continueToken = *currentToken;
+            advance();
+            return create<ContinueNode>(continueToken);
+        }
+        default:
+            return parseEvaluationExpression();
     }
-
-    return parseEvaluationExpression();
 }
