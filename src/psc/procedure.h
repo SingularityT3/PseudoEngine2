@@ -23,6 +23,8 @@ namespace PSC {
 
         Procedure(const std::string &name);
 
+        virtual ~Procedure() = default;
+
         virtual void run(PSC::Context &ctx);
     };
 
