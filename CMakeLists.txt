@@ -27,6 +27,7 @@ target_sources(PseudoEngine2 PRIVATE
     src/nodes/loop/while.cpp
     src/nodes/loop/for.cpp
     src/nodes/loop/repeatUntil.cpp
+    src/nodes/loop/control.cpp
     src/nodes/functions/procedure.cpp
     src/nodes/functions/function.cpp
     src/nodes/selection/ifStatement.cpp

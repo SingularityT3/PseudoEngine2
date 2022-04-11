@@ -13,3 +13,15 @@ WHILE Counter <= 3 DO
 
     Counter <- Counter + 1
 ENDWHILE
+
+
+FOR i <- 1 TO 10
+    IF i = 6 THEN
+        PRINT "BREAK"
+        BREAK
+    ELSE IF i = 3 THEN
+        PRINT "CONTINUE"
+        CONTINUE
+    ENDIF
+    PRINT i
+NEXT i

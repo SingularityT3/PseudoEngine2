@@ -1,4 +1,5 @@
 #include "psc/error.h"
+#include "nodes/loop/control.h"
 #include "nodes/loop/while.h"
 
 WhileLoopNode::WhileLoopNode(const Token &token, Node &condition, PSC::Block &block)
@@ -13,7 +14,14 @@ std::unique_ptr<NodeResult> WhileLoopNode::evaluate(PSC::Context &ctx) {
             throw PSC::ConditionTypeError(token, ctx);
 
         if (!conditionRes->get<PSC::Boolean>()) break;
-        block.run(ctx);
+
+        try {
+            block.run(ctx);
+        } catch (BreakErrSignal&) {
+            break;
+        } catch (ContinueErrSignal&) {
+            continue;
+        }
     }
 
     return std::make_unique<NodeResult>(nullptr, PSC::DataType::NONE);

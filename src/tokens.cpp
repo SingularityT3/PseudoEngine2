@@ -70,6 +70,8 @@ static const char *TT_STR[] = {
     "TT_TO",
     "TT_STEP",
     "TT_NEXT",
+    "BREAK",
+    "CONTINUE",
 
     "TT_PROCEDURE",
     "TT_BYREF",

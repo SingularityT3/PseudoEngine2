@@ -17,6 +17,8 @@ Expression -> EvaluationExpression
               | ForLoop
               | CALL IDENTIFIER[(EvaluationExpression {, EvaluationExpression})]
               | RETURN EvaluationExpression
+              | BREAK
+              | CONTINUE
               | (OUTPUT | PRINT) EvaluationExpression {, EvaluationExpression}
               | (INPUT | READ) IDENTIFIER
 

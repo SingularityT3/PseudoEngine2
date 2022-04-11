@@ -1,4 +1,5 @@
 #include "psc/error.h"
+#include "nodes/loop/control.h"
 #include "nodes/loop/for.h"
 
 ForLoopNode::ForLoopNode(const Token &token, const Token &identifier, Node &start, Node &stop, Node *step, PSC::Block *block)
@@ -56,7 +57,13 @@ std::unique_ptr<NodeResult> ForLoopNode::evaluate(PSC::Context &ctx) {
         (stepNegative && iteratorValue.value >= stopValue) || (!stepNegative && iteratorValue.value <= stopValue);
         iteratorValue = iteratorValue.value + stepValue
     ) {
-        block->run(ctx);
+        try {
+            block->run(ctx);
+        } catch (BreakErrSignal&) {
+            break;
+        } catch (ContinueErrSignal&) {
+            continue;
+        }
     }
 
     return std::make_unique<NodeResult>(nullptr, PSC::DataType::NONE);

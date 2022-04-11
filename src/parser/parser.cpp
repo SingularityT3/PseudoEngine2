@@ -56,7 +56,10 @@ PSC::Block *Parser::parse() {
 }
 
 PSC::Block *Parser::parseBlock(BlockType blockType) {
-    PSC::Block *block = new PSC::Block();
+    PSC::Block *block;
+    if (blockType == BlockType::MAIN) block = new PSC::MainBlock();
+    else block = new PSC::Block();
+
     blocks.push_back(block);
 
     while (true) {
@@ -124,6 +127,14 @@ Node *Parser::parseExpression() {
         advance();
         Node *evalExpr = parseEvaluationExpression();
         return create<ReturnNode>(returnToken, *evalExpr);
+    } else if (currentToken->type == TokenType::BREAK) {
+        const Token &breakToken = *currentToken;
+        advance();
+        return create<BreakNode>(breakToken);
+    } else if (currentToken->type == TokenType::CONTINUE) {
+        const Token &continueToken = *currentToken;
+        advance();
+        return create<ContinueNode>(continueToken);
     } else if (currentToken->type == TokenType::OUTPUT) {
         return parseOutput();
     } else if (currentToken->type == TokenType::INPUT) {

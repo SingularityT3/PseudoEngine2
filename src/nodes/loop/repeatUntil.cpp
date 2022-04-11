@@ -1,4 +1,5 @@
 #include "psc/error.h"
+#include "nodes/loop/control.h"
 #include "nodes/loop/repeatUntil.h"
 
 RepeatUntilNode::RepeatUntilNode(const Token &token, Node &condition, PSC::Block &block)
@@ -7,7 +8,13 @@ RepeatUntilNode::RepeatUntilNode(const Token &token, Node &condition, PSC::Block
 
 std::unique_ptr<NodeResult> RepeatUntilNode::evaluate(PSC::Context &ctx) {
     while (true) {
-        block.run(ctx);
+        try {
+            block.run(ctx);
+        } catch (BreakErrSignal&) {
+            break;
+        } catch (ContinueErrSignal&) {
+            continue;
+        }
 
         auto conditionRes = node.evaluate(ctx);
         

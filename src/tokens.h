@@ -69,6 +69,9 @@ enum class TokenType {
     STEP,
     NEXT,
 
+    BREAK,
+    CONTINUE,
+
     PROCEDURE,
     BYREF,
     BYVAL,

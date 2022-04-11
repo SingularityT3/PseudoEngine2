@@ -16,6 +16,7 @@
 #include "nodes/loop/while.h"
 #include "nodes/loop/repeatUntil.h"
 #include "nodes/loop/for.h"
+#include "nodes/loop/control.h"
 
 #include "nodes/functions/procedure.h"
 #include "nodes/functions/function.h"

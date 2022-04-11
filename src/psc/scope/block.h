@@ -15,8 +15,15 @@ namespace PSC {
         void _runREPL(PSC::Context &ctx);
 
     public:
+        virtual ~Block() = default;
+
         void addNode(Node *node);
 
-        void run(PSC::Context &ctx);
+        virtual void run(PSC::Context &ctx);
+    };
+
+    class MainBlock final : public Block {
+    public:
+        void run(PSC::Context &ctx) override;
     };
 }

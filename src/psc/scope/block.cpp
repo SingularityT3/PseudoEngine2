@@ -1,6 +1,7 @@
 #include <iostream>
 #include <limits>
 #include "nodes/functions/function.h"
+#include "nodes/loop/control.h"
 #include "psc/error.h"
 #include "psc/scope/block.h"
 
@@ -52,4 +53,14 @@ void Block::_runREPL(PSC::Context &ctx) {
 void Block::run(PSC::Context &ctx) {
     if (REPLMode) _runREPL(ctx);
     else _run(ctx);
+}
+
+void MainBlock::run(PSC::Context &ctx) {
+    try {
+        Block::run(ctx);
+    } catch (BreakErrSignal &e) {
+        throw PSC::InvalidUsageError(e.token, ctx, "'BREAK' statement");
+    } catch (ContinueErrSignal &e) {
+        throw PSC::InvalidUsageError(e.token, ctx, "'CONTINUE' statement");
+    }
 }

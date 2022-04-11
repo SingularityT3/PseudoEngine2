@@ -84,6 +84,12 @@ void Lexer::makeWord() {
         tokens.push_back(new Token(TokenType::NEXT, line, startColumn));
     }
 
+    else if (word == "BREAK") {
+        tokens.push_back(new Token(TokenType::BREAK, line, startColumn));
+    } else if (word == "CONTINUE") {
+        tokens.push_back(new Token(TokenType::CONTINUE, line, startColumn));
+    }
+
     else if (word == "PROCEDURE") {
         tokens.push_back(new Token(TokenType::PROCEDURE, line, startColumn));
     } else if (word == "BYREF") {
