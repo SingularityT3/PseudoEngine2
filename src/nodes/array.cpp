@@ -137,6 +137,7 @@ std::unique_ptr<NodeResult> ArrayAssignNode::evaluate(PSC::Context &ctx) {
     PSC::Value &value = array->getElement(evaluatedIndices);
 
     auto assignValue = node.evaluate(ctx);
+    assignValue->implicitCast(array->type);
     if (assignValue->type != array->type)
         throw PSC::InvalidUsageError(token, ctx, "assignment operator: incompatible data types");
 

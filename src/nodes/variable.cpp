@@ -47,10 +47,9 @@ std::unique_ptr<NodeResult> AssignNode::evaluate(PSC::Context &ctx) {
     if (var->isConstant)
         throw PSC::ConstAssignError(token, ctx, var->name);
 
-    PSC::InvalidUsageError err(token, ctx, "assignment operator: incompatible data types");
-
+    valueRes->implicitCast(var->type);
     if (var->type != valueRes->type)
-        throw err;
+        throw PSC::InvalidUsageError(token, ctx, "assignment operator: incompatible data types");
 
     switch (var->type) {
         case PSC::DataType::INTEGER:

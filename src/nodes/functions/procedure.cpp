@@ -36,8 +36,9 @@ std::unique_ptr<NodeResult> CallNode::evaluate(PSC::Context &ctx) {
     ctx.switchToken = &token;
 
     for (size_t i = 0; i < args.size(); i++) {
-        std::unique_ptr<NodeResult> argRes = args[i]->evaluate(ctx);
+        auto argRes = args[i]->evaluate(ctx);
 
+        if (!procedure->byRef) argRes->implicitCast(procedure->parameters[i].type);
         if (procedure->parameters[i].type != argRes->type)
             throw PSC::InvalidArgsError(token, ctx);
 
