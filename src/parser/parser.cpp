@@ -76,12 +76,17 @@ PSC::Block *Parser::parseBlock(BlockType blockType) {
             || currentToken->type == TokenType::ENDFUNCTION
         ) break;
 
-        if (blockType == BlockType::CASE) {
-            if (compareNextType(1, TokenType::COLON) // <value> :
-                || (currentToken->type == TokenType::MINUS && compareNextType(2, TokenType::COLON)) // - <value> :
-                || compareNextType(1, TokenType::TO) // <value> TO
-                || (currentToken->type == TokenType::MINUS && compareNextType(2, TokenType::TO)) // - <value> TO
-            ) break;
+        if (blockType == BlockType::CASE && currentToken->type != TokenType::DECLARE) {
+            bool endBlock = false;
+            for (size_t i = 1; i + idx < tokens->size(); i++) {
+                if (compareNextType(i, TokenType::COLON)) {
+                    endBlock = true;
+                    break;
+                } else if (compareNextType(i, TokenType::LINE_END)) {
+                    break;
+                }
+            }
+            if (endBlock) break;
         }
 
         Node *node;

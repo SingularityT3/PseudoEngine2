@@ -75,12 +75,12 @@ Node *Parser::parseCaseStatement() {
             break;
         }
 
-        Node *factor = parseFactor();
-        Node *otherFactor = nullptr;
+        Node *expr = parseEvaluationExpression();
+        Node *otherExpr = nullptr;
 
         if (currentToken->type == TokenType::TO) {
             advance();
-            otherFactor = parseFactor();
+            otherExpr = parseEvaluationExpression();
         }
 
         if (currentToken->type != TokenType::COLON)
@@ -90,10 +90,10 @@ Node *Parser::parseCaseStatement() {
         PSC::Block *block = parseBlock(BlockType::CASE);
 
         CaseComponent *component;
-        if (otherFactor == nullptr) {
-            component = new EqualsCaseComponent(*block, *factor);
+        if (otherExpr == nullptr) {
+            component = new EqualsCaseComponent(*block, *expr);
         } else {
-            component = new RangeCaseComponent(*block, *factor, *otherFactor);
+            component = new RangeCaseComponent(*block, *expr, *otherExpr);
         }
         caseNode->addCase(component);
     }

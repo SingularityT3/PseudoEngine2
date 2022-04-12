@@ -12,15 +12,19 @@ FOR x <- 1 TO 10
     OUTPUT msg
 NEXT x
 
+a <- 1
 FOR y <- 1 TO 100
     CASE OF y
         1: PRINT 1
-        2: PRINT 2
-        3: PRINT 3
-        4: PRINT 4
-        5 TO 10:
+        1 + 1: PRINT 2
+        4 - a: PRINT 3
+        a * 4: PRINT 4
+        5 TO 10 * a:
+        0.5 * 22:
+            DECLARE var : REAL
+            OUTPUT y, " ", var
         10: PRINT 10
-        11 TO 95.0:
+        12 - 1 TO 95.0:
         OTHERWISE: PRINT y 
     ENDCASE
 NEXT y

@@ -28,7 +28,7 @@ RepeatUntilLoop -> REPEAT Block UNTIL EvaluationExpression
 
 WhileLoop -> WHILE EvaluationExpression DO Block ENDWHILE
 
-CaseStatement -> CASE OF IDENTIFIER {Factor[ TO FACTOR] : Block} [OTHERWISE : Block] ENDCASE
+CaseStatement -> CASE OF IDENTIFIER {EvaluationExpression[ TO EvaluationExpression] : Block} [OTHERWISE : Block] ENDCASE
 
 IfCondition -> IF EvaluationExpression THEN Block {ELSE IF EvaluationExpression THEN Block} [ELSE Block] ENDIF
 
@@ -61,5 +61,5 @@ Atom -> INTEGER
         | IDENTIFIER
         | IDENTIFIER <- EvaluationExpression
         | IDENTIFIER([EvaluationExpression {, EvaluationExpression}])
-        | IDENTIFIER[ArithmeticExpression:ArithmeticExpression {, ArithmeticExpression:ArithmeticExpression}] <- EvaluationExpression
+        | IDENTIFIER[ArithmeticExpression {, ArithmeticExpression}] <- EvaluationExpression
         | IDENTIFIER[ArithmeticExpression {, ArithmeticExpression}]
