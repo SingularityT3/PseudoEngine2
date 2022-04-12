@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <concepts>
+#include <memory>
 #include "tokens.h"
 #include "nodes/node.h"
 #include "psc/error.h"
@@ -9,8 +10,8 @@
 class Parser {
 private:
     const std::vector<Token*> *tokens;
-    std::vector<Node*> nodes;
-    std::vector<PSC::Block*> blocks;
+    std::vector<std::unique_ptr<Node>> nodes;
+    std::vector<std::unique_ptr<PSC::Block>> blocks;
 
     const Token *currentToken;
     size_t idx;
@@ -24,7 +25,7 @@ private:
     template<std::derived_from<Node> T, typename... Args>
     inline T *create(Args&&... args) {
         T *node = new T(std::forward<Args>(args)...);
-        nodes.push_back(node);
+        nodes.emplace_back(node);
         return node;
     }
 
@@ -36,8 +37,6 @@ public:
     Parser() = default;
 
     Parser(const std::vector<Token*> *tokens);
-
-    ~Parser();
 
     PSC::Block *parse();
 

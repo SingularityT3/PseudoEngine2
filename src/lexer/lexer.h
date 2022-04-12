@@ -1,13 +1,14 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <memory>
 #include "tokens.h"
 #include "psc/error.h"
 
 class Lexer {
 private:
     const std::string *expr;
-    std::vector<Token*> tokens;
+    std::vector<std::unique_ptr<Token>> tokens;
 
     char currentChar;
     int line;
@@ -28,8 +29,6 @@ public:
     Lexer() = default;
 
     Lexer(std::string *expr);
-
-    ~Lexer();
 
     void setExpr(std::string *_expr);
 

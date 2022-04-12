@@ -30,15 +30,6 @@ Parser::Parser(const std::vector<Token*> *tokens)
     setTokens(tokens);
 }
 
-Parser::~Parser() {
-    for (Node *node : nodes) {
-        delete node;
-    }
-    for (PSC::Block *block : blocks) {
-        delete block;
-    }
-}
-
 void Parser::setTokens(const std::vector<Token*> *_tokens) {
     tokens = _tokens;
     idx = SIZE_MAX; // overflow to 0 on advance()
@@ -60,7 +51,7 @@ PSC::Block *Parser::parseBlock(BlockType blockType) {
     if (blockType == BlockType::MAIN) block = new PSC::MainBlock();
     else block = new PSC::Block();
 
-    blocks.push_back(block);
+    blocks.emplace_back(block);
 
     while (true) {
         while (currentToken->type == TokenType::LINE_END) advance();

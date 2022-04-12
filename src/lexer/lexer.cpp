@@ -18,12 +18,6 @@ Lexer::Lexer(std::string *expr)
     setExpr(expr);
 }
 
-Lexer::~Lexer() {
-    for (Token *t : tokens) {
-        delete t;
-    }
-}
-
 void Lexer::setExpr(std::string *_expr) {
     _expr->erase(std::remove(_expr->begin(), _expr->end(), '\r'), _expr->end());
     expr = _expr;
@@ -44,36 +38,36 @@ const std::vector<Token*> Lexer::makeTokens() {
 
     while (idx < expr->size()) {
         if (currentChar == '+') {
-            tokens.push_back(new Token(TokenType::PLUS, line, column));
+            tokens.emplace_back(new Token(TokenType::PLUS, line, column));
         } else if (currentChar == '-') {
-            tokens.push_back(new Token(TokenType::MINUS, line, column));
+            tokens.emplace_back(new Token(TokenType::MINUS, line, column));
         } else if (currentChar == '*') {
-            tokens.push_back(new Token(TokenType::STAR, line, column));
+            tokens.emplace_back(new Token(TokenType::STAR, line, column));
         } else if (currentChar == '/') {
             advance();
             if (idx >= expr->size() || currentChar != '/') {
-                tokens.push_back(new Token(TokenType::SLASH, line, column));
+                tokens.emplace_back(new Token(TokenType::SLASH, line, column));
             } else {
                 int commentLine = line;
                 while (line == commentLine && idx < expr->size()) advance();
             }
             continue;
         } else if (currentChar == '(') {
-            tokens.push_back(new Token(TokenType::LPAREN, line, column));
+            tokens.emplace_back(new Token(TokenType::LPAREN, line, column));
         } else if (currentChar == ')') {
-            tokens.push_back(new Token(TokenType::RPAREN, line, column));
+            tokens.emplace_back(new Token(TokenType::RPAREN, line, column));
         } else if (currentChar == '[') {
-            tokens.push_back(new Token(TokenType::LSQRBRACKET, line, column));
+            tokens.emplace_back(new Token(TokenType::LSQRBRACKET, line, column));
         } else if (currentChar == ']') {
-            tokens.push_back(new Token(TokenType::RSQRBRACKET, line, column));
+            tokens.emplace_back(new Token(TokenType::RSQRBRACKET, line, column));
         } else if (currentChar == '=') {
-            tokens.push_back(new Token(TokenType::EQUALS, line, column));
+            tokens.emplace_back(new Token(TokenType::EQUALS, line, column));
         } else if (currentChar == ':') {
-            tokens.push_back(new Token(TokenType::COLON, line, column));
+            tokens.emplace_back(new Token(TokenType::COLON, line, column));
         } else if (currentChar == ',') {
-            tokens.push_back(new Token(TokenType::COMMA, line, column));
+            tokens.emplace_back(new Token(TokenType::COMMA, line, column));
         } else if (currentChar == '&') {
-            tokens.push_back(new Token(TokenType::AMPERSAND, line, column));
+            tokens.emplace_back(new Token(TokenType::AMPERSAND, line, column));
         } else if (currentChar == '\'') {
             makeChar();
             continue;
@@ -84,23 +78,23 @@ const std::vector<Token*> Lexer::makeTokens() {
             advance();
 
             if (idx >= expr->size() || currentChar != '=') {
-                tokens.push_back(new Token(TokenType::GREATER, line, column));
+                tokens.emplace_back(new Token(TokenType::GREATER, line, column));
                 continue;
             } else {
-                tokens.push_back(new Token(TokenType::GREATER_EQUAL, line, column));
+                tokens.emplace_back(new Token(TokenType::GREATER_EQUAL, line, column));
             }
         } else if (currentChar == '<') {
             advance();
 
             if (idx >= expr->size() || (currentChar != '=' && currentChar != '>' && currentChar != '-')) {
-                tokens.push_back(new Token(TokenType::LESSER, line, column));
+                tokens.emplace_back(new Token(TokenType::LESSER, line, column));
                 continue;
             } else if (currentChar == '=') {
-                tokens.push_back(new Token(TokenType::LESSER_EQUAL, line, column));
+                tokens.emplace_back(new Token(TokenType::LESSER_EQUAL, line, column));
             } else if (currentChar == '>') {
-                tokens.push_back(new Token(TokenType::NOT_EQUALS, line, column));
+                tokens.emplace_back(new Token(TokenType::NOT_EQUALS, line, column));
             } else {
-                tokens.push_back(new Token(TokenType::ASSIGNMENT, line, column));
+                tokens.emplace_back(new Token(TokenType::ASSIGNMENT, line, column));
             }
         } else if (isalpha(currentChar)) {
             makeWord();
@@ -109,17 +103,17 @@ const std::vector<Token*> Lexer::makeTokens() {
             makeNumber();
             continue;
         } else if (currentChar == '\n') {
-            tokens.push_back(new Token(TokenType::LINE_END, line, column));
+            tokens.emplace_back(new Token(TokenType::LINE_END, line, column));
         } else if (currentChar != ' ' && currentChar != '\t') {
             throw PSC::InvalidCharError(line, column, currentChar);
         }
         advance();
     }
-    tokens.push_back(new Token(TokenType::EXPRESSION_END, line, column));
+    tokens.emplace_back(new Token(TokenType::EXPRESSION_END, line, column));
 
     currentTokens.reserve(tokens.size() - currentTokensIdx + 1);
     for (size_t i = currentTokensIdx; i < tokens.size(); i++) {
-        currentTokens.push_back(tokens[i]);
+        currentTokens.push_back(tokens[i].get());
     }
 
     return currentTokens;
