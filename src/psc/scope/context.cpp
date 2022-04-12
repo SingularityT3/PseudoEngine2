@@ -55,8 +55,6 @@ Variable *Context::getVariable(const std::string &varName) {
         if (var->name == varName) return var.get();
     }
 
-    if (parent != nullptr) return parent->getVariable(varName);
-
     return nullptr;
 }
 
@@ -65,13 +63,13 @@ void Context::addProcedure(std::unique_ptr<Procedure> &&procedure) {
 }
 
 Procedure *Context::getProcedure(const std::string &procedureName) {
+    if (parent != nullptr) return parent->getProcedure(procedureName);
+
     for (auto &procedure : procedures) {
         if (procedureName == procedure->name) {
             return procedure.get();
         }
     }
-
-    if (parent != nullptr) return parent->getProcedure(procedureName);
 
     return nullptr;
 }
@@ -81,13 +79,13 @@ void Context::addFunction(std::unique_ptr<Function> &&function) {
 }
 
 Function *Context::getFunction(const std::string &functionName) {
+    if (parent != nullptr) return parent->getFunction(functionName);
+
     for (auto &function : functions) {
         if (functionName == function->name) {
             return function.get();
         }
     }
-
-    if (parent != nullptr) return parent->getFunction(functionName);
 
     return nullptr;
 }
@@ -102,8 +100,6 @@ Array *Context::getArray(const std::string &arrayName) {
             return array.get();
         }
     }
-
-    if (parent != nullptr) return parent->getArray(arrayName);
 
     return nullptr;
 }
