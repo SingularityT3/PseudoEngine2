@@ -24,7 +24,7 @@ Note: The bounds are inclusive
 
 Multi Dimensional arrays:
 ```
-DECLARE <name> : ARRAY[<lb1>:<ub1>, <lb2>:<ub2>, ..., <lbn>:<ubn>]
+DECLARE <name> : ARRAY[<lb1>:<ub1>, <lb2>:<ub2>, ..., <lbn>:<ubn>] OF <data type>
 ```
 
 ## Accessing array elements
