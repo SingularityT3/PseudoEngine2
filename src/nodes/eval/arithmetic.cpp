@@ -101,12 +101,21 @@ std::unique_ptr<NodeResult> ArithmeticOperationNode::evaluate(PSC::Context &ctx)
             resNum = leftNum * rightNum;
             break;
         case TokenType::SLASH:
+            if ((rightNum.real && ((PSC::Real&) rightNum).value == 0)
+                || (!rightNum.real && ((PSC::Integer&) rightNum).value == 0)
+            ) throw PSC::RuntimeError(token, ctx, "Division by 0");
             resNum = leftNum / rightNum;
             break;
         case TokenType::MOD:
+            if ((rightNum.real && ((PSC::Real&) rightNum).value == 0)
+                || (!rightNum.real && ((PSC::Integer&) rightNum).value == 0)
+            ) throw PSC::RuntimeError(token, ctx, "Modulus by 0");
             resNum = leftNum % rightNum;
             break;
         case TokenType::DIV:
+        if ((rightNum.real && ((PSC::Real&) rightNum).value == 0)
+                || (!rightNum.real && ((PSC::Integer&) rightNum).value == 0)
+            ) throw PSC::RuntimeError(token, ctx, "Division by 0");
             resNum = leftNum | rightNum;
             break;
         default:
