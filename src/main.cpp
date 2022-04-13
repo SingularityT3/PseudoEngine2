@@ -9,10 +9,13 @@ bool REPLMode = true;
 int main(int argc, char **argv) {
     auto fn = startREPL;
 
-    if (argc > 1) {
+    if (argc == 2) {
         psfilename = argv[1];
         REPLMode = false;
         fn = runFile;
+    } else if (argc > 2) {
+        std::cerr << "Too many arguements!\nUsage:\n" << argv[0] << " <filename>" << std::endl;
+        return EXIT_FAILURE;
     }
 
     srand((unsigned int) time(NULL));

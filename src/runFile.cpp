@@ -7,7 +7,7 @@ bool runFile() {
     std::ifstream file(psfilename);
 
     if (!file.is_open()) {
-        std::cerr << "File not found!" << std::endl;
+        std::cerr << "Error: File '" << psfilename << "' not found!" << std::endl;
         return false;
     }
 

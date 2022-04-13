@@ -11,7 +11,7 @@ static const char *multilineKeywords[] = {
 };
 
 bool startREPL() {
-    std::cout << "PseudoEngine(v2) Experimental REPL\nEnter 'EXIT' to quit\n";
+    std::cout << "PseudoEngine2 v0.1 REPL\nEnter 'EXIT' to quit\n";
 
     Lexer lexer;
     Parser parser;
