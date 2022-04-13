@@ -63,6 +63,12 @@ Result of division operator will always be of type `REAL`
 - DIV - Integer division
 - MOD - Modulus
 
+Function style syntax may be used for DIV and MOD:
+```
+DIV(x, y)
+MOD(x, y)
+```
+
 ## Comparison operators
 - \> (Greater than)
 - \>= (Greater than or equal to)
