@@ -1,9 +1,9 @@
 #include "psc/error.h"
 #include "nodes/array.h"
 
-ArrayDeclareNode::ArrayDeclareNode(const Token &token, const std::string &name, PSC::DataType type, std::vector<Node*> &&bounds)
+ArrayDeclareNode::ArrayDeclareNode(const Token &token, std::vector<const Token*> &&identifiers, PSC::DataType type, std::vector<Node*> &&bounds)
     : Node(token),
-    name(name),
+    identifiers(identifiers),
     type(type),
     bounds(std::move(bounds))
 {}
@@ -11,10 +11,12 @@ ArrayDeclareNode::ArrayDeclareNode(const Token &token, const std::string &name, 
 std::unique_ptr<NodeResult> ArrayDeclareNode::evaluate(PSC::Context &ctx) {
     if (bounds.size() % 2 != 0 || bounds.size() == 0) std::abort();
 
-    if (ctx.getArray(name) != nullptr)
-        throw PSC::RedeclarationError(token, ctx, name);
+    for (auto identifier : identifiers) {
+        if (ctx.getArray(identifier->value) != nullptr)
+            throw PSC::RedeclarationError(token, ctx, identifier->value);
+    }
 
-    auto array = std::make_unique<PSC::Array>(name, type);
+    std::vector<PSC::ArrayDimension> dimensions;
 
     for (size_t i = 0; i < bounds.size(); i += 2) {
         auto lowerRes = bounds[i]->evaluate(ctx);
@@ -31,11 +33,14 @@ std::unique_ptr<NodeResult> ArrayDeclareNode::evaluate(PSC::Context &ctx) {
         if (upper < lower)
             throw PSC::RuntimeError(bounds[i + 1]->getToken(), ctx, "Array upper bound must be greater than lower bound");
 
-        array->dimensions.emplace_back(i / 2, lower, upper);
+        dimensions.emplace_back(i / 2, lower, upper);
     }
 
-    array->init();
-    ctx.addArray(std::move(array));
+    for (auto identifier : identifiers) {
+        auto array = std::make_unique<PSC::Array>(identifier->value, type, dimensions);
+        array->init();
+        ctx.addArray(std::move(array));
+    }
 
     return std::make_unique<NodeResult>(nullptr, PSC::DataType::NONE);
 }

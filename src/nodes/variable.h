@@ -3,12 +3,12 @@
 
 class DeclareNode : public Node {
 private:
-    const Token &identifier;
+    const std::vector<const Token*> identifiers;
     const PSC::DataType type;
 
 public:
     // token: DECLARE
-    DeclareNode(const Token &token, const Token &identifier, PSC::DataType type);
+    DeclareNode(const Token &token, std::vector<const Token*> &&identifiers, PSC::DataType type);
 
     std::unique_ptr<NodeResult> evaluate(PSC::Context &ctx) override;
 };

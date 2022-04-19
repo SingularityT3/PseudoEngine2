@@ -12,9 +12,9 @@ namespace PSC {
 
         ArrayDimension(int n, int_t lowerBound, int_t upperBound);
 
-        int_t getSize();
+        int_t getSize() const;
 
-        bool isValidIndex(int_t idx);
+        bool isValidIndex(int_t idx) const;
     };
 
     class Array {
@@ -32,9 +32,9 @@ namespace PSC {
     public:
         const std::string name;
         const DataType type;
-        std::vector<ArrayDimension> dimensions;
+        const std::vector<ArrayDimension> dimensions;
 
-        Array(const std::string &name, DataType type);
+        Array(const std::string &name, DataType type, const std::vector<ArrayDimension> &dimensions);
 
         // Allocates memory for elements
         void init();

@@ -9,7 +9,7 @@ Function -> FUNCTION IDENTIFIER [([BYREF | BYVAL] IDENTIFIER : DataType {, IDENT
 Procedure -> PROCEDURE IDENTIFIER [([BYREF | BYVAL] IDENTIFIER : DataType {, IDENTIFIER : DataType})] Block ENDPROCEDURE
 
 Expression -> EvaluationExpression
-              | DECLARE IDENTIFIER : [ARRAY[EvaluationExpression:EvaluationExpression {EvaluationExpression:EvaluationExpression}] OF] DataType
+              | DECLARE IDENTIFIER{, IDENTIFIER} : [ARRAY[EvaluationExpression:EvaluationExpression {EvaluationExpression:EvaluationExpression}] OF] DataType
               | CONSTANT IDENTIFIER = INTEGER | -INTEGER | REAL | -REAL | BOOLEAN | CHAR | STRING
               | IfCondition
               | CaseStatement

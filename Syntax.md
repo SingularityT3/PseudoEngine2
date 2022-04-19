@@ -16,6 +16,11 @@ Available data types:
 - CHAR
 - STRING
 
+Multiple variables of the same type can be declared with
+```
+DECLARE <var1>, <var2>, ... : <data type>
+```
+
 ## Array declaration:
 ```
 DECLARE <name> : ARRAY[<lower bound>:<upper bound>] OF <data type>

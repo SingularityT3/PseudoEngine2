@@ -1,6 +1,6 @@
 #include "parser/parser.h"
 
-Node *Parser::parseArrayDeclare(const Token &declareToken, const Token &identifier) {
+Node *Parser::parseArrayDeclare(const Token &declareToken, std::vector<const Token*> &identifiers) {
     if (currentToken->type != TokenType::ARRAY) std::abort();
     advance();
 
@@ -40,7 +40,7 @@ Node *Parser::parseArrayDeclare(const Token &declareToken, const Token &identifi
     PSC::DataType type = getPSCType();
     advance();
 
-    return create<ArrayDeclareNode>(declareToken, identifier.value, type, std::move(bounds));
+    return create<ArrayDeclareNode>(declareToken, std::move(identifiers), type, std::move(bounds));
 }
 
 Node *Parser::parseArrayOperation() {

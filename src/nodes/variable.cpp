@@ -1,15 +1,17 @@
 #include "psc/error.h"
 #include "nodes/variable.h"
 
-DeclareNode::DeclareNode(const Token &token, const Token &identifier, PSC::DataType type)
-    : Node(token), identifier(identifier), type(type)
+DeclareNode::DeclareNode(const Token &token, std::vector<const Token*> &&identifiers, PSC::DataType type)
+    : Node(token), identifiers(std::move(identifiers)), type(type)
 {}
 
 std::unique_ptr<NodeResult> DeclareNode::evaluate(PSC::Context &ctx) {
-    if (ctx.getVariable(identifier.value) != nullptr)
-        throw PSC::RedeclarationError(token, ctx, identifier.value);
+    for (auto identifier : identifiers) {
+        if (ctx.getVariable(identifier->value) != nullptr)
+            throw PSC::RedeclarationError(token, ctx, identifier->value);
 
-    ctx.addVariable(new PSC::Variable(identifier.value, type, false));
+        ctx.addVariable(new PSC::Variable(identifier->value, type, false));
+    }
 
     return std::make_unique<NodeResult>(nullptr, PSC::DataType::NONE);
 }

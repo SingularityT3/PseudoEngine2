@@ -71,7 +71,7 @@ private:
 
     Node *parseConstDeclareExpression();
 
-    Node *parseArrayDeclare(const Token &declareToken, const Token &identifier);
+    Node *parseArrayDeclare(const Token &declareToken, std::vector<const Token*> &identifiers);
 
     Node *parseAssignmentExpression();
 

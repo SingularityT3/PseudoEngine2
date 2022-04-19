@@ -2,20 +2,26 @@
 
 Node *Parser::parseDeclareExpression() {
     const Token &op = *currentToken;
+    std::vector<const Token*> identifiers;
     advance();
 
-    if (currentToken->type != TokenType::IDENTIFIER)
-        throw PSC::ExpectedTokenError(*currentToken, "identifier");
+    while (true) {
+        if (currentToken->type != TokenType::IDENTIFIER)
+            throw PSC::ExpectedTokenError(*currentToken, "identifier");
 
-    const Token &identifier = *currentToken;
-    advance();
+        identifiers.push_back(currentToken);
+        advance();
+
+        if (currentToken->type == TokenType::COMMA) advance();
+        else break;
+    }
 
     if (currentToken->type != TokenType::COLON)
         throw PSC::ExpectedTokenError(*currentToken, "':'");
     advance();
 
     if (currentToken->type == TokenType::ARRAY)
-        return parseArrayDeclare(op, identifier);
+        return parseArrayDeclare(op, identifiers);
 
     if (currentToken->type != TokenType::DATA_TYPE)
         throw PSC::ExpectedTokenError(*currentToken, "data type");
@@ -23,7 +29,7 @@ Node *Parser::parseDeclareExpression() {
     PSC::DataType type = getPSCType();
 
     advance();
-    return create<DeclareNode>(op, identifier, type);
+    return create<DeclareNode>(op, std::move(identifiers), type);
 }
 
 Node *Parser::parseConstDeclareExpression() {

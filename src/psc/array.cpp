@@ -6,17 +6,17 @@ ArrayDimension::ArrayDimension(int n, int_t lowerBound, int_t upperBound)
     : n(n), lowerBound(lowerBound), upperBound(upperBound)
 {}
 
-int_t ArrayDimension::getSize() {
+int_t ArrayDimension::getSize() const {
     return (upperBound - lowerBound) + 1;
 }
 
-bool ArrayDimension::isValidIndex(int_t idx) {
+bool ArrayDimension::isValidIndex(int_t idx) const {
     return idx >= lowerBound && idx <= upperBound;
 }
 
 
-Array::Array(const std::string &name, DataType type)
-    : name(name), type(type)
+Array::Array(const std::string &name, DataType type, const std::vector<ArrayDimension> &dimensions)
+    : name(name), type(type), dimensions(dimensions)
 {}
 
 void Array::init() {

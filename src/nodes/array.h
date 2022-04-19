@@ -6,12 +6,12 @@
 
 class ArrayDeclareNode : public Node {
 private:
-    const std::string name;
+    const std::vector<const Token*> identifiers;
     const PSC::DataType type;
     std::vector<Node*> bounds;
 
 public:
-    ArrayDeclareNode(const Token &token, const std::string &name, PSC::DataType type, std::vector<Node*> &&bounds);
+    ArrayDeclareNode(const Token &token, std::vector<const Token*> &&identifiers, PSC::DataType type, std::vector<Node*> &&bounds);
 
     std::unique_ptr<NodeResult> evaluate(PSC::Context &ctx) override;
 };
