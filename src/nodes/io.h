@@ -2,10 +2,11 @@
 #include "nodes/base.h"
 
 class OutputNode : public Node {
-public:
-    std::vector<Node*> nodes;
+private:
+    const std::vector<Node*> nodes;
 
-    using Node::Node;
+public:
+    OutputNode(const Token &token, std::vector<Node*> &&nodes);
 
     std::unique_ptr<NodeResult> evaluate(PSC::Context &ctx) override;
 };

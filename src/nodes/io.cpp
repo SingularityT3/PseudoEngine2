@@ -2,6 +2,10 @@
 #include "psc/error.h"
 #include "nodes/io.h"
 
+OutputNode::OutputNode(const Token &token, std::vector<Node*> &&nodes)
+    : Node(token), nodes(std::move(nodes))
+{}
+
 std::unique_ptr<NodeResult> OutputNode::evaluate(PSC::Context &ctx) {
     for (Node *node : nodes) {
         auto result = node->evaluate(ctx);

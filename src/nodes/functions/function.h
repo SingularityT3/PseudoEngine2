@@ -18,11 +18,10 @@ public:
 class FunctionCallNode : public Node {
 private:
     const std::string functionName;
+    const std::vector<Node*> args;
 
 public:
-    std::vector<Node*> args;
-
-    FunctionCallNode(const Token &token);
+    FunctionCallNode(const Token &token, std::vector<Node*> &&args);
 
     std::unique_ptr<NodeResult> evaluate(PSC::Context &ctx) override;
 };

@@ -1,20 +1,18 @@
 #include "parser/parser.h"
 
 Node *Parser::parseOutput() {
-    OutputNode *outputNode = create<OutputNode>(*currentToken);
+    const Token &outputToken = *currentToken;
     advance();
 
-    Node *expr = parseEvaluationExpression();
-    outputNode->nodes.push_back(expr);
+    std::vector<Node*> nodes;
+    nodes.push_back(parseEvaluationExpression());
 
     while (currentToken->type == TokenType::COMMA) {
         advance();
-
-        expr = parseEvaluationExpression();
-        outputNode->nodes.push_back(expr);
+        nodes.push_back(parseEvaluationExpression());
     }
 
-    return outputNode;
+    return create<OutputNode>(outputToken, std::move(nodes));
 }
 
 Node *Parser::parseInput() {

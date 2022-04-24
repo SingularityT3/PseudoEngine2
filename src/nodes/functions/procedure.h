@@ -16,11 +16,10 @@ public:
 class CallNode : public Node {
 private:
     const std::string procedureName;
+    const std::vector<Node*> args;
 
 public:
-    std::vector<Node*> args;
-
-    CallNode(const Token &token, const std::string &procedureName);
+    CallNode(const Token &token, const std::string &procedureName, std::vector<Node*> &&args);
 
     std::unique_ptr<NodeResult> evaluate(PSC::Context &ctx) override;
 };

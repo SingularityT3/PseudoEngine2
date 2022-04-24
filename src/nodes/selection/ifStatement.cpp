@@ -6,6 +6,10 @@ IfConditionComponent::IfConditionComponent(Node *condition, PSC::Block &block)
 {}
 
 
+IfStatementNode::IfStatementNode(const Token &token, std::vector<IfConditionComponent> &&components)
+    : Node(token), components(std::move(components))
+{}
+
 std::unique_ptr<NodeResult> IfStatementNode::evaluate(PSC::Context &ctx) {
     for (IfConditionComponent &component : components) {
         if (component.condition == nullptr) {

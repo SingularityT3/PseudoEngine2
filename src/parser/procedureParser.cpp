@@ -7,23 +7,21 @@ Node *Parser::parseCall() {
     if (currentToken->type != TokenType::IDENTIFIER)
         throw PSC::ExpectedTokenError(*currentToken, "identifier");
 
-    CallNode *node = create<CallNode>(callToken, currentToken->value);
+    const std::string &identifier = currentToken->value;
     advance();
 
+    std::vector<Node*> args;
     if (currentToken->type == TokenType::LPAREN) {
         advance();
 
         if (currentToken->type == TokenType::RPAREN) {
             advance();
         } else {
-            Node *evalExpr = parseEvaluationExpression();
-            node->args.push_back(evalExpr);
+            args.push_back(parseEvaluationExpression());
 
             while (currentToken->type == TokenType::COMMA) {
                 advance();
-
-                evalExpr = parseEvaluationExpression();
-                node->args.push_back(evalExpr);
+                args.push_back(parseEvaluationExpression());
             }
 
             if (currentToken->type != TokenType::RPAREN)
@@ -32,7 +30,7 @@ Node *Parser::parseCall() {
         }
     }
 
-    return node;
+    return create<CallNode>(callToken, identifier, std::move(args));
 }
 
 Node *Parser::parseProcedure() {

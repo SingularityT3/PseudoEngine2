@@ -74,7 +74,8 @@ Node *Parser::parseFunction() {
 }
 
 Node *Parser::parseFunctionCall() {
-    FunctionCallNode *node = create<FunctionCallNode>(*currentToken);
+    const Token &functionToken = *currentToken;
+    std::vector<Node*> args;
     advance();
 
     if (currentToken->type != TokenType::LPAREN) std::abort();
@@ -83,14 +84,11 @@ Node *Parser::parseFunctionCall() {
     if (currentToken->type == TokenType::RPAREN) {
         advance();
     } else {
-        Node *evalExpr = parseEvaluationExpression();
-        node->args.push_back(evalExpr);
+        args.push_back(parseEvaluationExpression());
 
         while (currentToken->type == TokenType::COMMA) {
             advance();
-
-            evalExpr = parseEvaluationExpression();
-            node->args.push_back(evalExpr);
+            args.push_back(parseEvaluationExpression());
         }
 
         if (currentToken->type != TokenType::RPAREN)
@@ -98,5 +96,5 @@ Node *Parser::parseFunctionCall() {
         advance();
     }
 
-    return node;
+    return create<FunctionCallNode>(functionToken, std::move(args));
 }

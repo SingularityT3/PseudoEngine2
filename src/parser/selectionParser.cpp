@@ -13,8 +13,8 @@ Node *Parser::parseIfStatement() {
 
     PSC::Block *block = parseBlock();
 
-    IfStatementNode *ifNode = create<IfStatementNode>(ifToken);
-    ifNode->components.emplace_back(condition, *block);
+    std::vector<IfConditionComponent> components;
+    components.emplace_back(condition, *block);
 
     while (currentToken->type == TokenType::ELSE) {
         advance();
@@ -28,10 +28,10 @@ Node *Parser::parseIfStatement() {
             advance();
 
             block = parseBlock();
-            ifNode->components.emplace_back(condition, *block);
+            components.emplace_back(condition, *block);
         } else {
             block = parseBlock();
-            ifNode->components.emplace_back(nullptr, *block);
+            components.emplace_back(nullptr, *block);
             break;
         }
     }
@@ -40,7 +40,7 @@ Node *Parser::parseIfStatement() {
         throw PSC::ExpectedTokenError(*currentToken, "'ENDIF'");
     advance();
 
-    return ifNode;
+    return create<IfStatementNode>(ifToken, std::move(components));
 }
 
 Node *Parser::parseCaseStatement() {

@@ -12,10 +12,11 @@ struct IfConditionComponent {
 };
 
 class IfStatementNode : public Node {
-public:
+private:
     std::vector<IfConditionComponent> components;
 
-    using Node::Node;
+public:
+    IfStatementNode(const Token &token, std::vector<IfConditionComponent> &&components);
 
     std::unique_ptr<NodeResult> evaluate(PSC::Context &ctx) override;
 };

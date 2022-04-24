@@ -18,8 +18,8 @@ std::unique_ptr<NodeResult> ProcedureNode::evaluate(PSC::Context &ctx) {
 }
 
 
-CallNode::CallNode(const Token &token, const std::string &procedureName)
-    : Node(token), procedureName(procedureName)
+CallNode::CallNode(const Token &token, const std::string &procedureName, std::vector<Node*> &&args)
+    : Node(token), procedureName(procedureName), args(std::move(args))
 {}
 
 std::unique_ptr<NodeResult> CallNode::evaluate(PSC::Context &ctx) {
