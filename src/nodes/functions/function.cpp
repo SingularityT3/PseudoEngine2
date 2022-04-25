@@ -104,6 +104,7 @@ std::unique_ptr<NodeResult> ReturnNode::evaluate(PSC::Context &ctx) {
         throw PSC::InvalidUsageError(token, ctx, "RETURN statement");
 
     ctx.returnValue = node.evaluate(ctx);
+    ctx.returnValue->implicitCast(ctx.returnType);
 
     if (ctx.returnValue->type != ctx.returnType)
         throw PSC::RuntimeError(token, ctx, "Invalid return type");
