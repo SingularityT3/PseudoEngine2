@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 #include "psc/types/types.h"
-#include "tokens.h"
+#include "lexer/tokens.h"
 
 namespace PSC {
     class Block;

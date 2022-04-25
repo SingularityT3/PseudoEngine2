@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include "tokens.h"
+#include "lexer/tokens.h"
 
 Token::Token(const TokenType &type, int line, int column, const std::string &value)
     : type(type), line(line), column(column), value(value)

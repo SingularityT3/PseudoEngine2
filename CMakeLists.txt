@@ -20,7 +20,7 @@ target_precompile_headers(PseudoEngine2 PRIVATE src/pch.h)
 target_sources(PseudoEngine2 PRIVATE 
     src/lexer/symbolLexer.cpp
     src/lexer/lexer.cpp
-    src/tokens.cpp
+    src/lexer/tokens.cpp
 
     src/nodes/eval/arithmetic.cpp
     src/nodes/eval/comparison.cpp
@@ -64,7 +64,8 @@ target_sources(PseudoEngine2 PRIVATE
     src/psc/builtinFunctions/numeric.cpp
     src/psc/error.cpp
     
-    src/repl.cpp
-    src/runFile.cpp
+    src/launch/repl.cpp
+    src/launch/runFile.cpp
+
     src/main.cpp
 )

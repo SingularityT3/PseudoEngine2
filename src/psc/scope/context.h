@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 #include <memory>
-#include "tokens.h"
+#include "lexer/tokens.h"
 #include "psc/variable.h"
 #include "psc/array.h"
 #include "psc/procedure.h"

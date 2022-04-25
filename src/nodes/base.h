@@ -1,6 +1,6 @@
 #pragma once
 #include <memory>
-#include "tokens.h"
+#include "lexer/tokens.h"
 #include "psc/types/types.h"
 #include "psc/scope/context.h"
 #include "nodes/nodeResult.h"

@@ -2,7 +2,7 @@
 #include <vector>
 #include <concepts>
 #include <memory>
-#include "tokens.h"
+#include "lexer/tokens.h"
 #include "nodes/node.h"
 #include "psc/error.h"
 #include "psc/scope/block.h"

@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 #include <memory>
-#include "tokens.h"
+#include "lexer/tokens.h"
 #include "psc/error.h"
 
 class Lexer {

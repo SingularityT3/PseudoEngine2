@@ -3,7 +3,7 @@
 #include <string>
 #include "psc/scope/context.h"
 #include "nodes/base.h"
-#include "tokens.h"
+#include "lexer/tokens.h"
 
 namespace PSC {
     class Error {
