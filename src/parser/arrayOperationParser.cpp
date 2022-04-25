@@ -1,3 +1,5 @@
+#include "pch.h"
+
 #include "parser/parser.h"
 
 Node *Parser::parseArrayDeclare(const Token &declareToken, std::vector<const Token*> &identifiers) {

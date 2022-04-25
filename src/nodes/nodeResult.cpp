@@ -1,3 +1,5 @@
+#include "pch.h"
+
 #include "nodeResult.h"
 
 NodeResult::NodeResult(const PSC::Value *data, PSC::DataType type)

@@ -1,3 +1,5 @@
+#include "pch.h"
+
 #include "psc/error.h"
 #include "nodes/array.h"
 
@@ -33,7 +35,7 @@ std::unique_ptr<NodeResult> ArrayDeclareNode::evaluate(PSC::Context &ctx) {
         if (upper < lower)
             throw PSC::RuntimeError(bounds[i + 1]->getToken(), ctx, "Array upper bound must be greater than lower bound");
 
-        dimensions.emplace_back(i / 2, lower, upper);
+        dimensions.emplace_back((PSC::int_t) (i / 2), lower, upper);
     }
 
     for (auto identifier : identifiers) {

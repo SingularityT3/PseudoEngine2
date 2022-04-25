@@ -1,3 +1,5 @@
+#include "pch.h"
+
 #include "nodes/eval/stringcat.h"
 
 std::unique_ptr<NodeResult> StringConcatenationNode::evaluate(PSC::Context &ctx) {

@@ -1,3 +1,5 @@
+#include "pch.h"
+
 #include "parser/parser.h"
 
 void Parser::advance() {

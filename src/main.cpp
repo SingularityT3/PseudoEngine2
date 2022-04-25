@@ -1,6 +1,8 @@
+#include "pch.h"
 #include <string>
 #include <ctime>
 #include <stdlib.h>
+
 #include "run.h"
 
 std::string psfilename = "<stdin>";

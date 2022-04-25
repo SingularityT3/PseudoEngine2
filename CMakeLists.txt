@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.11)
+cmake_minimum_required(VERSION 3.16)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
@@ -14,6 +14,8 @@ if(MSVC)
 else()
     target_compile_options(PseudoEngine2 PRIVATE -Wall -Wextra -pedantic -Werror)
 endif()
+
+target_precompile_headers(PseudoEngine2 PRIVATE src/pch.h)
 
 target_sources(PseudoEngine2 PRIVATE 
     src/lexer/symbolLexer.cpp

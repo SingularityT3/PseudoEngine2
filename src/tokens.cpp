@@ -1,3 +1,5 @@
+#include "pch.h"
+
 #include "tokens.h"
 
 Token::Token(const TokenType &type, int line, int column, const std::string &value)

@@ -1,4 +1,6 @@
+#include "pch.h"
 #include <sstream>
+
 #include "psc/error.h"
 
 extern std::string psfilename;

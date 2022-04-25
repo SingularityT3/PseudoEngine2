@@ -1,3 +1,5 @@
+#include "pch.h"
+
 #include "nodes/cast.h"
 
 CastNode::CastNode(const Token &token, Node &node, PSC::DataType target)

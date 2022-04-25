@@ -1,4 +1,6 @@
+#include "pch.h"
 #include <ctype.h>
+
 #include "lexer/lexer.h"
 
 void Lexer::makeWord() {

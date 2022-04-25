@@ -1,3 +1,5 @@
+#include "pch.h"
+
 #include "psc/scope/block.h"
 #include "psc/scope/context.h"
 #include "procedure.h"

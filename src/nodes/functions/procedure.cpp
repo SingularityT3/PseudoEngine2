@@ -1,3 +1,5 @@
+#include "pch.h"
+
 #include "psc/error.h"
 #include "psc/scope/block.h"
 #include "nodes/variable.h"
