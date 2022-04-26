@@ -94,4 +94,77 @@ namespace PSC {
 
         void run(PSC::Context &ctx) override;
     };
+
+
+    struct BuiltinFnPow : public Function {
+        BuiltinFnPow();
+
+        void run(PSC::Context &ctx) override;
+    };
+
+    struct BuiltinFnExp : public Function {
+        BuiltinFnExp();
+
+        void run(PSC::Context &ctx) override;
+    };
+
+    struct BuiltinFnSin : public Function {
+        BuiltinFnSin();
+
+        void run(PSC::Context &ctx) override;
+    };
+
+    struct BuiltinFnCos : public Function {
+        BuiltinFnCos();
+
+        void run(PSC::Context &ctx) override;
+    };
+
+    struct BuiltinFnTan : public Function {
+        BuiltinFnTan();
+
+        void run(PSC::Context &ctx) override;
+    };
+
+    struct BuiltinFnASin : public Function {
+        BuiltinFnASin();
+
+        void run(PSC::Context &ctx) override;
+    };
+
+    struct BuiltinFnACos : public Function {
+        BuiltinFnACos();
+
+        void run(PSC::Context &ctx) override;
+    };
+
+    struct BuiltinFnATan : public Function {
+        BuiltinFnATan();
+
+        void run(PSC::Context &ctx) override;
+    };
+
+    struct BuiltinFnATan2 : public Function {
+        BuiltinFnATan2();
+
+        void run(PSC::Context &ctx) override;
+    };
+
+    struct BuiltinFnSqrt : public Function {
+        BuiltinFnSqrt();
+
+        void run(PSC::Context &ctx) override;
+    };
+
+    struct BuiltinFnLog : public Function {
+        BuiltinFnLog();
+
+        void run(PSC::Context &ctx) override;
+    };
+
+    struct BuiltinFnLn : public Function {
+        BuiltinFnLn();
+
+        void run(PSC::Context &ctx) override;
+    };
 }

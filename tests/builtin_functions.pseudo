@@ -20,3 +20,20 @@ PRINT "CHR(99): " & CHR(99)
 
 PRINT "INT(92.235): " & INT(92.235)
 PRINT "RAND(1011): " & RAND(1011)
+
+PRINT "POW(8, 2/3): " & POW(8, 2 / 3.0)
+PRINT "EXP(LN(2)): " & EXP(LN(2))
+
+CONSTANT PI = 3.141592654
+
+PRINT "SIN(pi/6): " & SIN(PI / 6)
+PRINT "COS(pi/3): " & COS(PI / 3)
+PRINT "TAN(PI / 4): " & TAN(PI / 4)
+
+PRINT "ASIN(SQRT(3) / 2) / PI: " & ASIN(SQRT(3) / 2) / PI
+PRINT "ACOS(0.5) / PI: " & ACOS(0.5) / PI
+PRINT "ATAN(5): " & ATAN(5)
+PRINT "ATAN2(5, 12): " & ATAN2(5, 12)
+
+PRINT "LOG(100): " & LOG(100)
+PRINT "LN(e): " & LN(EXP(1))

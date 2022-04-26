@@ -37,6 +37,19 @@ std::unique_ptr<Context> Context::createGlobalContext() {
     ctx->addFunction(std::make_unique<PSC::BuiltinFnRand>());
     ctx->addFunction(std::make_unique<PSC::BuiltinFnInt>());
 
+    ctx->addFunction(std::make_unique<PSC::BuiltinFnPow>());
+    ctx->addFunction(std::make_unique<PSC::BuiltinFnExp>());
+    ctx->addFunction(std::make_unique<PSC::BuiltinFnSin>());
+    ctx->addFunction(std::make_unique<PSC::BuiltinFnCos>());
+    ctx->addFunction(std::make_unique<PSC::BuiltinFnTan>());
+    ctx->addFunction(std::make_unique<PSC::BuiltinFnASin>());
+    ctx->addFunction(std::make_unique<PSC::BuiltinFnACos>());
+    ctx->addFunction(std::make_unique<PSC::BuiltinFnATan>());
+    ctx->addFunction(std::make_unique<PSC::BuiltinFnATan2>());
+    ctx->addFunction(std::make_unique<PSC::BuiltinFnSqrt>());
+    ctx->addFunction(std::make_unique<PSC::BuiltinFnLog>());
+    ctx->addFunction(std::make_unique<PSC::BuiltinFnLn>());
+
     return ctx;
 }
 
