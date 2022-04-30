@@ -16,7 +16,7 @@ Context::Context(Context *parent, const std::string &name, bool isFunctionCtx, P
 std::unique_ptr<Context> Context::createGlobalContext() {
     auto ctx = std::make_unique<Context>(nullptr, "Program");
 
-    ctx->functions.reserve(15);
+    ctx->functions.reserve(27);
 
     ctx->addFunction(std::make_unique<PSC::BuiltinFnLength>());
     ctx->addFunction(std::make_unique<PSC::BuiltinFnRight>());
