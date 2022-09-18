@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include <vector>
 #include "psc/scope/context.h"
 #include "nodes/base.h"
 #include "lexer/tokens.h"
@@ -90,6 +91,6 @@ namespace PSC {
 
     class InvalidArgsError : public RuntimeError {
     public:
-        InvalidArgsError(const Token &token, const Context &context);
+        InvalidArgsError(const Token &token, const Context &context, std::vector<PSC::DataType> &&expected_types, std::vector<PSC::DataType> &&actual_types);
     };
 }

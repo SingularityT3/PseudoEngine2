@@ -25,6 +25,8 @@ namespace PSC {
 
         virtual ~Procedure() = default;
 
+        std::vector<DataType> getTypes() const;
+
         virtual void run(PSC::Context &ctx);
     };
 

@@ -123,6 +123,31 @@ ConditionTypeError::ConditionTypeError(const Token &token, const Context &contex
     : RuntimeError(token, context, conditionTypeErrorMessage(token.type))
 {}
 
-InvalidArgsError::InvalidArgsError(const Token &token, const Context &context)
-    : RuntimeError(token, context, "Invalid arguements")
+inline std::string invalidArgsErrorMessage(std::vector<PSC::DataType> expected_types, std::vector<PSC::DataType> actual_types) {
+    std::stringstream msg;
+    msg << "Invalid args: expected (";
+    
+    size_t et_size = expected_types.size();
+    size_t at_size = actual_types.size();
+
+    for (size_t i = 0; i < et_size; i++) {
+        if (i != 0) msg << ", ";
+        msg << expected_types[i];
+    }
+    if (et_size == 0) msg << "None";
+
+    msg << "), got (";
+    
+    for (size_t i = 0; i < at_size; i++) {
+        if (i != 0) msg << ", ";
+        msg << actual_types[i];
+    }
+    if (at_size == 0) msg << "None";
+    msg << ")";
+
+    return msg.str();
+}
+
+InvalidArgsError::InvalidArgsError(const Token &token, const Context &context, std::vector<PSC::DataType> &&expected_types, std::vector<PSC::DataType> &&actual_types)
+    : RuntimeError(token, context, invalidArgsErrorMessage(std::move(expected_types), std::move(actual_types)))
 {}

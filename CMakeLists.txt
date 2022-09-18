@@ -54,6 +54,7 @@ target_sources(PseudoEngine2 PRIVATE
     src/psc/types/numeric.cpp
     src/psc/types/boolean.cpp
     src/psc/types/character.cpp
+    src/psc/types/type_names.cpp
     src/psc/scope/block.cpp
     src/psc/scope/context.cpp
     src/psc/variable.cpp

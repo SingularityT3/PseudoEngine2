@@ -30,19 +30,29 @@ std::unique_ptr<NodeResult> CallNode::evaluate(PSC::Context &ctx) {
     if (procedure == nullptr)
         throw PSC::NotDefinedError(token, ctx, "Procedure '" + procedureName + "'");
 
+    std::vector<std::unique_ptr<NodeResult>> argResults;
+    std::vector<PSC::DataType> argTypes;
+    argResults.reserve(args.size());
+    argTypes.reserve(args.size());
+
+    for (size_t i = 0; i < args.size(); i++) {
+        argResults.push_back(args[i]->evaluate(ctx));
+        argTypes.push_back(argResults[i]->type);
+    }
+
     size_t nArgs = procedure->parameters.size();
     if (args.size() != nArgs)
-        throw PSC::InvalidArgsError(token, ctx);
+        throw PSC::InvalidArgsError(token, ctx, procedure->getTypes(), std::move(argTypes));
 
     auto procedureCtx = std::make_unique<PSC::Context>(&ctx, procedureName);
     ctx.switchToken = &token;
 
     for (size_t i = 0; i < args.size(); i++) {
-        auto argRes = args[i]->evaluate(ctx);
+        auto &argRes = argResults[i];
 
         if (!procedure->byRef) argRes->implicitCast(procedure->parameters[i].type);
         if (procedure->parameters[i].type != argRes->type)
-            throw PSC::InvalidArgsError(token, ctx);
+            throw PSC::InvalidArgsError(token, ctx, procedure->getTypes(), std::move(argTypes));
 
         PSC::Variable *var;
         if (procedure->byRef) {

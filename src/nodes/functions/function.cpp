@@ -30,19 +30,29 @@ std::unique_ptr<NodeResult> FunctionCallNode::evaluate(PSC::Context &ctx) {
     if (function == nullptr)
         throw PSC::NotDefinedError(token, ctx, "Function '" + functionName + "'");
 
+    std::vector<std::unique_ptr<NodeResult>> argResults;
+    std::vector<PSC::DataType> argTypes;
+    argResults.reserve(args.size());
+    argTypes.reserve(args.size());
+
+    for (size_t i = 0; i < args.size(); i++) {
+        argResults.push_back(args[i]->evaluate(ctx));
+        argTypes.push_back(argResults[i]->type);
+    }
+
     size_t nArgs = function->parameters.size();
     if (args.size() != nArgs)
-        throw PSC::InvalidArgsError(token, ctx);
+        throw PSC::InvalidArgsError(token, ctx, function->getTypes(), std::move(argTypes));
 
     auto functionCtx = std::make_unique<PSC::Context>(&ctx, functionName, true, function->returnType);
     ctx.switchToken = &token;
 
     for (size_t i = 0; i < args.size(); i++) {
-        auto argRes = args[i]->evaluate(ctx);
+        auto &argRes = argResults[i];
 
         if (!function->byRef) argRes->implicitCast(function->parameters[i].type);
         if (function->parameters[i].type != argRes->type) {
-            throw PSC::InvalidArgsError(token, ctx);
+            throw PSC::InvalidArgsError(token, ctx, function->getTypes(), std::move(argTypes));
         }
 
         PSC::Variable *var;

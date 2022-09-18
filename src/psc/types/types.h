@@ -10,6 +10,8 @@ namespace PSC {
         NONE, INTEGER, REAL, BOOLEAN, CHAR, STRING
     };
 
+    std::ostream &operator<<(std::ostream &os, DataType &type);
+
     class Integer;
     class Real;
     class Boolean;
