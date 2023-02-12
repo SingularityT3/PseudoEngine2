@@ -71,22 +71,22 @@ std::unique_ptr<NodeResult> WriteFileNode::evaluate(PSC::Context &ctx) {
         throw PSC::RuntimeError(token, ctx, "File '" + filename.value + "' is opened as read-only");
 
     auto nodeRes = node.evaluate(ctx);
-    PSC::String *data;
+    std::unique_ptr<PSC::String> data;
     switch (nodeRes->type) {
         case PSC::DataType::INTEGER:
-            data = nodeRes->get<PSC::Integer>().toString().release();
+            data = nodeRes->get<PSC::Integer>().toString();
             break;
         case PSC::DataType::REAL:
-            data = nodeRes->get<PSC::Real>().toString().release();
+            data = nodeRes->get<PSC::Real>().toString();
             break;
         case PSC::DataType::BOOLEAN:
-            data = nodeRes->get<PSC::Boolean>().toString().release();
+            data = nodeRes->get<PSC::Boolean>().toString();
             break;
         case PSC::DataType::CHAR:
-            data = nodeRes->get<PSC::Char>().toString().release();
+            data = nodeRes->get<PSC::Char>().toString();
             break;
         case PSC::DataType::STRING:
-            data = (PSC::String*) nodeRes->data.release();
+            data = std::move(*((std::unique_ptr<PSC::String>*) &nodeRes->data));
             break;
         case PSC::DataType::NONE:
             throw PSC::RuntimeError(token, ctx, "Expected value for writing");
