@@ -86,6 +86,15 @@ enum class TokenType {
     OUTPUT,
     INPUT,
 
+    OPENFILE,
+    READFILE,
+    WRITEFILE,
+    CLOSEFILE,
+
+    READ,
+    WRITE,
+    APPEND,
+
     LINE_END,
     EXPRESSION_END
 };

@@ -21,6 +21,10 @@ Expression -> EvaluationExpression
               | CONTINUE
               | (OUTPUT | PRINT) EvaluationExpression {, EvaluationExpression}
               | (INPUT | READ) IDENTIFIER
+              | OPENFILE StringExpression FOR (READ | WRITE | APPEND)
+              | READFILE StringExpression, IDENTIFIER
+              | WRITEFILE StringExpression, EvaluationExpression
+              | CLOSEFILE StringExpression
 
 ForLoop -> FOR IDENTIFIER <- ArithmeticExpression TO ArithmeticExpression [STEP ArithmeticExpression] Block NEXT [IDENTIFIER]
 

@@ -93,4 +93,9 @@ namespace PSC {
     public:
         InvalidArgsError(const Token &token, const Context &context, std::vector<PSC::DataType> &&expected_types, std::vector<PSC::DataType> &&actual_types);
     };
+
+    class FileNotOpenError : public RuntimeError {
+    public:
+        FileNotOpenError(const Token &token, const Context &context, const std::string &filename);
+    };
 }

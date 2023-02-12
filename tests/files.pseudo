@@ -1,0 +1,16 @@
+OPENFILE "new.txt" FOR WRITE
+WRITEFILE "new.txt", 2 * ASIN(1)
+CLOSEFILE "new.txt"
+
+DECLARE filename, line : STRING
+filename <- "new.txt"
+
+OPENFILE filename FOR READ
+READFILE filename, line
+CLOSEFILE filename
+
+OUTPUT line
+
+OPENFILE filename FOR APPEND
+WRITEFILE filename, "this text was appended"
+CLOSEFILE filename

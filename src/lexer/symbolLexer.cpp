@@ -116,8 +116,26 @@ void Lexer::makeWord() {
 
     else if (word == "OUTPUT" || word == "PRINT") {
         tokens.emplace_back(new Token(TokenType::OUTPUT, line, startColumn));
-    } else if (word == "INPUT" || word == "READ") {
+    } else if (word == "INPUT") {
         tokens.emplace_back(new Token(TokenType::INPUT, line, startColumn));
+    }
+
+    else if (word == "OPENFILE") {
+        tokens.emplace_back(new Token(TokenType::OPENFILE, line, startColumn));
+    } else if (word == "READFILE") {
+        tokens.emplace_back(new Token(TokenType::READFILE, line, startColumn));
+    } else if (word == "WRITEFILE") {
+        tokens.emplace_back(new Token(TokenType::WRITEFILE, line, startColumn));
+    } else if (word == "CLOSEFILE") {
+        tokens.emplace_back(new Token(TokenType::CLOSEFILE, line, startColumn));
+    }
+
+    else if (word == "READ") {
+        tokens.emplace_back(new Token(TokenType::READ, line, startColumn));
+    } else if (word == "WRITE") {
+        tokens.emplace_back(new Token(TokenType::WRITE, line, startColumn));
+    } else if (word == "APPEND") {
+        tokens.emplace_back(new Token(TokenType::APPEND, line, startColumn));
     }
 
     else {

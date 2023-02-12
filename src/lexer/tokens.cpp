@@ -89,6 +89,15 @@ static const char *TT_STR[] = {
     "TT_OUTPUT",
     "TT_INPUT",
 
+    "OPENFILE",
+    "READFILE",
+    "WRITEFILE",
+    "CLOSEFILE",
+
+    "READ",
+    "WRITE",
+    "APPEND",
+
     "TT_LINE_END",
     "TT_EXPRESSION_END"
 };

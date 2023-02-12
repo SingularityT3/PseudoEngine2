@@ -4,6 +4,7 @@
 #include "nodes/array.h"
 #include "nodes/cast.h"
 #include "nodes/io.h"
+#include "nodes/file.h"
 
 #include "nodes/eval/arithmetic.h"
 #include "nodes/eval/stringcat.h"

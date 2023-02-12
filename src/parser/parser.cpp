@@ -123,8 +123,17 @@ Node *Parser::parseExpression() {
             return parseCall();
         case TokenType::OUTPUT:
             return parseOutput();
+        case TokenType::READ:
         case TokenType::INPUT:
             return parseInput();
+        case TokenType::OPENFILE:
+            return parseOpenFile();
+        case TokenType::READFILE:
+            return parseReadFile();
+        case TokenType::WRITEFILE:
+            return parseWriteFile();
+        case TokenType::CLOSEFILE:
+            return parseCloseFile();
         case TokenType::RETURN: {
             const Token &returnToken = *currentToken;
             advance();

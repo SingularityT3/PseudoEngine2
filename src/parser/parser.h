@@ -57,6 +57,14 @@ private:
 
     Node *parseInput();
 
+    Node *parseOpenFile();
+
+    Node *parseReadFile();
+
+    Node *parseWriteFile();
+
+    Node *parseCloseFile();
+
     Node *parseForLoop();
 
     Node *parseRepeatLoop();

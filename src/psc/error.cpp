@@ -151,3 +151,6 @@ inline std::string invalidArgsErrorMessage(std::vector<PSC::DataType> expected_t
 InvalidArgsError::InvalidArgsError(const Token &token, const Context &context, std::vector<PSC::DataType> &&expected_types, std::vector<PSC::DataType> &&actual_types)
     : RuntimeError(token, context, invalidArgsErrorMessage(std::move(expected_types), std::move(actual_types)))
 {}
+
+FileNotOpenError::FileNotOpenError(const Token &token, const Context &context, const std::string &filename)
+    : RuntimeError(token, context, "File '" + filename + "' is not open") {}

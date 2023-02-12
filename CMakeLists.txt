@@ -37,6 +37,7 @@ target_sources(PseudoEngine2 PRIVATE
     src/nodes/variable.cpp
     src/nodes/array.cpp
     src/nodes/cast.cpp
+    src/nodes/file.cpp
     src/nodes/io.cpp
     src/nodes/nodeResult.cpp
     src/nodes/base.cpp
@@ -60,6 +61,7 @@ target_sources(PseudoEngine2 PRIVATE
     src/psc/variable.cpp
     src/psc/array.cpp
     src/psc/procedure.cpp
+    src/psc/file.cpp
     src/psc/builtinFunctions/string.cpp
     src/psc/builtinFunctions/char.cpp
     src/psc/builtinFunctions/numeric.cpp
