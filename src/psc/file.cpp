@@ -55,7 +55,7 @@ void File::write(const String &data) {
 }
 
 
-auto FileManager::files = std::vector<std::unique_ptr<PSC::File>>();
+std::vector<std::unique_ptr<PSC::File>> FileManager::files = std::vector<std::unique_ptr<PSC::File>>();
 
 bool FileManager::createFile(const String &name, FileMode mode) {
     namespace fs = std::filesystem;
