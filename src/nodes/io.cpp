@@ -45,7 +45,10 @@ InputNode::InputNode(const Token &token, const Token &identifier)
 
 std::unique_ptr<NodeResult> InputNode::evaluate(PSC::Context &ctx) {
     PSC::Variable *var = ctx.getVariable(identifier.value);
-    if (var == nullptr) throw PSC::NotDefinedError(identifier, ctx, "Identifier '" + identifier.value + "'");
+    if (var == nullptr) {
+        var = new PSC::Variable(identifier.value, PSC::DataType::STRING, false);
+        ctx.addVariable(var);
+    }
 
     PSC::String inputStr;
     std::getline(std::cin, inputStr.value);

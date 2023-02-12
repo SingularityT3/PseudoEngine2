@@ -35,8 +35,10 @@ std::unique_ptr<NodeResult> ReadFileNode::evaluate(PSC::Context &ctx) {
         throw PSC::RuntimeError(token, ctx, "Expected string for file name");
     
     PSC::Variable *var = ctx.getVariable(identifier.value);
-    if (var == nullptr)
-        throw PSC::NotDefinedError(token, ctx, "Identifier '" + token.value + "'");
+    if (var == nullptr) {
+        var = new PSC::Variable(identifier.value, PSC::DataType::STRING, false);
+        ctx.addVariable(var);
+    }
     if (var->type != PSC::DataType::STRING)
         throw PSC::RuntimeError(token, ctx, "Variable of type STRING expected");
 
