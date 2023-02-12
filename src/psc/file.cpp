@@ -30,6 +30,11 @@ FileMode File::getMode() {
     return mode;
 }
 
+bool File::eof() {
+    if (mode != FileMode::READ) std::abort();
+    return ifile->eof();
+}
+
 void File::close() {
     if (mode == FileMode::READ) {
         ifile->close();

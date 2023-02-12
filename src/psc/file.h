@@ -27,6 +27,8 @@ namespace PSC {
 
         FileMode getMode();
 
+        bool eof();
+
         void close();
 
         String read();

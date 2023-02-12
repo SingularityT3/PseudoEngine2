@@ -57,6 +57,16 @@ namespace PSC {
         void run(PSC::Context &ctx) override;
     };
 
+    struct BuiltinFnEOF : public Function {
+    private:
+        static Token errToken;
+    
+    public:
+        BuiltinFnEOF();
+
+        void run(PSC::Context &ctx) override;
+    };
+
 
     struct BuiltinFnLCase : public Function {
         BuiltinFnLCase();

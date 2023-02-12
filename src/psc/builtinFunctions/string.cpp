@@ -2,6 +2,8 @@
 #include <algorithm>
 
 #include "psc/variable.h"
+#include "psc/file.h"
+#include "psc/error.h"
 #include "psc/scope/context.h"
 #include "psc/builtinFunctions/functions.h"
 
@@ -219,4 +221,31 @@ void PSC::BuiltinFnIsNum::run(PSC::Context &ctx) {
     }
 
     ctx.returnValue = std::make_unique<NodeResult>(std::move(ret), PSC::DataType::BOOLEAN);
+}
+
+Token PSC::BuiltinFnEOF::errToken {TokenType::FUNCTION, 0, 0};
+
+PSC::BuiltinFnEOF::BuiltinFnEOF()
+    : Function("EOF")
+{
+    returnType = PSC::DataType::BOOLEAN;
+    parameters.emplace_back("File", PSC::DataType::STRING);
+}
+
+void PSC::BuiltinFnEOF::run(PSC::Context &ctx) {
+    PSC::Variable *fileName = ctx.getVariable("File");
+    if (fileName == nullptr || fileName->type != PSC::DataType::STRING) std::abort();
+
+    auto &filenameStr = fileName->get<PSC::String>();
+    PSC::File *file = PSC::FileManager::getFile(filenameStr);
+    
+    if (file == nullptr)
+        throw PSC::FileNotOpenError(errToken, ctx, filenameStr.value);
+    if (file->getMode() != FileMode::READ)
+        throw PSC::RuntimeError(errToken, ctx, "File is not open in READ mode");
+    
+    PSC::Boolean *eof = new PSC::Boolean;
+    *eof = file->eof();
+
+    ctx.returnValue = std::make_unique<NodeResult>(eof, PSC::DataType::BOOLEAN);
 }
