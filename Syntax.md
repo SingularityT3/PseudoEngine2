@@ -221,6 +221,9 @@ STR_TO_NUM(s : STRING) RETURNS REAL
 // Returns whether a string is a valid number
 IS_NUM(s : STRING) RETURNS BOOLEAN
 
+// Checks if end of file is reached
+EOF(filename : STRING) RETURNS BOOLEAN
+
 // Converts a character into lowercase if it is alphabetic
 LCASE(c : CHAR) RETURNS CHAR
 
@@ -238,6 +241,23 @@ INT(x : REAL) RETURNS INTEGER
 
 // Returns a random number from 0 to x inclusive
 RAND(x : INTEGER) RETURNS REAL
+```
+
+## File Handling
+```
+// Open a file
+// Modes are READ, WRITE and APPEND
+// WRITE mode creates the file if it doesn't exist
+OPENFILE <filename> FOR <mode>
+
+// Reads one line form the file into the variable(requires READ mode)
+READFILE <filename>, <variable>
+
+// Writes a line with data provided(requires WRITE or APPEND mode)
+WRITEFILE <filename>, <data>
+
+// Closes the file
+CLOSEFILE <filename>
 ```
 
 # Examples
