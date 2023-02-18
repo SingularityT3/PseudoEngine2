@@ -16,7 +16,7 @@ void NodeResult::implicitCast(PSC::DataType target) {
     // REAL -> INTEGER
     if (target == PSC::DataType::REAL && type == PSC::DataType::INTEGER) {
         type = PSC::DataType::REAL;
-        data = data->toReal();
+        data = static_cast<const PSC::Primitive*>(data.get())->toReal();
     }
 
     // STRING -> CHAR
@@ -30,6 +30,6 @@ void NodeResult::implicitCast(PSC::DataType target) {
     // CHAR -> STRING
     else if (target == PSC::DataType::STRING && type == PSC::DataType::CHAR) {
         type = PSC::DataType::STRING;
-        data = data->toString();
+        data = static_cast<const PSC::Primitive*>(data.get())->toString();
     }
 }

@@ -4,6 +4,7 @@
 #include <memory>
 #include "lexer/tokens.h"
 #include "nodes/node.h"
+#include "nodes/variable/resolver.h"
 #include "psc/error.h"
 #include "psc/scope/block.h"
 
@@ -65,6 +66,10 @@ private:
 
     Node *parseCloseFile();
 
+    Node *parseType();
+
+    Node *parseComposite(const Token &token, const Token &identifier);
+
     Node *parseForLoop();
 
     Node *parseRepeatLoop();
@@ -80,8 +85,6 @@ private:
     Node *parseConstDeclareExpression();
 
     Node *parseArrayDeclare(const Token &declareToken, std::vector<const Token*> &identifiers);
-
-    Node *parseAssignmentExpression();
 
     Node *parseEvaluationExpression();
 
@@ -106,6 +109,8 @@ private:
     Node *parseArrayOperation();
 
     Node *parseModDivFn();
+
+    std::unique_ptr<AbstractVariableResolver> parseIdentifierExpression();
 
     template<std::derived_from<Node> T>
     inline Node *parseLiteral() {

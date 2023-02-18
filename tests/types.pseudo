@@ -1,0 +1,28 @@
+TYPE IntPtr = ^INTEGER
+TYPE Enum = (State1, State2, State3, State4, State5)
+TYPE EnumPtr = ^Enum
+
+TYPE CustomType
+    DECLARE number : INTEGER
+    DECLARE array : ARRAY[1:5] OF REAL
+    DECLARE ptr : IntPtr
+    DECLARE enumPtrArray : ARRAY[-3:4] OF EnumPtr
+ENDTYPE
+
+DECLARE obj, otherObj : CustomType
+obj.number <- 5
+obj.array[2] <- 36.17
+obj.ptr <- ^otherObj.number
+
+otherObj.number <- 2
+
+OUTPUT obj.number, " ", obj.array[2], " ", obj.ptr^
+
+TYPE CustomTypePtr = ^CustomType
+DECLARE cptr : CustomTypePtr
+DECLARE enum1 : Enum
+enum1 <- State4
+cptr <- ^obj
+cptr^.enumPtrArray[1] <- ^enum1
+
+OUTPUT cptr^.enumPtrArray[1]^

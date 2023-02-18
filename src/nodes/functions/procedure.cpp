@@ -2,8 +2,8 @@
 
 #include "psc/error.h"
 #include "psc/scope/block.h"
-#include "nodes/variable.h"
-#include "nodes/array.h"
+#include "nodes/variable/variable.h"
+#include "nodes/variable/array.h"
 #include "nodes/functions/procedure.h"
 
 ProcedureNode::ProcedureNode(const Token &token, PSC::Procedure *procedure)
@@ -57,21 +57,19 @@ std::unique_ptr<NodeResult> CallNode::evaluate(PSC::Context &ctx) {
         PSC::Variable *var;
         if (procedure->byRef) {
             AccessNode *accsNode = dynamic_cast<AccessNode*>(args[i]);
-            ArrayAccessNode *arrAccsNode = dynamic_cast<ArrayAccessNode*>(args[i]);
-            if (!accsNode && !arrAccsNode)
+            if (!accsNode)
                 throw PSC::RuntimeError(token, ctx, "Only variables and array elements can be used as arguements when passing by reference");
 
-            if (accsNode) {
-                PSC::Variable *original = ctx.getVariable(accsNode->getToken().value);
-                if (original == nullptr) std::abort();
-                var = original->createReference(procedure->parameters[i].name);
-            } else {
-                var = PSC::Variable::createArrayElementReference(procedure->parameters[i].name, argRes->type, arrAccsNode->getValue(ctx).first);
-            }
+            auto &holder = accsNode->getResolver().resolve(ctx);
+            if (holder.isArray())
+                throw PSC::RuntimeError(token, ctx, "Expected indices for array");
+
+            PSC::Variable &original = *static_cast<PSC::Variable*>(&holder);
+            var = original.createReference(procedure->parameters[i].name);
         } else {
             var = new PSC::Variable(procedure->parameters[i].name, argRes->type, false);
 
-            switch (var->type) {
+            switch (var->type.type) {
                 case PSC::DataType::INTEGER:
                     var->get<PSC::Integer>() = argRes->get<PSC::Integer>();
                     break;
@@ -87,7 +85,16 @@ std::unique_ptr<NodeResult> CallNode::evaluate(PSC::Context &ctx) {
                 case PSC::DataType::STRING:
                     var->get<PSC::String>() = argRes->get<PSC::String>();
                     break;
-                default:
+                case PSC::DataType::ENUM:
+                    var->get<PSC::Enum>() = argRes->get<PSC::Enum>();
+                    break;
+                case PSC::DataType::POINTER:
+                    var->get<PSC::Pointer>() = argRes->get<PSC::Pointer>();
+                    break;
+                case PSC::DataType::COMPOSITE:
+                    var->get<PSC::Composite>() = argRes->get<PSC::Composite>();
+                    break;
+                case PSC::DataType::NONE:
                     std::abort();
             }
         }

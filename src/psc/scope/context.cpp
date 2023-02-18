@@ -13,6 +13,27 @@ Context::Context(Context *parent, const std::string &name, bool isFunctionCtx, P
     : parent(parent), name(name), isFunctionCtx(isFunctionCtx), returnType(returnType)
 {}
 
+template<typename T>
+void copyPtrVector(const std::vector<std::unique_ptr<T>> &source, std::vector<std::unique_ptr<T>> &dest) {
+    size_t size = source.size();
+    dest.reserve(size);
+    for (size_t i = 0; i < size; i++) {
+        dest.emplace_back(std::make_unique<T>(*source[i]));
+    }
+}
+
+Context::Context(const Context &other)
+    : parent(other.parent),
+    name(other.name),
+    isFunctionCtx(other.isFunctionCtx),
+    returnType(other.returnType)
+{
+    copyPtrVector(other.variables, variables);
+    copyPtrVector(other.arrays, arrays);
+    copyPtrVector(other.procedures, procedures);
+    copyPtrVector(other.functions, functions);
+}
+
 std::unique_ptr<Context> Context::createGlobalContext() {
     auto ctx = std::make_unique<Context>(nullptr, "Program");
 

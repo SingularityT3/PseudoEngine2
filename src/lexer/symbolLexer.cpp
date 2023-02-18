@@ -42,6 +42,12 @@ void Lexer::makeWord() {
         tokens.emplace_back(new Token(TokenType::ARRAY, line, startColumn));
     }
 
+    else if (word == "TYPE") {
+        tokens.emplace_back(new Token(TokenType::TYPE, line, startColumn));
+    } else if (word == "ENDTYPE") {
+        tokens.emplace_back(new Token(TokenType::ENDTYPE, line, startColumn));
+    }
+
     else if (word == "IF") {
         tokens.emplace_back(new Token(TokenType::IF, line, startColumn));
     } else if (word == "THEN") {

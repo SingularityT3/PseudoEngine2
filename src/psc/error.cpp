@@ -87,6 +87,10 @@ InvalidUsageError::InvalidUsageError(const Token &token, const Context &context,
     : RuntimeError(token, context, "Invalid usage of " + info)
 {}
 
+TypeOperationError::TypeOperationError(const Token &token, const Context &context, const std::string &op)
+    : RuntimeError(token, context, op + " operation cannot be used on non-primitive types")
+{}
+
 RedeclarationError::RedeclarationError(const Token &token, const Context &context, const std::string &identifier)
     : RuntimeError(token, context, "Redeclaration of '" + identifier + "'")
 {}

@@ -4,18 +4,20 @@ Program -> {Block}
 
 Block -> {Expression}*
 
-Function -> FUNCTION IDENTIFIER [([BYREF | BYVAL] IDENTIFIER : DataType {, IDENTIFIER : DataType})] RETURNS DataType Block ENDPROCEDURE
+Function -> FUNCTION IDENTIFIER [LPRN [BYREF | BYVAL] IDENTIFIER : DataType {, IDENTIFIER : DataType} RPRN] RETURNS DataType Block ENDPROCEDURE
 
-Procedure -> PROCEDURE IDENTIFIER [([BYREF | BYVAL] IDENTIFIER : DataType {, IDENTIFIER : DataType})] Block ENDPROCEDURE
+Procedure -> PROCEDURE IDENTIFIER [LPRN [BYREF | BYVAL] IDENTIFIER : DataType {, IDENTIFIER : DataType} RPRN] Block ENDPROCEDURE
 
 Expression -> EvaluationExpression
-              | DECLARE IDENTIFIER{, IDENTIFIER} : [ARRAY[EvaluationExpression:EvaluationExpression {EvaluationExpression:EvaluationExpression}] OF] DataType
+              | DeclareStatement
               | CONSTANT IDENTIFIER = INTEGER | -INTEGER | REAL | -REAL | BOOLEAN | CHAR | STRING
+              | TYPE IDENTIFIER = (LPRN {IDENTIFIER}* RPRN) | ^DataType
+              | CompositeType
               | IfCondition
               | CaseStatement
               | WhileLoop
               | ForLoop
-              | CALL IDENTIFIER[(EvaluationExpression {, EvaluationExpression})]
+              | CALL IDENTIFIER[LPRN EvaluationExpression {, EvaluationExpression} RPRN]
               | RETURN EvaluationExpression
               | BREAK
               | CONTINUE
@@ -25,6 +27,10 @@ Expression -> EvaluationExpression
               | READFILE StringExpression, IDENTIFIER
               | WRITEFILE StringExpression, EvaluationExpression
               | CLOSEFILE StringExpression
+
+CompositeType -> TYPE IDENTIFIER {DeclareStatement}* ENDTYPE
+
+DeclareStatement -> DECLARE IDENTIFIER{, IDENTIFIER} : [ARRAY LSQRB EvaluationExpression:EvaluationExpression {EvaluationExpression:EvaluationExpression} RSQRB OF] (DataType | IDENTIFIER)
 
 ForLoop -> FOR IDENTIFIER <- ArithmeticExpression TO ArithmeticExpression [STEP ArithmeticExpression] Block NEXT [IDENTIFIER]
 
@@ -59,11 +65,20 @@ Atom -> INTEGER
         | FALSE
         | CHAR
         | STRING
-        | (MOD | DIV) (EvaluationExpression, EvaluationExpression)
-        | DataType(EvaluationExpression)
-        | (EvaluationExpression)
-        | IDENTIFIER
-        | IDENTIFIER <- EvaluationExpression
-        | IDENTIFIER([EvaluationExpression {, EvaluationExpression}])
-        | IDENTIFIER[ArithmeticExpression {, ArithmeticExpression}] <- EvaluationExpression
-        | IDENTIFIER[ArithmeticExpression {, ArithmeticExpression}]
+        | (MOD | DIV) LPRN EvaluationExpression, EvaluationExpression RPRN
+        | DataType LPRN EvaluationExpression RPRN
+        | LPRN EvaluationExpression RPRN
+        | IdentifierExpression
+        | IdentifierExpression <- EvaluationExpression | ^IdentifierExpression
+        | IDENTIFIER LPRN [EvaluationExpression {, EvaluationExpression}] RPRN
+
+IdentifierExpression -> SingleIdentifier{.SingleIdentifier | ^ | LSQRB ArithmeticExpression {, ArithmeticExpression} RSQRB}
+
+---- Definitions ----
+X | Y - X or Y
+[X] - Optional
+{X} - Zero or many
+{X}* - One or many
+
+LPRN/RPRN - Left/Right parentheses
+LSQRB/RSQRB - Left/Right square brackets

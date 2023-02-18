@@ -23,7 +23,7 @@ bool EqualsCaseComponent::match(const NodeResult &value, PSC::Context &ctx) {
 
     if (value.type != res->type) return false;
 
-    switch (value.type) {
+    switch (value.type.type) {
         case PSC::DataType::INTEGER:
             return value.get<PSC::Integer>().value == res->get<PSC::Integer>().value;
         case PSC::DataType::REAL:
@@ -34,7 +34,13 @@ bool EqualsCaseComponent::match(const NodeResult &value, PSC::Context &ctx) {
             return value.get<PSC::Char>().value == res->get<PSC::Char>().value;
         case PSC::DataType::STRING:
             return value.get<PSC::String>().value == res->get<PSC::String>().value;
-        default: ;
+        case PSC::DataType::ENUM:
+            return *value.get<PSC::Enum>().value == *res->get<PSC::Enum>().value;
+        case PSC::DataType::POINTER:
+            return value.get<PSC::Pointer>().getValue() == res->get<PSC::Pointer>().getValue();
+        case PSC::DataType::COMPOSITE:
+            return false;
+        case PSC::DataType::NONE: ;
     }
     std::abort();
 }

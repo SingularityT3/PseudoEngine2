@@ -36,42 +36,11 @@ Node *Parser::parseArrayDeclare(const Token &declareToken, std::vector<const Tok
         throw PSC::ExpectedTokenError(*currentToken, "'OF'");
     advance();
 
-    if (currentToken->type != TokenType::DATA_TYPE)
+    if (currentToken->type != TokenType::DATA_TYPE && currentToken->type != TokenType::IDENTIFIER)
         throw PSC::ExpectedTokenError(*currentToken, "data type");
 
-    PSC::DataType type = getPSCType();
+    const Token &type = *currentToken;
     advance();
 
     return create<ArrayDeclareNode>(declareToken, std::move(identifiers), type, std::move(bounds));
-}
-
-Node *Parser::parseArrayOperation() {
-    const Token &identifier = *currentToken;
-    advance();
-
-    if (currentToken->type != TokenType::LSQRBRACKET) std::abort();
-    advance();
-
-    std::vector<Node*> indices;
-
-    while (true) {
-        Node *index = parseArithmeticExpression();
-        indices.push_back(index);
-
-        if (currentToken->type == TokenType::COMMA) advance();
-        else break;
-    }
-
-    if (currentToken->type != TokenType::RSQRBRACKET)
-        throw PSC::ExpectedTokenError(*currentToken, "']'");
-    advance();
-
-    if (currentToken->type == TokenType::ASSIGNMENT) {
-        const Token &op = *currentToken;
-        advance();
-        Node *node = parseEvaluationExpression();
-        return create<ArrayAssignNode>(op, *node, identifier.value, std::move(indices));
-    }
-
-    return create<ArrayAccessNode>(identifier, std::move(indices));
 }

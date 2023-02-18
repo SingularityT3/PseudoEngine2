@@ -25,12 +25,12 @@ Node *Parser::parseDeclareExpression() {
     if (currentToken->type == TokenType::ARRAY)
         return parseArrayDeclare(op, identifiers);
 
-    if (currentToken->type != TokenType::DATA_TYPE)
+    if (currentToken->type != TokenType::DATA_TYPE && currentToken->type != TokenType::IDENTIFIER)
         throw PSC::ExpectedTokenError(*currentToken, "data type");
 
-    PSC::DataType type = getPSCType();
-
+    const Token& type = *currentToken;
     advance();
+
     return create<DeclareNode>(op, std::move(identifiers), type);
 }
 
@@ -72,17 +72,47 @@ Node *Parser::parseConstDeclareExpression() {
     return create<ConstDeclareNode>(op, *value, identifier);
 }
 
-Node *Parser::parseAssignmentExpression() {
+std::unique_ptr<AbstractVariableResolver> Parser::parseIdentifierExpression() {
     const Token &identifier = *currentToken;
     advance();
+    std::unique_ptr<AbstractVariableResolver> resolver = std::make_unique<SimpleVariableSource>(identifier);
 
-    if (currentToken->type != TokenType::ASSIGNMENT)
-        throw PSC::ExpectedTokenError(*currentToken, "'<-'");
+    bool resolve = true;
+    while (resolve) {
+        switch (currentToken->type) {
+            case TokenType::PERIOD: {
+                const Token &token = *currentToken;
+                advance();
 
-    const Token &op = *currentToken;
-    advance();
+                resolver = std::make_unique<CompositeResolver>(token, std::move(resolver), *currentToken);
+                advance();
+                break;
+            } case TokenType::CARET:
+                resolver = std::make_unique<PointerDereferencer>(*currentToken, std::move(resolver));
+                advance();
+                break;
+            case TokenType::LSQRBRACKET: {
+                const Token &token = *currentToken;
+                advance();
+                std::vector<Node*> indices;
+                while (true) {
+                    Node *index = parseArithmeticExpression();
+                    indices.push_back(index);
 
-    Node *value = parseEvaluationExpression();
+                    if (currentToken->type == TokenType::COMMA) advance();
+                    else break;
+                }
 
-    return create<AssignNode>(op, *value, identifier);
+                if (currentToken->type != TokenType::RSQRBRACKET)
+                    throw PSC::ExpectedTokenError(*currentToken, "']'");
+                advance();
+
+                resolver = std::make_unique<ArrayElementResolver>(token, std::move(resolver), std::move(indices));
+                break;
+            } default:
+                resolve = false;
+        }
+    }
+
+    return resolver;
 }

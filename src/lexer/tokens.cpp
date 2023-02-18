@@ -51,6 +51,11 @@ static const char *TT_STR[] = {
     "TT_LSQRBRACKET",
     "TT_RSQRBRACKET",
 
+    "TT_TYPE",
+    "TT_ENDTYPE",
+    "TT_CARET",
+    "TT_PERIOD",
+
     "TT_IF",
     "TT_THEN",
     "TT_ELSE",
@@ -72,8 +77,8 @@ static const char *TT_STR[] = {
     "TT_TO",
     "TT_STEP",
     "TT_NEXT",
-    "BREAK",
-    "CONTINUE",
+    "TT_BREAK",
+    "TT_CONTINUE",
 
     "TT_PROCEDURE",
     "TT_BYREF",
@@ -89,14 +94,14 @@ static const char *TT_STR[] = {
     "TT_OUTPUT",
     "TT_INPUT",
 
-    "OPENFILE",
-    "READFILE",
-    "WRITEFILE",
-    "CLOSEFILE",
+    "TT_OPENFILE",
+    "TT_READFILE",
+    "TT_WRITEFILE",
+    "TT_CLOSEFILE",
 
-    "READ",
-    "WRITE",
-    "APPEND",
+    "TT_READ",
+    "TT_WRITE",
+    "TT_APPEND",
 
     "TT_LINE_END",
     "TT_EXPRESSION_END"

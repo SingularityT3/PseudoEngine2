@@ -17,7 +17,7 @@ void Block::addNode(Node *node) {
 void Block::runNodeREPL(Node *node, PSC::Context &ctx) {
     auto result = node->evaluate(ctx);
 
-    switch (result->type) {
+    switch (result->type.type) {
         case PSC::DataType::INTEGER:
             std::cout << result->get<PSC::Integer>();
             break;
@@ -32,6 +32,19 @@ void Block::runNodeREPL(Node *node, PSC::Context &ctx) {
             break;
         case PSC::DataType::STRING:
             std::cout << "\"" << result->get<PSC::String>().value << "\"";
+            break;
+        case PSC::DataType::ENUM: {
+            auto &resEnum = result->get<PSC::Enum>();
+            std::cout << resEnum.definitionName << ": " << *resEnum.value;
+            break;
+        } case PSC::DataType::POINTER: {
+            auto &resPtr = result->get<PSC::Pointer>();
+            PSC::Variable *ptrValue = resPtr.getValue();
+            const std::string &valueStr = ptrValue == nullptr ? "null" : ptrValue->name;
+            std::cout << resPtr.definitionName << ": " << valueStr;
+            break;
+        } case PSC::DataType::COMPOSITE:
+            std::cout << result->get<PSC::Composite>().definitionName << " object";
             break;
         case PSC::DataType::NONE:
             return;

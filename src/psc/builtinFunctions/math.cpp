@@ -2,6 +2,7 @@
 #include <math.h>
 
 #include "psc/builtinFunctions/functions.h"
+#include "psc/scope/context.h"
 
 PSC::BuiltinFnPow::BuiltinFnPow()
     : Function("POW")

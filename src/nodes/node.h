@@ -1,10 +1,13 @@
 #pragma once
 #include "nodes/base.h"
-#include "nodes/variable.h"
-#include "nodes/array.h"
+#include "nodes/variable/variable.h"
+#include "nodes/variable/array.h"
+#include "nodes/variable/enum.h"
+#include "nodes/variable/pointer.h"
+#include "nodes/variable/composite.h"
 #include "nodes/cast.h"
-#include "nodes/io.h"
-#include "nodes/file.h"
+#include "nodes/io/io.h"
+#include "nodes/io/file.h"
 
 #include "nodes/eval/arithmetic.h"
 #include "nodes/eval/stringcat.h"

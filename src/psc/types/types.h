@@ -2,13 +2,12 @@
 #include <string>
 #include <memory>
 
+#include "psc/types/datatypes.h"
+#include "psc/types/type_definitions.h"
+
 namespace PSC {
     typedef long int_t;
     typedef double real_t;
-
-    enum class DataType {
-        NONE, INTEGER, REAL, BOOLEAN, CHAR, STRING
-    };
 
     std::ostream &operator<<(std::ostream &os, DataType &type);
 
@@ -22,6 +21,11 @@ namespace PSC {
     public:
         virtual ~Value() = default;
 
+        virtual bool isPrimitive() const = 0;
+    };
+
+    class Primitive : public Value {
+    public:
         virtual std::unique_ptr<Integer> toInteger() const = 0;
 
         virtual std::unique_ptr<Real> toReal() const = 0;
@@ -31,9 +35,11 @@ namespace PSC {
         virtual std::unique_ptr<Char> toChar() const = 0;
 
         virtual std::unique_ptr<String> toString() const = 0;
+
+        constexpr bool isPrimitive() const override {return true;}
     };
 
-    class Number : public Value {
+    class Number : public Primitive {
     public:
         const bool real;
 
@@ -119,7 +125,7 @@ namespace PSC {
         std::unique_ptr<String> toString() const override;
     };
 
-    class Boolean : public Value {
+    class Boolean : public Primitive {
     public:
         bool value = false;
 
@@ -146,7 +152,7 @@ namespace PSC {
         std::unique_ptr<String> toString() const override;
     };
 
-    class Char : public Value {
+    class Char : public Primitive {
     public:
         char value = 0;
 
@@ -173,7 +179,7 @@ namespace PSC {
         std::unique_ptr<String> toString() const override;
     };
 
-    class String : public Value {
+    class String : public Primitive {
     public:
         std::string value;
 
@@ -198,5 +204,66 @@ namespace PSC {
         std::unique_ptr<Char> toChar() const override;
 
         std::unique_ptr<String> toString() const override;
+    };
+
+    class Custom : public Value {
+    public:
+        constexpr bool isPrimitive() const override {return false;}
+    };
+
+    class Enum : public Custom {
+    public:
+        const std::string definitionName;
+        const std::string *value;
+
+        Enum(const std::string &name);
+
+        Enum(const Enum &other) = default;
+
+        void operator=(const Enum &other);
+
+        const EnumTypeDefinition &getDefinition() const;
+    };
+
+
+    class Variable;
+    class Pointer : public Custom {
+    private:
+        Variable *ptr = nullptr;
+
+    public:
+        const std::string definitionName;
+        
+        Pointer(const PointerTypeDefinition &definition);
+
+        Pointer(const std::string &name);
+
+        Pointer(const Pointer &other) = default;
+
+        void setValue(Variable *value);
+
+        void operator=(const Pointer &other);
+
+        Variable *getValue() const;
+
+        const PointerTypeDefinition &getDefinition() const;
+    };
+
+    class DataHolder;
+    class Context;
+    class Composite : public Custom {
+    public:
+        const std::string definitionName;
+        std::unique_ptr<Context> ctx;
+
+        Composite(const std::string &name);
+
+        Composite(const Composite &other);
+
+        void operator=(const Composite &other);
+
+        DataHolder *getMember(const std::string &name);
+
+        const CompositeTypeDefinition &getDefinition() const;
     };
 }

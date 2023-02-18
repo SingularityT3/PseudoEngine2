@@ -29,6 +29,9 @@ namespace PSC {
 
         Context(Context *parent, const std::string &name, bool isFunctionCtx, PSC::DataType returnType);
 
+        // For copying composites
+        explicit Context(const Context &other);
+
         static std::unique_ptr<Context> createGlobalContext();
 
         Context *getParent() const;

@@ -47,6 +47,11 @@ enum class TokenType {
     LSQRBRACKET,
     RSQRBRACKET,
 
+    TYPE,
+    ENDTYPE,
+    CARET,
+    PERIOD,
+
     IF,
     THEN,
     ELSE,

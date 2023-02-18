@@ -2,7 +2,7 @@
 #include <iostream>
 
 #include "psc/error.h"
-#include "nodes/io.h"
+#include "nodes/io/io.h"
 
 OutputNode::OutputNode(const Token &token, std::vector<Node*> &&nodes)
     : Node(token), nodes(std::move(nodes))
@@ -12,7 +12,7 @@ std::unique_ptr<NodeResult> OutputNode::evaluate(PSC::Context &ctx) {
     for (Node *node : nodes) {
         auto result = node->evaluate(ctx);
 
-        switch (result->type) {
+        switch (result->type.type) {
             case PSC::DataType::INTEGER:
                 std::cout << result->get<PSC::Integer>();
                 break;
@@ -27,6 +27,15 @@ std::unique_ptr<NodeResult> OutputNode::evaluate(PSC::Context &ctx) {
                 break;
             case PSC::DataType::STRING:
                 std::cout << result->get<PSC::String>().value;
+                break;
+            case PSC::DataType::ENUM:
+                std::cout << *result->get<PSC::Enum>().value;
+                break;
+            case PSC::DataType::POINTER:
+                std::cout << result->get<PSC::Pointer>().definitionName << " object";
+                break;
+            case PSC::DataType::COMPOSITE:
+                std::cout << result->get<PSC::Composite>().definitionName << " object";
                 break;
             case PSC::DataType::NONE:
                 std::cout.flush();
@@ -53,7 +62,7 @@ std::unique_ptr<NodeResult> InputNode::evaluate(PSC::Context &ctx) {
     PSC::String inputStr;
     std::getline(std::cin, inputStr.value);
 
-    switch (var->type) {
+    switch (var->type.type) {
         case PSC::DataType::INTEGER:
             var->get<PSC::Integer>() = inputStr.toInteger()->value;
             break;
@@ -69,7 +78,11 @@ std::unique_ptr<NodeResult> InputNode::evaluate(PSC::Context &ctx) {
         case PSC::DataType::STRING:
             var->get<PSC::String>().value = std::move(inputStr.value);
             break;
-        default:
+        case PSC::DataType::ENUM:
+        case PSC::DataType::POINTER:
+        case PSC::DataType::COMPOSITE:
+            throw PSC::RuntimeError(token, ctx, "Cannot input non-primitive types");
+        case PSC::DataType::NONE:
             std::abort();
     }
 

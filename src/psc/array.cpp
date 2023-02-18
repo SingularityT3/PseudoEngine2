@@ -18,8 +18,24 @@ bool ArrayDimension::isValidIndex(int_t idx) const {
 
 
 Array::Array(const std::string &name, DataType type, const std::vector<ArrayDimension> &dimensions)
-    : name(name), type(type), dimensions(dimensions)
+    : DataHolder(name), type(type), dimensions(dimensions)
 {}
+
+Array::Array(const Array &other)
+    : DataHolder(other.name),
+    type(other.type),
+    dimensions(Array::copyDimensions(other.dimensions))
+{}
+
+const std::vector<ArrayDimension> Array::copyDimensions(const std::vector<ArrayDimension> &source) {
+    std::vector<ArrayDimension> copy;
+    size_t size = source.size();
+    copy.reserve(size);
+    for (size_t i = 0; i < size; i++) {
+        copy.emplace_back(source[i]);
+    }
+    return copy;
+}
 
 void Array::init() {
     unsigned long size = 1;
@@ -29,28 +45,13 @@ void Array::init() {
 
     data.reserve(size);
 
-    switch (type) {
-        case PSC::DataType::INTEGER:
-            _init<PSC::Integer>();
-            break;
-        case PSC::DataType::REAL:
-            _init<PSC::Real>();
-            break;
-        case PSC::DataType::BOOLEAN:
-            _init<PSC::Boolean>();
-            break;
-        case PSC::DataType::CHAR:
-            _init<PSC::Char>();
-            break;
-        case PSC::DataType::STRING:
-            _init<PSC::String>();
-            break;
-        default:
-            std::abort();
+    size_t capacity = data.capacity();
+    for (size_t i = 0; i < capacity; i++) {
+        data.emplace_back(new Variable(name, type, false));
     }
 }
 
-Value &Array::getElement(const std::vector<int_t> &index) {
+Variable &Array::getElement(const std::vector<int_t> &index) {
     if (index.size() != dimensions.size()) std::abort();
 
     size_t realIndex = 0;

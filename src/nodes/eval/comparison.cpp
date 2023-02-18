@@ -67,8 +67,12 @@ std::unique_ptr<NodeResult> ComparisonNode::evaluate(PSC::Context &ctx) {
             bool comparisonEq = leftRes->get<PSC::String>().value == rightRes->get<PSC::String>().value;
             bool res = (!eq && !comparisonEq) || (eq && comparisonEq);
             return std::make_unique<NodeResult>(new PSC::Boolean(res), PSC::DataType::BOOLEAN);
+        } else if (leftRes->type == PSC::DataType::ENUM) {
+            bool comparisonEq = *leftRes->get<PSC::Enum>().value == *rightRes->get<PSC::Enum>().value;
+            bool res = (!eq && !comparisonEq) || (eq && comparisonEq);
+            return std::make_unique<NodeResult>(new PSC::Boolean(res), PSC::DataType::BOOLEAN);
         } else {
-            throw PSC::InvalidUsageError(token, ctx, "'" + op + "' operator, operands must be of type Integer, Real or Boolean");
+            throw PSC::InvalidUsageError(token, ctx, "'" + op + "' operator, operands must be of comparable type");
         }
     }
 

@@ -138,9 +138,33 @@ Node *Parser::parseAtom() {
     } else if (currentToken->type == TokenType::STRING) {
         return parseLiteral<StringNode>();
     } else if (currentToken->type == TokenType::IDENTIFIER) {
-        if (compareNextType(1, TokenType::LPAREN)) {
-            return parseFunctionCall();
-        } else if (compareNextType(1, TokenType::ASSIGNMENT)) {
+        if (compareNextType(1, TokenType::LPAREN)) return parseFunctionCall();
+        
+        const Token &identifier = *currentToken;
+        auto resolver = parseIdentifierExpression();
+        if (currentToken->type == TokenType::ASSIGNMENT) {
+            const Token &token = *currentToken;
+            advance();
+
+            if (currentToken->type == TokenType::CARET) {
+                const Token &refToken = *currentToken;
+                advance();
+
+                if (currentToken->type != TokenType::IDENTIFIER)
+                    throw PSC::ExpectedTokenError(*currentToken, "identifier");
+                auto valueResolver = parseIdentifierExpression();
+
+                return create<PointerAssignNode>(refToken, std::move(resolver), std::move(valueResolver));
+            } else {
+                Node *expr = parseEvaluationExpression();
+                return create<AssignNode>(token, *expr, std::move(resolver));
+            }
+        } else {
+            return create<AccessNode>(identifier, std::move(resolver));
+        }
+
+        /*
+        else if (compareNextType(1, TokenType::ASSIGNMENT)) {
             return parseAssignmentExpression();
         } else if (compareNextType(1, TokenType::LSQRBRACKET)) {
             return parseArrayOperation();
@@ -149,6 +173,7 @@ Node *Parser::parseAtom() {
             advance();
             return node;
         }
+        */
     } else if (currentToken->type == TokenType::LPAREN) {
         advance();
         Node *expr = parseEvaluationExpression();

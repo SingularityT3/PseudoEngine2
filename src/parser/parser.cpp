@@ -109,6 +109,8 @@ Node *Parser::parseExpression() {
             return parseDeclareExpression();
         case TokenType::CONSTANT:
             return parseConstDeclareExpression();
+        case TokenType::TYPE:
+            return parseType();
         case TokenType::IF:
             return parseIfStatement();
         case TokenType::CASE:

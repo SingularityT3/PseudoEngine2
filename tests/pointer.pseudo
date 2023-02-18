@@ -1,0 +1,22 @@
+TYPE IntPtr = ^INTEGER
+
+DECLARE int : INTEGER
+DECLARE pointer : IntPtr
+
+int <- 8
+pointer <- ^int
+OUTPUT pointer^
+
+int <- 99
+OUTPUT pointer^
+
+pointer^ <- 47
+OUTPUT int, " ", pointer^
+
+TYPE IntPtr2 = ^IntPtr
+DECLARE pointer2 : IntPtr2
+
+pointer2 <- ^pointer
+OUTPUT pointer2^^
+
+pointer2^^ <- 24

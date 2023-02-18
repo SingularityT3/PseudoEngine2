@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.16)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-project(PseudoEngine2 VERSION 0.1)
+project(PseudoEngine2 VERSION 0.3)
 
 add_executable(PseudoEngine2)
 
@@ -34,17 +34,22 @@ target_sources(PseudoEngine2 PRIVATE
     src/nodes/functions/function.cpp
     src/nodes/selection/ifStatement.cpp
     src/nodes/selection/case.cpp
-    src/nodes/variable.cpp
-    src/nodes/array.cpp
+    src/nodes/variable/variable.cpp
+    src/nodes/variable/array.cpp
+    src/nodes/variable/enum.cpp
+    src/nodes/variable/pointer.cpp
+    src/nodes/variable/composite.cpp
+    src/nodes/variable/resolver.cpp
     src/nodes/cast.cpp
-    src/nodes/file.cpp
-    src/nodes/io.cpp
+    src/nodes/io/file.cpp
+    src/nodes/io/io.cpp
     src/nodes/nodeResult.cpp
     src/nodes/base.cpp
 
     src/parser/evalExprParser.cpp
     src/parser/variableExprParser.cpp
     src/parser/arrayOperationParser.cpp
+    src/parser/user_type.cpp
     src/parser/procedureParser.cpp
     src/parser/functionParser.cpp
     src/parser/selectionParser.cpp
@@ -55,6 +60,9 @@ target_sources(PseudoEngine2 PRIVATE
     src/psc/types/numeric.cpp
     src/psc/types/boolean.cpp
     src/psc/types/character.cpp
+    src/psc/types/user_type.cpp
+    src/psc/types/types.cpp
+    src/psc/types/type_definitions.cpp
     src/psc/types/type_names.cpp
     src/psc/scope/block.cpp
     src/psc/scope/context.cpp

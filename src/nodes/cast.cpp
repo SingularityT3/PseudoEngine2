@@ -1,5 +1,6 @@
 #include "pch.h"
 
+#include "psc/error.h"
 #include "nodes/cast.h"
 
 CastNode::CastNode(const Token &token, Node &node, PSC::DataType target)
@@ -9,26 +10,34 @@ CastNode::CastNode(const Token &token, Node &node, PSC::DataType target)
 std::unique_ptr<NodeResult> CastNode::evaluate(PSC::Context &ctx) {
     auto value = node.evaluate(ctx);
 
+    if (!value->data->isPrimitive())
+        throw PSC::TypeOperationError(token, ctx, "Cast");
     if (value->type == target) return value;
 
+    auto pvalue = static_cast<const PSC::Primitive*>(value->data.get());
+
     std::unique_ptr<PSC::Value> result;
-    switch(target) {
+    switch(target.type) {
         case PSC::DataType::INTEGER:
-            result = value->data->toInteger();
+            result = pvalue->toInteger();
             break;
         case PSC::DataType::REAL:
-            result = value->data->toReal();
+            result = pvalue->toReal();
             break;
         case PSC::DataType::BOOLEAN:
-            result = value->data->toBoolean();
+            result = pvalue->toBoolean();
             break;
         case PSC::DataType::CHAR:
-            result = value->data->toChar();
+            result = pvalue->toChar();
             break;
         case PSC::DataType::STRING:
-            result = value->data->toString();
+            result = pvalue->toString();
             break;
-        default:
+        case PSC::DataType::ENUM:
+        case PSC::DataType::POINTER:
+        case PSC::DataType::COMPOSITE:
+            throw PSC::TypeOperationError(token, ctx, "Cast");
+        case PSC::DataType::NONE:
             std::abort();
     }
 

@@ -5,7 +5,18 @@
 #include "psc/types/types.h"
 
 namespace PSC {
-    class Variable {
+    class DataHolder {
+    public:
+        const std::string name;
+
+        DataHolder(const std::string &name);
+
+        virtual ~DataHolder() = default;
+
+        virtual bool isArray() const = 0;
+    };
+
+    class Variable : public DataHolder {
     private:
         Value *data;
         bool reference;
@@ -17,7 +28,6 @@ namespace PSC {
         Variable(const std::string &name, PSC::DataType type, Value *data);
 
     public:
-        const std::string name;
         const PSC::DataType type;
         const bool isConstant;
 
@@ -25,10 +35,15 @@ namespace PSC {
 
         ~Variable();
 
+        constexpr bool isArray() const override {return false;}
+
         void set(Value *_data);
 
         template<std::derived_from<PSC::Value> T>
         T &get() { return *((T*) data); }
+
+        template<std::derived_from<PSC::Value> T>
+        T &getConst() const { return *((const T*) data); }
 
         Variable *createReference(const std::string &refName);
 

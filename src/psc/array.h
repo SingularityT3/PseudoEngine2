@@ -3,6 +3,7 @@
 #include <memory>
 #include <string>
 #include <concepts>
+#include "psc/types/types.h"
 #include "psc/variable.h"
 
 namespace PSC {
@@ -12,33 +13,32 @@ namespace PSC {
 
         ArrayDimension(int n, int_t lowerBound, int_t upperBound);
 
+        ArrayDimension(const ArrayDimension &other) = default;
+
         int_t getSize() const;
 
         bool isValidIndex(int_t idx) const;
     };
 
-    class Array {
+    class Array : public DataHolder {
     private:
-        std::vector<std::unique_ptr<Value>> data;
+        std::vector<std::unique_ptr<Variable>> data;
 
-        template<std::derived_from<Value> T>
-        void _init() {
-            size_t size = data.capacity();
-            for (size_t i = 0; i < size; i++) {
-                data.emplace_back(new T());
-            }
-        }
+        static const std::vector<ArrayDimension> copyDimensions(const std::vector<ArrayDimension> &source);
 
     public:
-        const std::string name;
         const DataType type;
         const std::vector<ArrayDimension> dimensions;
 
         Array(const std::string &name, DataType type, const std::vector<ArrayDimension> &dimensions);
 
+        Array(const Array &other);
+
+        constexpr bool isArray() const override {return true;}
+
         // Allocates memory for elements
         void init();
 
-        Value &getElement(const std::vector<int_t> &index);
+        Variable &getElement(const std::vector<int_t> &index);
     };
 };

@@ -69,6 +69,11 @@ namespace PSC {
         InvalidUsageError(const Token &token, const Context &context, const std::string &info);
     };
 
+    class TypeOperationError : public RuntimeError {
+    public:
+        TypeOperationError(const Token &token, const Context &context, const std::string &op);
+    };
+
     class RedeclarationError : public RuntimeError {
     public:
         RedeclarationError(const Token &token, const Context &context, const std::string &identifier);

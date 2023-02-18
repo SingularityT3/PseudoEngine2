@@ -70,6 +70,10 @@ const std::vector<Token*> Lexer::makeTokens() {
             tokens.emplace_back(new Token(TokenType::COMMA, line, column));
         } else if (currentChar == '&') {
             tokens.emplace_back(new Token(TokenType::AMPERSAND, line, column));
+        } else if (currentChar == '^') {
+            tokens.emplace_back(new Token(TokenType::CARET, line, column));
+        } else if (currentChar == '.') {
+            tokens.emplace_back(new Token(TokenType::PERIOD, line, column));
         } else if (currentChar == '\'') {
             makeChar();
             continue;

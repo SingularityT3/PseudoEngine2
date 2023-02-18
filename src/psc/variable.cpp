@@ -4,18 +4,20 @@
 
 using namespace PSC;
 
+DataHolder::DataHolder(const std::string &name) : name(name) {}
+
 Variable::Variable(const std::string &name, Variable *v)
-    : data(v->data), reference(true), name(name), type(v->type), isConstant(v->isConstant)
+    : DataHolder(name), data(v->data), reference(true), type(v->type), isConstant(v->isConstant)
 {}
 
 Variable::Variable(const std::string &name, PSC::DataType type, Value *data)
-    : data(data), reference(true), name(name), type(type), isConstant(false)
+    : DataHolder(name), data(data), reference(true), type(type), isConstant(false)
 {}
 
 Variable::Variable(const std::string &name, PSC::DataType type, bool isConstant, const Value *initialData)
-    : reference(false), name(name), type(type), isConstant(isConstant)
+    : DataHolder(name), reference(false), type(type), isConstant(isConstant)
 {
-    switch (type) {
+    switch (type.type) {
         case PSC::DataType::INTEGER:
             if (initialData == nullptr) data = new PSC::Integer();
             else data = new PSC::Integer(*((const PSC::Integer*) initialData));
@@ -36,7 +38,19 @@ Variable::Variable(const std::string &name, PSC::DataType type, bool isConstant,
             if (initialData == nullptr) data = new PSC::String();
             else data = new PSC::String(*((const PSC::String*) initialData));
             break;
-        default:
+        case PSC::DataType::ENUM:
+            if (initialData == nullptr) data = new PSC::Enum(*type.name);
+            else data = new PSC::Enum(*((const PSC::Enum*) initialData));
+            break;
+        case PSC::DataType::POINTER:
+            if (initialData == nullptr) data = new PSC::Pointer(*type.name);
+            else data = new PSC::Pointer(*((const PSC::Pointer*) initialData));
+            break;
+        case PSC::DataType::COMPOSITE:
+            if (initialData == nullptr) data = new PSC::Composite(*type.name);
+            else data = new PSC::Composite(*((const PSC::Composite*) initialData));
+            break;
+        case PSC::DataType::NONE:
             std::abort();
     }
 }

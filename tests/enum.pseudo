@@ -1,0 +1,18 @@
+TYPE StatusT = (Running, Stopped, Error)
+
+DECLARE status : StatusT
+status <- Running
+
+OUTPUT status
+
+TYPE StatusPointer = ^StatusT
+DECLARE ptr : StatusPointer
+ptr <- ^status
+ptr^ <- Stopped
+OUTPUT status
+
+IF status <> Error THEN
+    status <- Error
+ENDIF
+
+OUTPUT status

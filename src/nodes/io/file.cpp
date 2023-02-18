@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include "nodes/file.h"
+#include "nodes/io/file.h"
 #include "psc/error.h"
 #include "psc/file.h"
 
@@ -72,7 +72,7 @@ std::unique_ptr<NodeResult> WriteFileNode::evaluate(PSC::Context &ctx) {
 
     auto nodeRes = node.evaluate(ctx);
     std::unique_ptr<PSC::String> data;
-    switch (nodeRes->type) {
+    switch (nodeRes->type.type) {
         case PSC::DataType::INTEGER:
             data = nodeRes->get<PSC::Integer>().toString();
             break;
@@ -90,6 +90,10 @@ std::unique_ptr<NodeResult> WriteFileNode::evaluate(PSC::Context &ctx) {
             break;
         case PSC::DataType::NONE:
             throw PSC::RuntimeError(token, ctx, "Expected value for writing");
+        case PSC::DataType::ENUM:
+        case PSC::DataType::POINTER:
+        case PSC::DataType::COMPOSITE:
+            throw PSC::TypeOperationError(token, ctx, "Write");
     }
 
     file->write(*data);

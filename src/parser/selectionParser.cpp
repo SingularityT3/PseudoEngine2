@@ -55,7 +55,7 @@ Node *Parser::parseCaseStatement() {
 
     if (currentToken->type != TokenType::IDENTIFIER)
         throw PSC::ExpectedTokenError(*currentToken, "IDENTIFIER");
-    AccessNode *variable = create<AccessNode>(*currentToken);
+    AccessNode *variable = create<AccessNode>(*currentToken, std::make_unique<SimpleVariableSource>(*currentToken));
     advance();
 
     if (currentToken->type == TokenType::LINE_END) advance();
