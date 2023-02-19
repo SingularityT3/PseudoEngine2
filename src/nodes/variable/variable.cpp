@@ -3,45 +3,6 @@
 #include "psc/error.h"
 #include "nodes/variable/variable.h"
 
-PSC::DataType getType(const Token &token) {
-    if (token.type == TokenType::DATA_TYPE) {
-        if (token.value == "INTEGER") return PSC::DataType(PSC::DataType::INTEGER);
-        else if (token.value == "REAL") return PSC::DataType(PSC::DataType::REAL);
-        else if (token.value == "BOOLEAN") return PSC::DataType(PSC::DataType::BOOLEAN);
-        else if (token.value == "CHAR") return PSC::DataType(PSC::DataType::CHAR);
-        else if (token.value == "STRING") return PSC::DataType(PSC::DataType::STRING);
-        else std::abort();
-    } else if (token.type == TokenType::IDENTIFIER) {
-        auto *enumDefinition = PSC::TypeDefinitions::getEnumDefinition(token.value);
-        if (enumDefinition != nullptr)
-            return PSC::DataType(PSC::DataType::ENUM, &enumDefinition->name);
-        
-        auto *pointerDefinition = PSC::TypeDefinitions::getPointerDefinition(token.value);
-        if (pointerDefinition != nullptr)
-            return PSC::DataType(PSC::DataType::POINTER, &pointerDefinition->name);
-        
-        auto *compositeDefinition = PSC::TypeDefinitions::getCompositeDefinition(token.value);
-        if (compositeDefinition != nullptr)
-            return PSC::DataType(PSC::DataType::COMPOSITE, &compositeDefinition->name);
-        
-        return PSC::DataType(PSC::DataType::NONE);
-    }
-    std::abort();
-}
-
-bool isIdentifierType(const Token &token) {
-    PSC::DataType dataType = getType(token);
-    if (dataType != PSC::DataType::NONE)
-        return true;
-
-    std::unique_ptr<PSC::Enum> enumEl(PSC::TypeDefinitions::isEnumElement(token.value));
-    if (enumEl.get() != nullptr)
-        return true;
-
-    return false;
-}
-
-
 DeclareNode::DeclareNode(const Token &token, std::vector<const Token*> &&identifiers, const Token &type)
     : Node(token), identifiers(std::move(identifiers)), type(type)
 {}
@@ -51,14 +12,14 @@ std::unique_ptr<NodeResult> DeclareNode::evaluate(PSC::Context &ctx) {
         if (ctx.getVariable(identifier->value) != nullptr)
             throw PSC::RedeclarationError(token, ctx, identifier->value);
 
-        if (isIdentifierType(*identifier))
+        if (ctx.isIdentifierType(*identifier))
             throw PSC::RuntimeError(token, ctx, "Redefinition of type '" + identifier->value + "' as variable");
 
-        PSC::DataType dataType = getType(type);
+        PSC::DataType dataType = ctx.getType(type);
         if (dataType == PSC::DataType::NONE)
             throw PSC::NotDefinedError(token, ctx, "Type '" + type.value + "'");
 
-        ctx.addVariable(new PSC::Variable(identifier->value, dataType, false));
+        ctx.addVariable(new PSC::Variable(identifier->value, dataType, false, &ctx));
     }
 
     return std::make_unique<NodeResult>(nullptr, PSC::DataType::NONE);
@@ -75,7 +36,7 @@ std::unique_ptr<NodeResult> ConstDeclareNode::evaluate(PSC::Context &ctx) {
     if (ctx.getVariable(identifier.value) != nullptr)
         throw PSC::RedeclarationError(token, ctx, identifier.value);
 
-    ctx.addVariable(new PSC::Variable(identifier.value, value->type, true, value->data.get()));
+    ctx.addVariable(new PSC::Variable(identifier.value, value->type, true, &ctx, value->data.get()));
 
     return std::make_unique<NodeResult>(nullptr, PSC::DataType::NONE);
 }
@@ -98,9 +59,9 @@ std::unique_ptr<NodeResult> AssignNode::evaluate(PSC::Context &ctx) {
     } catch (PSC::NotDefinedError &e) {
         const SimpleVariableSource *simpleSource = dynamic_cast<const SimpleVariableSource*>(resolver.get());
         if (simpleSource == nullptr) throw e;
-        if (isIdentifierType(simpleSource->getToken())) throw e;
+        if (ctx.isIdentifierType(simpleSource->getToken())) throw e;
 
-        var = new PSC::Variable(simpleSource->getName(), valueRes->type, false);
+        var = new PSC::Variable(simpleSource->getName(), valueRes->type, false, &ctx);
         ctx.addVariable(var);
     }
 
@@ -152,7 +113,7 @@ std::unique_ptr<NodeResult> AccessNode::evaluate(PSC::Context &ctx) {
     try {
         holder = &resolver->resolve(ctx);
     } catch (PSC::NotDefinedError &e) {
-        auto def = PSC::TypeDefinitions::isEnumElement(token.value);
+        auto def = ctx.getEnumElement(token.value);
         if (def != nullptr)
             return std::make_unique<NodeResult>(def, PSC::DataType(PSC::DataType::ENUM, &def->definitionName));
         throw e;

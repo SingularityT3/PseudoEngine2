@@ -8,15 +8,15 @@ PointerDefineNode::PointerDefineNode(const Token &token, const Token &name, cons
     : Node(token), name(name), type(type) {}
 
 std::unique_ptr<NodeResult> PointerDefineNode::evaluate(PSC::Context &ctx) {
-    PSC::DataType pointerType = getType(type);
+    PSC::DataType pointerType = ctx.getType(type);
     if (pointerType == PSC::DataType::NONE)
         throw PSC::NotDefinedError(token, ctx, "Type '" + type.value + "'");
 
-    if (isIdentifierType(name))
+    if (ctx.isIdentifierType(name))
         throw PSC::RuntimeError(token, ctx, "Redefinition of type '" + name.value + "'");
 
     PSC::PointerTypeDefinition definition(name.value, pointerType);
-    PSC::TypeDefinitions::createPointerDefinition(std::move(definition));
+    ctx.createPointerDefinition(std::move(definition));
     return std::make_unique<NodeResult>(nullptr, PSC::DataType::NONE);
 }
 
@@ -45,7 +45,7 @@ std::unique_ptr<NodeResult> PointerAssignNode::evaluate(PSC::Context &ctx) {
         throw PSC::RuntimeError(token, ctx, "Cannot assign pointer to variable not of type pointer");
 
     auto &pointer = pointerVar.get<PSC::Pointer>();
-    auto &pointerType = pointer.getDefinition().type;
+    auto &pointerType = pointer.getDefinition(ctx).type;
     if (pointerType != value.type)
         throw PSC::RuntimeError(token, ctx, "Assignment Error: Incompatible data types");
     

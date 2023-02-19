@@ -17,6 +17,9 @@ namespace PSC {
         std::vector<std::unique_ptr<Array>> arrays;
         std::vector<std::unique_ptr<Procedure>> procedures;
         std::vector<std::unique_ptr<Function>> functions;
+        std::vector<std::unique_ptr<EnumTypeDefinition>> enums;
+        std::vector<std::unique_ptr<PointerTypeDefinition>> pointers;
+        std::vector<std::unique_ptr<CompositeTypeDefinition>> composites;
 
     public:
         const Token *switchToken = nullptr;
@@ -31,6 +34,9 @@ namespace PSC {
 
         // For copying composites
         explicit Context(const Context &other);
+
+        // Only for composites
+        void copyVariableData(const Context &other);
 
         static std::unique_ptr<Context> createGlobalContext();
 
@@ -53,5 +59,23 @@ namespace PSC {
         void addArray(std::unique_ptr<Array> &&array);
 
         Array *getArray(const std::string &arrayName);
+
+        PSC::DataType getType(const Token &token);
+
+        bool isIdentifierType(const Token &identifier);
+
+        Enum *getEnumElement(const std::string &value);
+
+        void createEnumDefinition(EnumTypeDefinition &&definition);
+
+        void createPointerDefinition(PointerTypeDefinition &&definition);
+
+        void createCompositeDefinition(CompositeTypeDefinition &&definition);
+
+        const EnumTypeDefinition *getEnumDefinition(const std::string &name);
+
+        const PointerTypeDefinition *getPointerDefinition(const std::string &name);
+
+        const CompositeTypeDefinition *getCompositeDefinition(const std::string &name);
     };
 }

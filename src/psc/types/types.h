@@ -17,6 +17,10 @@ namespace PSC {
     class Char;
     class String;
 
+    class Context;
+    class DataHolder;
+    class Variable;
+
     class Value {
     public:
         virtual ~Value() = default;
@@ -222,11 +226,10 @@ namespace PSC {
 
         void operator=(const Enum &other);
 
-        const EnumTypeDefinition &getDefinition() const;
+        const EnumTypeDefinition &getDefinition(Context &ctx) const;
     };
 
 
-    class Variable;
     class Pointer : public Custom {
     private:
         Variable *ptr = nullptr;
@@ -246,17 +249,15 @@ namespace PSC {
 
         Variable *getValue() const;
 
-        const PointerTypeDefinition &getDefinition() const;
+        const PointerTypeDefinition &getDefinition(Context &ctx) const;
     };
 
-    class DataHolder;
-    class Context;
     class Composite : public Custom {
     public:
         const std::string definitionName;
         std::unique_ptr<Context> ctx;
 
-        Composite(const std::string &name);
+        Composite(const std::string &name, Context &parent);
 
         Composite(const Composite &other);
 
@@ -264,6 +265,6 @@ namespace PSC {
 
         DataHolder *getMember(const std::string &name);
 
-        const CompositeTypeDefinition &getDefinition() const;
+        const CompositeTypeDefinition &getDefinition(Context &ctx) const;
     };
 }

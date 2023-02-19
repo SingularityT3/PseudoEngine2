@@ -34,6 +34,12 @@ Context::Context(const Context &other)
     copyPtrVector(other.functions, functions);
 }
 
+void Context::copyVariableData(const Context &other) {
+    for (size_t i = 0; i < variables.size(); i++) {
+        variables[i]->set(&other.variables[i]->get<Value>(), true);
+    }
+}
+
 std::unique_ptr<Context> Context::createGlobalContext() {
     auto ctx = std::make_unique<Context>(nullptr, "Program");
 
@@ -138,5 +144,93 @@ Array *Context::getArray(const std::string &arrayName) {
         }
     }
 
+    return nullptr;
+}
+
+PSC::DataType Context::getType(const Token &token) {
+    if (token.type == TokenType::DATA_TYPE) {
+        if (token.value == "INTEGER") return PSC::DataType(PSC::DataType::INTEGER);
+        else if (token.value == "REAL") return PSC::DataType(PSC::DataType::REAL);
+        else if (token.value == "BOOLEAN") return PSC::DataType(PSC::DataType::BOOLEAN);
+        else if (token.value == "CHAR") return PSC::DataType(PSC::DataType::CHAR);
+        else if (token.value == "STRING") return PSC::DataType(PSC::DataType::STRING);
+        else std::abort();
+    } else if (token.type == TokenType::IDENTIFIER) {
+        auto *enumDefinition = getEnumDefinition(token.value);
+        if (enumDefinition != nullptr)
+            return PSC::DataType(PSC::DataType::ENUM, &enumDefinition->name);
+        
+        auto *pointerDefinition = getPointerDefinition(token.value);
+        if (pointerDefinition != nullptr)
+            return PSC::DataType(PSC::DataType::POINTER, &pointerDefinition->name);
+        
+        auto *compositeDefinition = getCompositeDefinition(token.value);
+        if (compositeDefinition != nullptr)
+            return PSC::DataType(PSC::DataType::COMPOSITE, &compositeDefinition->name);
+        
+        return PSC::DataType(PSC::DataType::NONE);
+    }
+    std::abort();
+}
+
+bool Context::isIdentifierType(const Token &identifier) {
+    PSC::DataType dataType = getType(identifier);
+    if (dataType != PSC::DataType::NONE)
+        return true;
+
+    std::unique_ptr<PSC::Enum> enumEl(getEnumElement(identifier.value));
+    if (enumEl.get() != nullptr)
+        return true;
+
+    return false;
+}
+
+Enum *Context::getEnumElement(const std::string &value) {
+    for (auto &definition : enums) {
+        for (size_t i = 0; i < definition->values.size(); i++) {
+            if (definition->values[i] == value) {
+                auto ptr = new Enum(definition->name);
+                ptr->value = &definition->values[i];
+                return ptr;
+            }
+        }
+    }
+    if (parent != nullptr) return parent->getEnumElement(value);
+    return nullptr;
+}
+
+void Context::createEnumDefinition(EnumTypeDefinition &&definition) {
+    enums.emplace_back(std::make_unique<EnumTypeDefinition>(std::move(definition)));
+}
+
+void Context::createPointerDefinition(PointerTypeDefinition &&definition) {
+    pointers.emplace_back(std::make_unique<PointerTypeDefinition>(std::move(definition)));
+}
+
+void Context::createCompositeDefinition(CompositeTypeDefinition &&definition) {
+    composites.emplace_back(std::make_unique<CompositeTypeDefinition>(std::move(definition)));
+}
+
+const EnumTypeDefinition *Context::getEnumDefinition(const std::string &name) {
+    for (const auto &e : enums) {
+        if (e->name == name) return e.get();
+    }
+    if (parent != nullptr) return parent->getEnumDefinition(name);
+    return nullptr;
+}
+
+const PointerTypeDefinition *Context::getPointerDefinition(const std::string &name) {
+    for (const auto &p : pointers) {
+        if (p->name == name) return p.get();
+    }
+    if (parent != nullptr) return parent->getPointerDefinition(name);
+    return nullptr;
+}
+
+const CompositeTypeDefinition *Context::getCompositeDefinition(const std::string &name) {
+    for (const auto &c : composites) {
+        if (c->name == name) return c.get();
+    }
+    if (parent != nullptr) return parent->getCompositeDefinition(name);
     return nullptr;
 }

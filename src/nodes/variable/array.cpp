@@ -40,12 +40,12 @@ std::unique_ptr<NodeResult> ArrayDeclareNode::evaluate(PSC::Context &ctx) {
     }
 
     for (auto identifier : identifiers) {
-        PSC::DataType dataType = getType(type);
+        PSC::DataType dataType = ctx.getType(type);
         if (dataType.type == PSC::DataType::NONE)
             throw PSC::NotDefinedError(token, ctx, "Type '" + type.value + "'");
 
         auto array = std::make_unique<PSC::Array>(identifier->value, dataType, dimensions);
-        array->init();
+        array->init(ctx);
         ctx.addArray(std::move(array));
     }
 

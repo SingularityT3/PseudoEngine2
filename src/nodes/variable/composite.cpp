@@ -8,10 +8,10 @@ CompositeDefineNode::CompositeDefineNode(const Token &token, const Token &name, 
     : Node(token), name(name), initBlock(initBlock) {}
 
 std::unique_ptr<NodeResult> CompositeDefineNode::evaluate(PSC::Context &ctx) {
-    if (isIdentifierType(name))
+    if (ctx.isIdentifierType(name))
         throw PSC::RuntimeError(token, ctx, "Redefinition of type '" + name.value + "'");
     
     PSC::CompositeTypeDefinition definition(name.value, initBlock);
-    PSC::TypeDefinitions::createCompositeDefinition(std::move(definition));
+    ctx.createCompositeDefinition(std::move(definition));
     return std::make_unique<NodeResult>(nullptr, PSC::DataType::NONE);
 }

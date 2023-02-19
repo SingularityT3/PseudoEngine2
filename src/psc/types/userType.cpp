@@ -13,8 +13,8 @@ void Enum::operator=(const Enum &other) {
     value = other.value;
 }
 
-const EnumTypeDefinition &Enum::getDefinition() const {
-    return *PSC::TypeDefinitions::getEnumDefinition(definitionName);
+const EnumTypeDefinition &Enum::getDefinition(Context &ctx) const {
+    return *ctx.getEnumDefinition(definitionName);
 }
 
 Pointer::Pointer(const std::string &name)
@@ -33,15 +33,15 @@ Variable *Pointer::getValue() const {
     return ptr;
 }
 
-const PointerTypeDefinition &Pointer::getDefinition() const {
-    return *PSC::TypeDefinitions::getPointerDefinition(definitionName);
+const PointerTypeDefinition &Pointer::getDefinition(Context &ctx) const {
+    return *ctx.getPointerDefinition(definitionName);
 }
 
-Composite::Composite(const std::string &name)
+Composite::Composite(const std::string &name, Context &parent)
     : definitionName(name),
-    ctx(std::make_unique<Context>(nullptr, definitionName))
+    ctx(std::make_unique<Context>(&parent, definitionName))
 {
-    getDefinition().initBlock.run(*ctx);
+    getDefinition(*ctx).initBlock.run(*ctx);
 }
 
 Composite::Composite(const Composite &other)
@@ -51,7 +51,8 @@ Composite::Composite(const Composite &other)
 
 void Composite::operator=(const Composite &other) {
     if (definitionName != other.definitionName) std::abort();
-    ctx = std::make_unique<Context>(*other.ctx);
+    // ctx = std::make_unique<Context>(*other.ctx);
+    ctx->copyVariableData(*other.ctx);
 }
 
 DataHolder *Composite::getMember(const std::string &name) {
@@ -62,6 +63,6 @@ DataHolder *Composite::getMember(const std::string &name) {
     return arr;
 }
 
-const CompositeTypeDefinition &Composite::getDefinition() const {
-    return *PSC::TypeDefinitions::getCompositeDefinition(definitionName);
+const CompositeTypeDefinition &Composite::getDefinition(PSC::Context &ctx) const {
+    return *ctx.getCompositeDefinition(definitionName);
 }

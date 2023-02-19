@@ -49,7 +49,7 @@ target_sources(PseudoEngine2 PRIVATE
     src/parser/evalExprParser.cpp
     src/parser/variableExprParser.cpp
     src/parser/arrayOperationParser.cpp
-    src/parser/user_type.cpp
+    src/parser/userType.cpp
     src/parser/procedureParser.cpp
     src/parser/functionParser.cpp
     src/parser/selectionParser.cpp
@@ -60,7 +60,7 @@ target_sources(PseudoEngine2 PRIVATE
     src/psc/types/numeric.cpp
     src/psc/types/boolean.cpp
     src/psc/types/character.cpp
-    src/psc/types/user_type.cpp
+    src/psc/types/userType.cpp
     src/psc/types/types.cpp
     src/psc/types/type_definitions.cpp
     src/psc/types/type_names.cpp

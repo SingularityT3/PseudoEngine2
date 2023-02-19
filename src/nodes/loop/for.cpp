@@ -16,7 +16,7 @@ ForLoopNode::ForLoopNode(const Token &token, const Token &identifier, Node &star
 std::unique_ptr<NodeResult> ForLoopNode::evaluate(PSC::Context &ctx) {
     PSC::Variable *iterator = ctx.getVariable(identifier.value);
     if (iterator == nullptr) {
-        iterator = new PSC::Variable(identifier.value, PSC::DataType::INTEGER, false);
+        iterator = new PSC::Variable(identifier.value, PSC::DataType::INTEGER, false, &ctx);
         ctx.addVariable(iterator);
     }
 

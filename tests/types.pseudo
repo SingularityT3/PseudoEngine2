@@ -18,6 +18,9 @@ otherObj.number <- 2
 
 OUTPUT obj.number, " ", obj.array[2], " ", obj.ptr^
 
+otherObj <- obj
+OUTPUT otherObj.number, " ", obj.ptr^
+
 TYPE CustomTypePtr = ^CustomType
 DECLARE cptr : CustomTypePtr
 DECLARE enum1 : Enum

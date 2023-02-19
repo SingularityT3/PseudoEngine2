@@ -31,7 +31,7 @@ namespace PSC {
         const PSC::DataType type;
         const bool isConstant;
 
-        Variable(const std::string &name, PSC::DataType type, bool isConstant, const Value *initialData = nullptr);
+        Variable(const std::string &name, PSC::DataType type, bool isConstant, Context *ctx, const Value *initialData = nullptr);
 
         Variable(const Variable &other);
 
@@ -39,7 +39,7 @@ namespace PSC {
 
         constexpr bool isArray() const override {return false;}
 
-        void set(Value *_data);
+        void set(Value *_data, bool copy = false);
 
         template<std::derived_from<PSC::Value> T>
         T &get() { return *((T*) data); }

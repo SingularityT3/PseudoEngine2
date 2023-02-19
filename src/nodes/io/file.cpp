@@ -36,7 +36,7 @@ std::unique_ptr<NodeResult> ReadFileNode::evaluate(PSC::Context &ctx) {
     
     PSC::Variable *var = ctx.getVariable(identifier.value);
     if (var == nullptr) {
-        var = new PSC::Variable(identifier.value, PSC::DataType::STRING, false);
+        var = new PSC::Variable(identifier.value, PSC::DataType::STRING, false, &ctx);
         ctx.addVariable(var);
     }
     if (var->type != PSC::DataType::STRING)

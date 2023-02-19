@@ -37,7 +37,7 @@ namespace PSC {
         constexpr bool isArray() const override {return true;}
 
         // Allocates memory for elements
-        void init();
+        void init(Context &ctx);
 
         Variable &getElement(const std::vector<int_t> &index);
     };

@@ -2,10 +2,6 @@
 #include "nodes/base.h"
 #include "nodes/variable/resolver.h"
 
-PSC::DataType getType(const Token &token);
-
-bool isIdentifierType(const Token &token);
-
 class DeclareNode : public Node {
 private:
     const std::vector<const Token*> identifiers;

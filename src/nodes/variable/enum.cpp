@@ -8,10 +8,10 @@ EnumDefineNode::EnumDefineNode(const Token &token, const Token &name, std::vecto
     : Node(token), name(name), values(std::move(values)) {}
 
 std::unique_ptr<NodeResult> EnumDefineNode::evaluate(PSC::Context &ctx) {
-    if (isIdentifierType(name))
+    if (ctx.isIdentifierType(name))
         throw PSC::RuntimeError(token, ctx, "Redefinition of type '" + name.value + "'");
 
     PSC::EnumTypeDefinition definition(name.value, std::move(values));
-    PSC::TypeDefinitions::createEnumDefinition(std::move(definition));
+    ctx.createEnumDefinition(std::move(definition));
     return std::make_unique<NodeResult>(nullptr, PSC::DataType::NONE);
 }

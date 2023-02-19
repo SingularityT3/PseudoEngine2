@@ -37,7 +37,7 @@ const std::vector<ArrayDimension> Array::copyDimensions(const std::vector<ArrayD
     return copy;
 }
 
-void Array::init() {
+void Array::init(Context &ctx) {
     unsigned long size = 1;
     for (auto &dim : dimensions) {
         size *= dim.getSize();
@@ -47,7 +47,7 @@ void Array::init() {
 
     size_t capacity = data.capacity();
     for (size_t i = 0; i < capacity; i++) {
-        data.emplace_back(new Variable(name, type, false));
+        data.emplace_back(new Variable(name, type, false, &ctx));
     }
 }
 
