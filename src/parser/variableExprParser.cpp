@@ -44,8 +44,8 @@ Node *Parser::parseConstDeclareExpression() {
     const Token &identifier = *currentToken;
     advance();
 
-    if (currentToken->type != TokenType::EQUALS)
-        throw PSC::ExpectedTokenError(*currentToken, "'='");
+    if (currentToken->type != TokenType::EQUALS && currentToken->type != TokenType::ASSIGNMENT)
+        throw PSC::ExpectedTokenError(*currentToken, "'=' or '<-'");
     advance();
 
     Node *value;
@@ -64,7 +64,7 @@ Node *Parser::parseConstDeclareExpression() {
     } else if (currentToken->type == TokenType::STRING) {
         value = parseLiteral<StringNode>();
     } else {
-        throw PSC::ExpectedTokenError(*currentToken, "Integer, Real or Boolean literal"); 
+        throw PSC::ExpectedTokenError(*currentToken, " literal"); 
     }
 
     if (negative) value = create<NegateNode>(minusToken, *value);
