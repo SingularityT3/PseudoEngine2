@@ -33,6 +33,8 @@ namespace PSC {
 
         Variable(const std::string &name, PSC::DataType type, bool isConstant, const Value *initialData = nullptr);
 
+        Variable(const Variable &other);
+
         ~Variable();
 
         constexpr bool isArray() const override {return false;}

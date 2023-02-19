@@ -55,6 +55,10 @@ Variable::Variable(const std::string &name, PSC::DataType type, bool isConstant,
     }
 }
 
+Variable::Variable(const Variable &other)
+    : Variable(other.name, other.type, other.isConstant, other.data)
+{}
+
 Variable::~Variable() {
     if (!reference) delete data;
 }
