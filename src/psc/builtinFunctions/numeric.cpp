@@ -7,9 +7,8 @@
 
 
 PSC::BuiltinFnRand::BuiltinFnRand()
-    : Function("RAND")
+    : Function("RAND", PSC::DataType::REAL)
 {
-    returnType = PSC::DataType::REAL;
     parameters.emplace_back("x", PSC::DataType::INTEGER);
 }
 
@@ -25,9 +24,8 @@ void PSC::BuiltinFnRand::run(PSC::Context &ctx) {
 
 
 PSC::BuiltinFnInt::BuiltinFnInt()
-    : Function("INT")
+    : Function("INT", PSC::DataType::INTEGER)
 {
-    returnType = PSC::DataType::INTEGER;
     parameters.emplace_back("x", PSC::DataType::REAL);
 }
 

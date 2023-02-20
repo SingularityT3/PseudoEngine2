@@ -41,26 +41,25 @@ Node *Parser::parseProcedure() {
 
     if (currentToken->type != TokenType::IDENTIFIER)
         throw PSC::ExpectedTokenError(*currentToken, "identifier");
-    const Token &identifier = *currentToken;
+    const std::string &procedureName = currentToken->value;
     advance();
 
-    PSC::Procedure *procedure = new PSC::Procedure(identifier.value);
-    procedure->byRef = false;
-
-    ProcedureNode *node = create<ProcedureNode>(procedureToken, procedure);
+    bool byRef = false;
+    std::vector<std::string> parameterNames;
+    std::vector<const Token*> parameterTypes;
 
     if (currentToken->type == TokenType::LPAREN) {
         advance();
 
         if (currentToken->type == TokenType::BYREF) {
-            procedure->byRef = true;
+            byRef = true;
             advance();
         } else if (currentToken->type == TokenType::BYVAL) {
             advance();
         }
 
         while (currentToken->type != TokenType::RPAREN) {
-            if (procedure->parameters.size() > 0) {
+            if (parameterNames.size() > 0) {
                 if (currentToken->type != TokenType::COMMA)
                     throw PSC::ExpectedTokenError(*currentToken, "','");
                 advance();
@@ -75,13 +74,13 @@ Node *Parser::parseProcedure() {
                 throw PSC::ExpectedTokenError(*currentToken, "':'");
             advance();
 
-            if (currentToken->type != TokenType::DATA_TYPE)
+            if (currentToken->type != TokenType::DATA_TYPE && currentToken->type != TokenType::IDENTIFIER)
                 throw PSC::ExpectedTokenError(*currentToken, "data type");
-
-            PSC::DataType type = getPSCType();
+            const Token *type = currentToken;
             advance();
 
-            procedure->parameters.emplace_back(paramName, type);
+            parameterNames.emplace_back(paramName);
+            parameterTypes.emplace_back(type);
         }
         advance();
     }
@@ -91,7 +90,12 @@ Node *Parser::parseProcedure() {
         throw PSC::ExpectedTokenError(*currentToken, "'ENDPROCEDURE'");
     advance();
 
-    procedure->block = block;
-
-    return node;
+    return create<ProcedureNode>(
+        procedureToken,
+        procedureName,
+        std::move(parameterNames),
+        std::move(parameterTypes),
+        byRef,
+        *block
+    );
 }

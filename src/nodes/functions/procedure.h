@@ -1,13 +1,26 @@
 #pragma once
+#include <string>
+#include <vector>
 #include "nodes/base.h"
-#include "psc/procedure.h"
+#include "psc/scope/block.h"
 
 class ProcedureNode : public Node {
 private:
-    std::unique_ptr<PSC::Procedure> procedure;
+    const std::string procedureName;
+    const std::vector<std::string> parameterNames;
+    const std::vector<const Token*> parameterTypes;
+    const bool byRef;
+    PSC::Block &block;
 
 public:
-    ProcedureNode(const Token &token, PSC::Procedure *procedure);
+    ProcedureNode(
+        const Token &token,
+        const std::string &procedureName,
+        std::vector<std::string> &&parameterNames,
+        std::vector<const Token*> &&parameterTypes,
+        bool byRef,
+        PSC::Block &block
+    );
 
     // Adds procedure to ctx
     std::unique_ptr<NodeResult> evaluate(PSC::Context &ctx) override;

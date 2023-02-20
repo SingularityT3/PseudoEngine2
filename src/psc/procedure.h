@@ -18,8 +18,15 @@ namespace PSC {
     struct Procedure {
         const std::string name;
         std::vector<Parameter> parameters;
-        bool byRef = false;
-        PSC::Block *block;
+        const bool byRef;
+        PSC::Block *const block;
+
+        Procedure(
+            const std::string &name,
+            std::vector<Parameter> &&parameters,
+            bool byRef,
+            PSC::Block *block
+        );
 
         Procedure(const std::string &name);
 
@@ -31,9 +38,19 @@ namespace PSC {
     };
 
     struct Function : public Procedure {
-        PSC::DataType returnType;
+        const PSC::DataType returnType;
         const Token *defToken; // For throwing 'missing return' errors
 
-        using Procedure::Procedure;
+        Function(
+            const std::string &name,
+            std::vector<Parameter> &&parameters,
+            bool byRef,
+            PSC::Block *block,
+            PSC::DataType returnType,
+            const Token *defToken
+        );
+
+        // Builtin functions
+        Function(const std::string &name, PSC::DataType returnType);
     };
 };

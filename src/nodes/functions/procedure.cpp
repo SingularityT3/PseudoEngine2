@@ -6,14 +6,38 @@
 #include "nodes/variable/array.h"
 #include "nodes/functions/procedure.h"
 
-ProcedureNode::ProcedureNode(const Token &token, PSC::Procedure *procedure)
-    : Node(token), procedure(procedure)
+ProcedureNode::ProcedureNode(
+    const Token &token,
+    const std::string &procedureName,
+    std::vector<std::string> &&parameterNames,
+    std::vector<const Token*> &&parameterTypes,
+    bool byRef,
+    PSC::Block &block
+)
+: Node(token),
+    procedureName(procedureName),
+    parameterNames(std::move(parameterNames)),
+    parameterTypes(std::move(parameterTypes)),
+    byRef(byRef),
+    block(block)
 {}
 
 std::unique_ptr<NodeResult> ProcedureNode::evaluate(PSC::Context &ctx) {
-    if (ctx.getProcedure(procedure->name) != nullptr)
-        throw PSC::RedeclarationError(token, ctx, procedure->name);
+    if (ctx.getProcedure(procedureName) != nullptr)
+        throw PSC::RedeclarationError(token, ctx, procedureName);
 
+    size_t parametersSize = parameterNames.size();
+    std::vector<PSC::Parameter> parameters;
+    parameters.reserve(parametersSize);
+    for (size_t i = 0; i < parametersSize; i++) {
+        const Token *typeToken = parameterTypes[i];
+        PSC::DataType type = ctx.getType(*typeToken);
+        if (type == PSC::DataType::NONE)
+            throw PSC::NotDefinedError(*typeToken, ctx, "Type '" + typeToken->value + "'");
+        parameters.emplace_back(parameterNames[i], type);
+    }
+
+    auto procedure = std::make_unique<PSC::Procedure>(procedureName, std::move(parameters), byRef, &block);
     ctx.addProcedure(std::move(procedure));
 
     return std::make_unique<NodeResult>(nullptr, PSC::DataType::NONE);

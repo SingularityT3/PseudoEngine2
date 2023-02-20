@@ -8,27 +8,26 @@ Node *Parser::parseFunction() {
 
     if (currentToken->type != TokenType::IDENTIFIER)
         throw PSC::ExpectedTokenError(*currentToken, "identifier");
-    const Token &identifier = *currentToken;
+    const std::string &functionName = currentToken->value;
     advance();
 
-    PSC::Function *function = new PSC::Function(identifier.value);
-    function->defToken = &functionToken;
-    function->byRef = false;
-
-    FunctionNode *node = create<FunctionNode>(functionToken, function);
+    bool byRef = false;
+    std::vector<std::string> parameterNames;
+    std::vector<const Token*> parameterTypes;
+    const Token *returnType;
 
     if (currentToken->type == TokenType::LPAREN) {
         advance();
 
         if (currentToken->type == TokenType::BYREF) {
-            function->byRef = true;
+            byRef = true;
             advance();
         } else if (currentToken->type == TokenType::BYVAL) {
             advance();
         }
 
         while (currentToken->type != TokenType::RPAREN) {
-            if (function->parameters.size() > 0) {
+            if (parameterNames.size() > 0) {
                 if (currentToken->type != TokenType::COMMA)
                     throw PSC::ExpectedTokenError(*currentToken, "','");
                 advance();
@@ -43,13 +42,13 @@ Node *Parser::parseFunction() {
                 throw PSC::ExpectedTokenError(*currentToken, "':'");
             advance();
 
-            if (currentToken->type != TokenType::DATA_TYPE)
+            if (currentToken->type != TokenType::DATA_TYPE && currentToken->type != TokenType::IDENTIFIER)
                 throw PSC::ExpectedTokenError(*currentToken, "data type");
-
-            PSC::DataType type = getPSCType();
+            const Token *type = currentToken;
             advance();
 
-            function->parameters.emplace_back(paramName, type);
+            parameterNames.emplace_back(paramName);
+            parameterTypes.emplace_back(type);
         }
         advance();
     }
@@ -59,10 +58,9 @@ Node *Parser::parseFunction() {
         throw PSC::ExpectedTokenError(*currentToken, "'RETURNS'");
     advance();
 
-    if (currentToken->type != TokenType::DATA_TYPE)
+    if (currentToken->type != TokenType::DATA_TYPE && currentToken->type != TokenType::IDENTIFIER)
         throw PSC::ExpectedTokenError(*currentToken, "data type");
-
-    function->returnType = getPSCType();
+    returnType = currentToken;
     advance();
 
     PSC::Block *block = parseBlock();
@@ -70,9 +68,15 @@ Node *Parser::parseFunction() {
         throw PSC::ExpectedTokenError(*currentToken, "'ENDFUNCTION'");
     advance();
 
-    function->block = block;
-
-    return node;
+    return create<FunctionNode>(
+        functionToken,
+        functionName,
+        std::move(parameterNames),
+        std::move(parameterTypes),
+        byRef,
+        *block,
+        *returnType
+    );
 }
 
 Node *Parser::parseFunctionCall() {

@@ -6,14 +6,44 @@
 #include "nodes/variable/array.h"
 #include "nodes/functions/function.h"
 
-FunctionNode::FunctionNode(const Token &token, PSC::Function *function)
-    : Node(token), function(function)
+FunctionNode::FunctionNode(
+    const Token &token,
+    const std::string &functionName,
+    std::vector<std::string> &&parameterNames,
+    std::vector<const Token*> &&parameterTypes,
+    bool byRef,
+    PSC::Block &block,
+    const Token &returnType
+)
+: Node(token),
+    functionName(functionName),
+    parameterNames(std::move(parameterNames)),
+    parameterTypes(std::move(parameterTypes)),
+    byRef(byRef),
+    block(block),
+    returnType(returnType)
 {}
 
 std::unique_ptr<NodeResult> FunctionNode::evaluate(PSC::Context &ctx) {
-    if (ctx.getFunction(function->name) != nullptr)
-        throw PSC::RedeclarationError(token, ctx, function->name);
+    if (ctx.getFunction(functionName) != nullptr)
+        throw PSC::RedeclarationError(token, ctx, functionName);
 
+    PSC::DataType returnDataType = ctx.getType(returnType);
+    if (returnDataType == PSC::DataType::NONE)
+        throw PSC::NotDefinedError(returnType, ctx, "Type '" + returnType.value + "'");
+
+    size_t parametersSize = parameterNames.size();
+    std::vector<PSC::Parameter> parameters;
+    parameters.reserve(parametersSize);
+    for (size_t i = 0; i < parametersSize; i++) {
+        const Token *typeToken = parameterTypes[i];
+        PSC::DataType type = ctx.getType(*typeToken);
+        if (type == PSC::DataType::NONE)
+            throw PSC::NotDefinedError(*typeToken, ctx, "Type '" + typeToken->value + "'");
+        parameters.emplace_back(parameterNames[i], type);
+    }
+
+    auto function = std::make_unique<PSC::Function>(functionName, std::move(parameters), byRef, &block, returnDataType, &token);
     ctx.addFunction(std::move(function));
 
     return std::make_unique<NodeResult>(nullptr, PSC::DataType::NONE);

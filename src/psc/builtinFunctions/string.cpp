@@ -8,9 +8,8 @@
 #include "psc/builtinFunctions/functions.h"
 
 PSC::BuiltinFnLength::BuiltinFnLength()
-    : Function("LENGTH")
+    : Function("LENGTH", PSC::DataType::INTEGER)
 {
-    returnType = PSC::DataType::INTEGER;
     parameters.emplace_back("String", PSC::DataType::STRING);
 }
 
@@ -26,9 +25,8 @@ void PSC::BuiltinFnLength::run(PSC::Context &ctx) {
 
 
 PSC::BuiltinFnRight::BuiltinFnRight()
-    : Function("RIGHT")
+    : Function("RIGHT", PSC::DataType::STRING)
 {
-    returnType = PSC::DataType::STRING;
     parameters.reserve(2);
     parameters.emplace_back("String", PSC::DataType::STRING);
     parameters.emplace_back("x", PSC::DataType::INTEGER);
@@ -56,9 +54,8 @@ void PSC::BuiltinFnRight::run(PSC::Context &ctx) {
 
 
 PSC::BuiltinFnMid::BuiltinFnMid()
-    : Function("MID")
+    : Function("MID", PSC::DataType::STRING)
 {
-    returnType = PSC::DataType::STRING;
     parameters.reserve(3);
     parameters.emplace_back("String", PSC::DataType::STRING);
     parameters.emplace_back("x", PSC::DataType::INTEGER);
@@ -91,9 +88,8 @@ void PSC::BuiltinFnMid::run(PSC::Context &ctx) {
 
 
 PSC::BuiltinFnLeft::BuiltinFnLeft()
-    : Function("LEFT")
+    : Function("LEFT", PSC::DataType::STRING)
 {
-    returnType = PSC::DataType::STRING;
     parameters.reserve(2);
     parameters.emplace_back("String", PSC::DataType::STRING);
     parameters.emplace_back("x", PSC::DataType::INTEGER);
@@ -118,9 +114,8 @@ void PSC::BuiltinFnLeft::run(PSC::Context &ctx) {
 
 
 PSC::BuiltinFnToUpper::BuiltinFnToUpper()
-    : Function("TO_UPPER")
+    : Function("TO_UPPER", PSC::DataType::STRING)
 {
-    returnType = PSC::DataType::STRING;
     parameters.emplace_back("String", PSC::DataType::STRING);
 }
 
@@ -138,9 +133,8 @@ void PSC::BuiltinFnToUpper::run(PSC::Context &ctx) {
 
 
 PSC::BuiltinFnToLower::BuiltinFnToLower()
-    : Function("TO_LOWER")
+    : Function("TO_LOWER", PSC::DataType::STRING)
 {
-    returnType = PSC::DataType::STRING;
     parameters.emplace_back("String", PSC::DataType::STRING);
 }
 
@@ -158,9 +152,8 @@ void PSC::BuiltinFnToLower::run(PSC::Context &ctx) {
 
 
 PSC::BuiltinFnNumToStr::BuiltinFnNumToStr()
-    : Function("NUM_TO_STR")
+    : Function("NUM_TO_STR", PSC::DataType::STRING)
 {
-    returnType = PSC::DataType::STRING;
     parameters.emplace_back("x", PSC::DataType::REAL);
 }
 
@@ -175,9 +168,8 @@ void PSC::BuiltinFnNumToStr::run(PSC::Context &ctx) {
 
 
 PSC::BuiltinFnStrToNum::BuiltinFnStrToNum()
-    : Function("STR_TO_NUM")
+    : Function("STR_TO_NUM", PSC::DataType::REAL)
 {
-    returnType = PSC::DataType::REAL;
     parameters.emplace_back("String", PSC::DataType::STRING);
 }
 
@@ -192,9 +184,8 @@ void PSC::BuiltinFnStrToNum::run(PSC::Context &ctx) {
 
 
 PSC::BuiltinFnIsNum::BuiltinFnIsNum()
-    : Function("IS_NUM")
+    : Function("IS_NUM", PSC::DataType::BOOLEAN)
 {
-    returnType = PSC::DataType::BOOLEAN;
     parameters.emplace_back("String", PSC::DataType::STRING);
 }
 
@@ -226,9 +217,8 @@ void PSC::BuiltinFnIsNum::run(PSC::Context &ctx) {
 Token PSC::BuiltinFnEOF::errToken {TokenType::FUNCTION, 0, 0};
 
 PSC::BuiltinFnEOF::BuiltinFnEOF()
-    : Function("EOF")
+    : Function("EOF", PSC::DataType::BOOLEAN)
 {
-    returnType = PSC::DataType::BOOLEAN;
     parameters.emplace_back("File", PSC::DataType::STRING);
 }
 

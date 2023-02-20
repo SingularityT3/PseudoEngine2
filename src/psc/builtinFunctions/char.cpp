@@ -6,9 +6,8 @@
 #include "psc/builtinFunctions/functions.h"
 
 PSC::BuiltinFnLCase::BuiltinFnLCase()
-    : Function("LCASE")
+    : Function("LCASE", PSC::DataType::CHAR)
 {
-    returnType = PSC::DataType::CHAR;
     parameters.emplace_back("Char", PSC::DataType::CHAR);
 }
 
@@ -24,9 +23,8 @@ void PSC::BuiltinFnLCase::run(PSC::Context &ctx) {
 
 
 PSC::BuiltinFnUCase::BuiltinFnUCase()
-    : Function("UCASE")
+    : Function("UCASE", PSC::DataType::CHAR)
 {
-    returnType = PSC::DataType::CHAR;
     parameters.emplace_back("Char", PSC::DataType::CHAR);
 }
 
@@ -42,9 +40,8 @@ void PSC::BuiltinFnUCase::run(PSC::Context &ctx) {
 
 
 PSC::BuiltinFnASC::BuiltinFnASC()
-    : Function("ASC")
+    : Function("ASC", PSC::DataType::INTEGER)
 {
-    returnType = PSC::DataType::INTEGER;
     parameters.emplace_back("Char", PSC::DataType::CHAR);
 }
 
@@ -60,9 +57,8 @@ void PSC::BuiltinFnASC::run(PSC::Context &ctx) {
 
 
 PSC::BuiltinFnCHR::BuiltinFnCHR()
-    : Function("CHR")
+    : Function("CHR", PSC::DataType::CHAR)
 {
-    returnType = PSC::DataType::CHAR;
     parameters.emplace_back("x", PSC::DataType::INTEGER);
 }
 

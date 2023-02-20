@@ -5,9 +5,8 @@
 #include "psc/scope/context.h"
 
 PSC::BuiltinFnPow::BuiltinFnPow()
-    : Function("POW")
+    : Function("POW", PSC::DataType::REAL)
 {
-    returnType = PSC::DataType::REAL;
     parameters.emplace_back("x", PSC::DataType::REAL);
     parameters.emplace_back("y", PSC::DataType::REAL);
 }
@@ -27,9 +26,8 @@ void PSC::BuiltinFnPow::run(PSC::Context &ctx) {
 }
 
 PSC::BuiltinFnExp::BuiltinFnExp()
-    : Function("EXP")
+    : Function("EXP", PSC::DataType::REAL)
 {
-    returnType = PSC::DataType::REAL;
     parameters.emplace_back("x", PSC::DataType::REAL);
 }
 
@@ -44,9 +42,8 @@ void PSC::BuiltinFnExp::run(PSC::Context &ctx) {
 }
 
 PSC::BuiltinFnSin::BuiltinFnSin()
-    : Function("SIN")
+    : Function("SIN", PSC::DataType::REAL)
 {
-    returnType = PSC::DataType::REAL;
     parameters.emplace_back("x", PSC::DataType::REAL);
 }
 
@@ -61,9 +58,8 @@ void PSC::BuiltinFnSin::run(PSC::Context &ctx) {
 }
 
 PSC::BuiltinFnCos::BuiltinFnCos()
-    : Function("COS")
+    : Function("COS", PSC::DataType::REAL)
 {
-    returnType = PSC::DataType::REAL;
     parameters.emplace_back("x", PSC::DataType::REAL);
 }
 
@@ -78,9 +74,8 @@ void PSC::BuiltinFnCos::run(PSC::Context &ctx) {
 }
 
 PSC::BuiltinFnTan::BuiltinFnTan()
-    : Function("TAN")
+    : Function("TAN", PSC::DataType::REAL)
 {
-    returnType = PSC::DataType::REAL;
     parameters.emplace_back("x", PSC::DataType::REAL);
 }
 
@@ -95,9 +90,8 @@ void PSC::BuiltinFnTan::run(PSC::Context &ctx) {
 }
 
 PSC::BuiltinFnASin::BuiltinFnASin()
-    : Function("ASIN")
+    : Function("ASIN", PSC::DataType::REAL)
 {
-    returnType = PSC::DataType::REAL;
     parameters.emplace_back("x", PSC::DataType::REAL);
 }
 
@@ -112,9 +106,8 @@ void PSC::BuiltinFnASin::run(PSC::Context &ctx) {
 }
 
 PSC::BuiltinFnACos::BuiltinFnACos()
-    : Function("ACOS")
+    : Function("ACOS", PSC::DataType::REAL)
 {
-    returnType = PSC::DataType::REAL;
     parameters.emplace_back("x", PSC::DataType::REAL);
 }
 
@@ -129,9 +122,8 @@ void PSC::BuiltinFnACos::run(PSC::Context &ctx) {
 }
 
 PSC::BuiltinFnATan::BuiltinFnATan()
-    : Function("ATAN")
+    : Function("ATAN", PSC::DataType::REAL)
 {
-    returnType = PSC::DataType::REAL;
     parameters.emplace_back("x", PSC::DataType::REAL);
 }
 
@@ -146,9 +138,8 @@ void PSC::BuiltinFnATan::run(PSC::Context &ctx) {
 }
 
 PSC::BuiltinFnATan2::BuiltinFnATan2()
-    : Function("ATAN2")
+    : Function("ATAN2", PSC::DataType::REAL)
 {
-    returnType = PSC::DataType::REAL;
     parameters.emplace_back("y", PSC::DataType::REAL);
     parameters.emplace_back("x", PSC::DataType::REAL);
 }
@@ -168,9 +159,8 @@ void PSC::BuiltinFnATan2::run(PSC::Context &ctx) {
 }
 
 PSC::BuiltinFnSqrt::BuiltinFnSqrt()
-    : Function("SQRT")
+    : Function("SQRT", PSC::DataType::REAL)
 {
-    returnType = PSC::DataType::REAL;
     parameters.emplace_back("x", PSC::DataType::REAL);
 }
 
@@ -185,9 +175,8 @@ void PSC::BuiltinFnSqrt::run(PSC::Context &ctx) {
 }
 
 PSC::BuiltinFnLog::BuiltinFnLog()
-    : Function("LOG")
+    : Function("LOG", PSC::DataType::REAL)
 {
-    returnType = PSC::DataType::REAL;
     parameters.emplace_back("x", PSC::DataType::REAL);
 }
 
@@ -202,9 +191,8 @@ void PSC::BuiltinFnLog::run(PSC::Context &ctx) {
 }
 
 PSC::BuiltinFnLn::BuiltinFnLn()
-    : Function("LN")
+    : Function("LN", PSC::DataType::REAL)
 {
-    returnType = PSC::DataType::REAL;
     parameters.emplace_back("x", PSC::DataType::REAL);
 }
 
