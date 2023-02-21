@@ -3,6 +3,8 @@
 #include <string>
 #include "launch/run.h"
 
+extern std::string psfilename;
+
 static const std::string multilineKeywords[] = {
     "IF",
     "CASE",
@@ -26,11 +28,23 @@ bool startREPL() {
         std::string code;
         std::getline(std::cin, code);
 
+        size_t size = code.size();
+        if (size == 0) continue;
         if (code == "EXIT") break;
-        if (code.size() == 0) continue;
+        if (code.starts_with("RUNFILE")) {
+            if (size < 9) {
+                std::cerr << "Expected filename" << std::endl;
+                continue;
+            }
+            psfilename = code.substr(8, size - 8);
+            std::cout << "Running file " << psfilename << "\n";
+            std::string exit = runFile() ? "successfully" : "with an error";
+            std::cout << "\nProgram exited " << exit << "\n";
+            continue;
+        }
 
         for (const std::string &keyword : multilineKeywords) {
-            if (code.rfind(keyword, 0) == 0) {
+            if (code.starts_with(keyword)) {
                 if (keyword == "TYPE" && code.find("=") != std::string::npos) break;
                 std::string line = " ";
                 while (line.size() > 0) {
@@ -52,6 +66,7 @@ bool startREPL() {
             std::cout.precision(10);
             block->run(*globalCtx);
         } catch (const PSC::Error &e) {
+            std::cout << "\n";
             e.print();
         }
     }

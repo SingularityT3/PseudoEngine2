@@ -32,6 +32,7 @@ bool runFile() {
         auto globalCtx = PSC::Context::createGlobalContext();
         block->run(*globalCtx);
     } catch (const PSC::Error &e) {
+        std::cout << "\n";
         e.print();
         return false;
     }

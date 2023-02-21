@@ -7,4 +7,4 @@ A pseudocode interpreter designed to be compatible with the Cambridge IGCSE and 
 ./PseudoEngine2 <filename>
 ```
 
-The REPL is launched when no filename is provieded
+The REPL is launched when no filename is provided. Programs can also be run from the REPL by using `RUNFILE <filename>`
