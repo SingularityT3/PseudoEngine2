@@ -58,6 +58,54 @@ myArray[index1, index2, ...] <- <value>
 ```
 CONSTANT <name> = <value>
 ```
+or
+```
+CONSTANT <name> <- <value>
+```
+
+## Types
+### Enum definition
+```
+TYPE <name> = (State1, State2, State3, ...)
+```
+
+### Pointer definition
+```
+TYPE <name> = ^<data type>
+```
+
+### Composite definition
+```
+TYPE <name>
+    DECLARE <var1> : <data type 1>
+    DECLARE <var2> : <data type 2>
+    ...
+ENDTYPE
+```
+
+### Declaration
+```
+DECLARE <variable name> : <type name>
+```
+
+### Assignment
+```
+// Enum
+<enumVar> <- <state>
+
+// Pointer
+<pointerVar> <- <otherPointerVar> <pointerVar> <- ^<otherVar>
+
+// Composite
+<compositeVar> <- <otherCompositeVar>
+<compositeVar>.<member> <- <value>
+```
+
+### Accessing pointers
+```
+// Access value of ptrVar and store it in var
+<var> <- ^<ptrVar>
+```
 
 ## Arithmetic operations
 - \+ (Addition)
@@ -243,7 +291,52 @@ INT(x : REAL) RETURNS INTEGER
 RAND(x : INTEGER) RETURNS REAL
 ```
 
-## File Handling
+Math functions
+```
+// Power
+POW(x : REAL, y : REAL) RETURNS REAL
+
+// e^x
+EXP(x : REAL) RETURNS REAL
+
+// Trigonometric functions
+SIN(x : REAL) RETURNS REAL
+COS(x : REAL) RETURNS REAL
+TAN(x : REAL) RETURNS REAL
+ASIN(x : REAL) RETURNS REAL
+ACOS(x : REAL) RETURNS REAL
+ATAN(x : REAL) RETURNS REAL
+ATAN2(x : REAL) RETURNS REAL
+
+// Square root
+SQRT(x : REAL) RETURNS REAL
+
+// Logarithm(Base 10)
+LOG(x : REAL) RETURNS REAL
+
+// Natural logarithm
+LN(x : REAL) RETURNS REAL
+```
+
+## I/O
+### Output to screen
+```
+OUTPUT <value>
+or
+PRINT <value>
+```
+Multiple values can be output at once with
+```
+OUTPUT <value1>, <value2>, ...
+```
+
+### Get user input
+```
+INPUT <variableName>
+```
+Gets user input and stores it in the given variable
+
+### File Handling
 ```
 // Open a file
 // Modes are READ, WRITE and APPEND
