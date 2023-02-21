@@ -1,8 +1,9 @@
 #include "pch.h"
 
+#include <string>
 #include "launch/run.h"
 
-static const char *multilineKeywords[] = {
+static const std::string multilineKeywords[] = {
     "IF",
     "CASE",
     "WHILE",
@@ -28,8 +29,9 @@ bool startREPL() {
         if (code == "EXIT") break;
         if (code.size() == 0) continue;
 
-        for (const char *keyword : multilineKeywords) {
+        for (const std::string &keyword : multilineKeywords) {
             if (code.rfind(keyword, 0) == 0) {
+                if (keyword == "TYPE" && code.find("=") != std::string::npos) break;
                 std::string line = " ";
                 while (line.size() > 0) {
                     code += "\n";
