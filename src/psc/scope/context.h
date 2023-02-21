@@ -24,13 +24,17 @@ namespace PSC {
     public:
         const Token *switchToken = nullptr;
 
-        const bool isFunctionCtx;
+        const bool isFunctionCtx, isCompositeCtx;
         std::unique_ptr<NodeResult> returnValue;
         const PSC::DataType returnType;
 
         Context(Context *parent, const std::string &name);
 
+        // Functions
         Context(Context *parent, const std::string &name, bool isFunctionCtx, PSC::DataType returnType);
+
+        // Composites
+        Context(Context *parent, const std::string &name, bool isCompositeCtx);
 
         // For copying composites
         explicit Context(const Context &other);

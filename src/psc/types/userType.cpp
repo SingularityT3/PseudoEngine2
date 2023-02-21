@@ -20,17 +20,30 @@ const EnumTypeDefinition &Enum::getDefinition(Context &ctx) const {
 Pointer::Pointer(const std::string &name)
     : definitionName(name) {}
 
+Pointer::Pointer(const Pointer &other)
+    : ptr(other.ptr), varCtx(other.varCtx), definitionName(other.definitionName)
+{}
+
 void Pointer::setValue(Variable *value) {
     ptr = value;
+    varCtx = value->parent;
+    while (varCtx->isCompositeCtx) {
+        varCtx = varCtx->getParent();
+    }
 }
 
 void Pointer::operator=(const Pointer &other) {
     if (definitionName != other.definitionName) std::abort();
     ptr = other.ptr;
+    varCtx = other.varCtx;
 }
 
 Variable *Pointer::getValue() const {
     return ptr;
+}
+
+const Context *Pointer::getCtx() const {
+    return varCtx;
 }
 
 const PointerTypeDefinition &Pointer::getDefinition(Context &ctx) const {
@@ -39,7 +52,7 @@ const PointerTypeDefinition &Pointer::getDefinition(Context &ctx) const {
 
 Composite::Composite(const std::string &name, Context &parent)
     : definitionName(name),
-    ctx(std::make_unique<Context>(&parent, definitionName))
+    ctx(std::make_unique<Context>(&parent, definitionName, true))
 {
     getDefinition(*ctx).initBlock.run(*ctx);
 }
@@ -51,7 +64,6 @@ Composite::Composite(const Composite &other)
 
 void Composite::operator=(const Composite &other) {
     if (definitionName != other.definitionName) std::abort();
-    // ctx = std::make_unique<Context>(*other.ctx);
     ctx->copyVariableData(*other.ctx);
 }
 

@@ -91,7 +91,7 @@ std::unique_ptr<NodeResult> CallNode::evaluate(PSC::Context &ctx) {
             PSC::Variable &original = *static_cast<PSC::Variable*>(&holder);
             var = original.createReference(procedure->parameters[i].name);
         } else {
-            var = new PSC::Variable(procedure->parameters[i].name, argRes->type, false, &ctx);
+            var = new PSC::Variable(procedure->parameters[i].name, argRes->type, false, procedureCtx.get());
 
             switch (var->type.type) {
                 case PSC::DataType::INTEGER:

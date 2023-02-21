@@ -10,15 +10,19 @@ Context::Context(Context *parent, const std::string &name)
 {}
 
 Context::Context(Context *parent, const std::string &name, bool isFunctionCtx, PSC::DataType returnType)
-    : parent(parent), name(name), isFunctionCtx(isFunctionCtx), returnType(returnType)
+    : parent(parent), name(name), isFunctionCtx(isFunctionCtx), isCompositeCtx(false), returnType(returnType)
 {}
 
-template<typename T>
-void copyPtrVector(const std::vector<std::unique_ptr<T>> &source, std::vector<std::unique_ptr<T>> &dest) {
+Context::Context(Context *parent, const std::string &name, bool isCompositeCtx)
+    : parent(parent), name(name), isFunctionCtx(false), isCompositeCtx(isCompositeCtx), returnType(PSC::DataType::NONE)
+{}
+
+template<typename T, typename... Args>
+void copyPtrVector(const std::vector<std::unique_ptr<T>> &source, std::vector<std::unique_ptr<T>> &dest, Args&&... args) {
     size_t size = source.size();
     dest.reserve(size);
     for (size_t i = 0; i < size; i++) {
-        dest.emplace_back(std::make_unique<T>(*source[i]));
+        dest.emplace_back(std::make_unique<T>(*source[i], std::forward<Args>(args)...));
     }
 }
 
@@ -26,9 +30,10 @@ Context::Context(const Context &other)
     : parent(other.parent),
     name(other.name),
     isFunctionCtx(other.isFunctionCtx),
+    isCompositeCtx(other.isCompositeCtx),
     returnType(other.returnType)
 {
-    copyPtrVector(other.variables, variables);
+    copyPtrVector(other.variables, variables, this);
     copyPtrVector(other.arrays, arrays);
     copyPtrVector(other.procedures, procedures);
     copyPtrVector(other.functions, functions);

@@ -19,11 +19,20 @@ PSC::DataHolder &PointerDereferencer::resolve(PSC::Context &ctx) const {
     if (var.type != PSC::DataType::POINTER)
         throw PSC::InvalidUsageError(token, ctx, "'^' operator: Attempting to dereference non-pointer");
 
-    PSC::Variable *ptr = var.get<PSC::Pointer>().getValue();
-    if (ptr == nullptr)
+    PSC::Pointer &ptr = var.get<PSC::Pointer>();
+    const PSC::Context *ptrCtx = ptr.getCtx();
+    PSC::Context *tempCtx = &ctx;
+    while (tempCtx != ptrCtx) {
+        tempCtx = tempCtx->getParent();
+        if (tempCtx == nullptr)
+            throw PSC::RuntimeError(token, ctx, "Attempting to access deleted object from pointer '" + var.name + "'");
+    }
+
+    PSC::Variable *ptrVar = ptr.getValue();
+    if (ptrVar == nullptr)
         throw PSC::RuntimeError(token, ctx, "Attempt to access uninitalized pointer");
-    
-    return *ptr;
+
+    return *ptrVar;
 }
 
 CompositeResolver::CompositeResolver(const Token &token, std::unique_ptr<AbstractVariableResolver> &&resolver, const Token &member)

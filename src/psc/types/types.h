@@ -233,21 +233,22 @@ namespace PSC {
     class Pointer : public Custom {
     private:
         Variable *ptr = nullptr;
+        Context *varCtx = nullptr;
 
     public:
         const std::string definitionName;
-        
-        Pointer(const PointerTypeDefinition &definition);
 
         Pointer(const std::string &name);
 
-        Pointer(const Pointer &other) = default;
+        Pointer(const Pointer &other);
 
         void setValue(Variable *value);
 
         void operator=(const Pointer &other);
 
         Variable *getValue() const;
+
+        const Context *getCtx() const;
 
         const PointerTypeDefinition &getDefinition(Context &ctx) const;
     };

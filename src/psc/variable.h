@@ -19,21 +19,19 @@ namespace PSC {
     class Variable : public DataHolder {
     private:
         Value *data;
-        bool reference;
+        Variable *ref;
 
         // Reference constructor
         Variable(const std::string &name, Variable *v);
 
-        // Array element reference constructor
-        Variable(const std::string &name, PSC::DataType type, Value *data);
-
     public:
-        const PSC::DataType type;
+        const DataType type;
         const bool isConstant;
+        Context *const parent;
 
-        Variable(const std::string &name, PSC::DataType type, bool isConstant, Context *ctx, const Value *initialData = nullptr);
+        Variable(const std::string &name, DataType type, bool isConstant, Context *ctx, const Value *initialData = nullptr);
 
-        Variable(const Variable &other);
+        Variable(const Variable &other, Context *ctx);
 
         ~Variable();
 
@@ -41,14 +39,14 @@ namespace PSC {
 
         void set(Value *_data, bool copy = false);
 
-        template<std::derived_from<PSC::Value> T>
+        template<std::derived_from<Value> T>
         T &get() { return *((T*) data); }
 
-        template<std::derived_from<PSC::Value> T>
+        template<std::derived_from<Value> T>
         T &getConst() const { return *((const T*) data); }
 
         Variable *createReference(const std::string &refName);
 
-        static Variable *createArrayElementReference(const std::string &refName, PSC::DataType type, PSC::Value *value);
+        Variable *getReference();
     };
 }

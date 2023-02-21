@@ -39,9 +39,23 @@ void Block::runNodeREPL(Node *node, PSC::Context &ctx) {
             break;
         } case PSC::DataType::POINTER: {
             auto &resPtr = result->get<PSC::Pointer>();
-            PSC::Variable *ptrValue = resPtr.getValue();
-            const std::string &valueStr = ptrValue == nullptr ? "null" : ptrValue->name;
-            std::cout << resPtr.definitionName << ": " << valueStr;
+
+            const PSC::Context *ptrCtx = resPtr.getCtx();
+            PSC::Context *tempCtx = &ctx;
+            bool valid = true;
+            while (valid && tempCtx != ptrCtx) {
+                tempCtx = tempCtx->getParent();
+                if (tempCtx == nullptr) valid = false;
+            }
+
+            std::cout << resPtr.definitionName << ": ";
+            if (valid) {
+                PSC::Variable *ptrValue = resPtr.getValue();
+                const std::string &valueStr = ptrValue == nullptr ? "null" : ptrValue->name;
+                std::cout << valueStr;
+            } else {
+                std::cout << "{DELETED}";
+            }
             break;
         } case PSC::DataType::COMPOSITE:
             std::cout << result->get<PSC::Composite>().definitionName << " object";

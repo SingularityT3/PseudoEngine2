@@ -49,7 +49,9 @@ std::unique_ptr<NodeResult> PointerAssignNode::evaluate(PSC::Context &ctx) {
     if (pointerType != value.type)
         throw PSC::RuntimeError(token, ctx, "Assignment Error: Incompatible data types");
     
-    pointer.setValue(&value);
+    PSC::Variable *v = value.getReference();
+    if (v == nullptr) v = &value;
+    pointer.setValue(v);
 
     return std::make_unique<NodeResult>(nullptr, PSC::DataType::NONE);
 }
