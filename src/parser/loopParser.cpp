@@ -68,9 +68,7 @@ Node *Parser::parseWhileLoop() {
     Node *condition = parseEvaluationExpression();
 
     if (currentToken->type == TokenType::LINE_END) advance();
-    if (currentToken->type != TokenType::DO)
-        throw PSC::ExpectedTokenError(*currentToken, "'DO'");
-    advance();
+    if (currentToken->type == TokenType::DO) advance();
 
     PSC::Block *block = parseBlock();
 
