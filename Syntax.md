@@ -21,7 +21,7 @@ Multiple variables of the same type can be declared with
 DECLARE <var1>, <var2>, ... : <data type>
 ```
 
-## Array declaration:
+### Array declaration:
 ```
 DECLARE <name> : ARRAY[<lower bound>:<upper bound>] OF <data type>
 ```
@@ -32,7 +32,7 @@ Multi Dimensional arrays:
 DECLARE <name> : ARRAY[<lb1>:<ub1>, <lb2>:<ub2>, ..., <lbn>:<ubn>] OF <data type>
 ```
 
-## Accessing array elements
+### Accessing array elements
 One-dimensional array:
 ```
 myArray[index]
@@ -48,7 +48,7 @@ myArray[index1, index2, ...]
 ```
 Assigning to an undefined variable will define and initialise it to the value assigned
 
-## Assigning to array element
+### Assigning to array element
 ```
 myArray[index] <- <value>
 myArray[index1, index2, ...] <- <value>
@@ -94,7 +94,8 @@ DECLARE <variable name> : <type name>
 <enumVar> <- <state>
 
 // Pointer
-<pointerVar> <- <otherPointerVar> <pointerVar> <- ^<otherVar>
+<pointerVar> <- <otherPointerVar>
+<pointerVar> <- ^<otherVar>
 
 // Composite
 <compositeVar> <- <otherCompositeVar>
@@ -212,7 +213,7 @@ ENDPROCEDURE
 - `BYVAL` - pass parameters by value
 - If `BYREF` or `BYVAL` is not speified, `BYVAL` will be used as the default
 
-## Calling procedures
+### Calling procedures
 No parameters:
 ```
 CALL <procedureName>
@@ -234,13 +235,13 @@ ENDFUNCTION
 - Syntax for function parameters are identical to those of procedures
 - Functions must have a `RETURN` statement that returns a value of the specified data type
 
-## Calling functions
+### Calling functions
 ```
 <functionName>(<parameter1>, <parameter2>, ...)
 ```
 Function calls may be used inside expressions since they return a data type
 
-## In-built functions
+### In-built functions
 ```
 // Returns the length of a string
 LENGTH(s : STRING) RETURNS INTEGER
@@ -291,7 +292,7 @@ INT(x : REAL) RETURNS INTEGER
 RAND(x : INTEGER) RETURNS REAL
 ```
 
-Math functions
+#### Math functions
 ```
 // Power
 POW(x : REAL, y : REAL) RETURNS REAL
@@ -352,6 +353,11 @@ WRITEFILE <filename>, <data>
 // Closes the file
 CLOSEFILE <filename>
 ```
+
+## Other features(outside cambridge format)
+- `BREAK` - Break out of loops early
+- `CONTINUE` - Skip to next iteration of loop
+- Alternate method of type conversion(apart from in-built functions): `<data type>(<value>)`. For example: `INTEGER("57")` 
 
 # Examples
 See [tests](./tests)
