@@ -79,6 +79,11 @@ namespace PSC {
         RedeclarationError(const Token &token, const Context &context, const std::string &identifier);
     };
 
+    class RedefinitionError : public RuntimeError {
+    public:
+        RedefinitionError(const Token &token, const Context &context, const std::string &identifier);
+    };
+
     class ConstAssignError : public RuntimeError {
     public:
         ConstAssignError(const Token &token, const Context &context, const std::string &constant);

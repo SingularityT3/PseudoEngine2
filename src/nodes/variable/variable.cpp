@@ -9,7 +9,7 @@ DeclareNode::DeclareNode(const Token &token, std::vector<const Token*> &&identif
 
 std::unique_ptr<NodeResult> DeclareNode::evaluate(PSC::Context &ctx) {
     for (auto identifier : identifiers) {
-        if (ctx.getVariable(identifier->value) != nullptr)
+        if (ctx.getVariable(identifier->value, false) != nullptr)
             throw PSC::RedeclarationError(token, ctx, identifier->value);
 
         if (ctx.isIdentifierType(*identifier))
@@ -33,7 +33,7 @@ ConstDeclareNode::ConstDeclareNode(const Token &token, Node &node, const Token &
 std::unique_ptr<NodeResult> ConstDeclareNode::evaluate(PSC::Context &ctx) {
     auto value = node.evaluate(ctx);
 
-    if (ctx.getVariable(identifier.value) != nullptr)
+    if (ctx.getVariable(identifier.value, false) != nullptr)
         throw PSC::RedeclarationError(token, ctx, identifier.value);
 
     ctx.addVariable(new PSC::Variable(identifier.value, value->type, true, &ctx, value->data.get()));

@@ -46,11 +46,13 @@ namespace PSC {
 
         Context *getParent() const;
 
+        Context *getGlobalContext();
+
         const std::string &getName() const;
 
         void addVariable(Variable *variable);
 
-        Variable *getVariable(const std::string &varName);
+        Variable *getVariable(const std::string &varName, bool global = true);
 
         void addProcedure(std::unique_ptr<Procedure> &&procedure);
 
@@ -62,13 +64,13 @@ namespace PSC {
 
         void addArray(std::unique_ptr<Array> &&array);
 
-        Array *getArray(const std::string &arrayName);
+        Array *getArray(const std::string &arrayName, bool global = true);
 
-        PSC::DataType getType(const Token &token);
+        PSC::DataType getType(const Token &token, bool global = true);
 
-        bool isIdentifierType(const Token &identifier);
+        bool isIdentifierType(const Token &identifier, bool global = true);
 
-        Enum *getEnumElement(const std::string &value);
+        Enum *getEnumElement(const std::string &value, bool global = true);
 
         void createEnumDefinition(EnumTypeDefinition &&definition);
 
@@ -76,10 +78,10 @@ namespace PSC {
 
         void createCompositeDefinition(CompositeTypeDefinition &&definition);
 
-        const EnumTypeDefinition *getEnumDefinition(const std::string &name);
+        const EnumTypeDefinition *getEnumDefinition(const std::string &name, bool global = true);
 
-        const PointerTypeDefinition *getPointerDefinition(const std::string &name);
+        const PointerTypeDefinition *getPointerDefinition(const std::string &name, bool global = true);
 
-        const CompositeTypeDefinition *getCompositeDefinition(const std::string &name);
+        const CompositeTypeDefinition *getCompositeDefinition(const std::string &name, bool global = true);
     };
 }

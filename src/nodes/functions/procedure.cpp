@@ -24,7 +24,7 @@ ProcedureNode::ProcedureNode(
 
 std::unique_ptr<NodeResult> ProcedureNode::evaluate(PSC::Context &ctx) {
     if (ctx.getProcedure(procedureName) != nullptr)
-        throw PSC::RedeclarationError(token, ctx, procedureName);
+        throw PSC::RedefinitionError(token, ctx, procedureName);
 
     size_t parametersSize = parameterNames.size();
     std::vector<PSC::Parameter> parameters;

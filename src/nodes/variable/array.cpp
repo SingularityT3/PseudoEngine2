@@ -15,7 +15,7 @@ std::unique_ptr<NodeResult> ArrayDeclareNode::evaluate(PSC::Context &ctx) {
     if (bounds.size() % 2 != 0 || bounds.size() == 0) std::abort();
 
     for (auto identifier : identifiers) {
-        if (ctx.getArray(identifier->value) != nullptr)
+        if (ctx.getArray(identifier->value, false) != nullptr)
             throw PSC::RedeclarationError(token, ctx, identifier->value);
     }
 

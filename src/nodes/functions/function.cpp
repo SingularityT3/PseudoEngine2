@@ -26,7 +26,7 @@ FunctionNode::FunctionNode(
 
 std::unique_ptr<NodeResult> FunctionNode::evaluate(PSC::Context &ctx) {
     if (ctx.getFunction(functionName) != nullptr)
-        throw PSC::RedeclarationError(token, ctx, functionName);
+        throw PSC::RedefinitionError(token, ctx, functionName);
 
     PSC::DataType returnDataType = ctx.getType(returnType);
     if (returnDataType == PSC::DataType::NONE)

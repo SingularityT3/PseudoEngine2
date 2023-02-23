@@ -95,6 +95,10 @@ RedeclarationError::RedeclarationError(const Token &token, const Context &contex
     : RuntimeError(token, context, "Redeclaration of '" + identifier + "'")
 {}
 
+RedefinitionError::RedefinitionError(const Token &token, const Context &context, const std::string &identifier)
+    : RuntimeError(token, context, "Redefinition of '" + identifier + "'")
+{}
+
 ConstAssignError::ConstAssignError(const Token &token, const Context &context, const std::string &constant)
     : RuntimeError(token, context, "Assignment to constant '" + constant + "'")
 {}

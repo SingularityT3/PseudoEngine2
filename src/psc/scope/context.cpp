@@ -90,6 +90,12 @@ Context *Context::getParent() const {
     return parent;
 }
 
+Context *Context::getGlobalContext() {
+    Context *ctx = this;
+    while (ctx->parent != nullptr) {ctx = ctx->parent;}
+    return ctx;
+}
+
 const std::string &Context::getName() const {
     return name;
 }
@@ -98,12 +104,13 @@ void Context::addVariable(Variable *variable) {
     variables.emplace_back(variable);
 }
 
-Variable *Context::getVariable(const std::string &varName) {
+Variable *Context::getVariable(const std::string &varName, bool global) {
     for (auto &var : variables) {
         if (var->name == varName) return var.get();
     }
 
-    return nullptr;
+    if (!global || parent == nullptr) return nullptr;
+    return getGlobalContext()->getVariable(varName);
 }
 
 void Context::addProcedure(std::unique_ptr<Procedure> &&procedure) {
@@ -142,17 +149,18 @@ void Context::addArray(std::unique_ptr<Array> &&array) {
     arrays.emplace_back(std::move(array));
 }
 
-Array *Context::getArray(const std::string &arrayName) {
+Array *Context::getArray(const std::string &arrayName, bool global) {
     for (auto &array : arrays) {
         if (arrayName == array->name) {
             return array.get();
         }
     }
 
-    return nullptr;
+    if (!global || parent == nullptr) return nullptr;
+    return getGlobalContext()->getArray(arrayName);
 }
 
-PSC::DataType Context::getType(const Token &token) {
+PSC::DataType Context::getType(const Token &token, bool global) {
     if (token.type == TokenType::DATA_TYPE) {
         if (token.value == "INTEGER") return PSC::DataType(PSC::DataType::INTEGER);
         else if (token.value == "REAL") return PSC::DataType(PSC::DataType::REAL);
@@ -161,15 +169,15 @@ PSC::DataType Context::getType(const Token &token) {
         else if (token.value == "STRING") return PSC::DataType(PSC::DataType::STRING);
         else std::abort();
     } else if (token.type == TokenType::IDENTIFIER) {
-        auto *enumDefinition = getEnumDefinition(token.value);
+        auto *enumDefinition = getEnumDefinition(token.value, global);
         if (enumDefinition != nullptr)
             return PSC::DataType(PSC::DataType::ENUM, &enumDefinition->name);
         
-        auto *pointerDefinition = getPointerDefinition(token.value);
+        auto *pointerDefinition = getPointerDefinition(token.value, global);
         if (pointerDefinition != nullptr)
             return PSC::DataType(PSC::DataType::POINTER, &pointerDefinition->name);
         
-        auto *compositeDefinition = getCompositeDefinition(token.value);
+        auto *compositeDefinition = getCompositeDefinition(token.value, global);
         if (compositeDefinition != nullptr)
             return PSC::DataType(PSC::DataType::COMPOSITE, &compositeDefinition->name);
         
@@ -178,19 +186,19 @@ PSC::DataType Context::getType(const Token &token) {
     std::abort();
 }
 
-bool Context::isIdentifierType(const Token &identifier) {
-    PSC::DataType dataType = getType(identifier);
+bool Context::isIdentifierType(const Token &identifier, bool global) {
+    PSC::DataType dataType = getType(identifier, global);
     if (dataType != PSC::DataType::NONE)
         return true;
 
-    std::unique_ptr<PSC::Enum> enumEl(getEnumElement(identifier.value));
+    std::unique_ptr<PSC::Enum> enumEl(getEnumElement(identifier.value, global));
     if (enumEl.get() != nullptr)
         return true;
 
     return false;
 }
 
-Enum *Context::getEnumElement(const std::string &value) {
+Enum *Context::getEnumElement(const std::string &value, bool global) {
     for (auto &definition : enums) {
         for (size_t i = 0; i < definition->values.size(); i++) {
             if (definition->values[i] == value) {
@@ -200,7 +208,7 @@ Enum *Context::getEnumElement(const std::string &value) {
             }
         }
     }
-    if (parent != nullptr) return parent->getEnumElement(value);
+    if (global && parent != nullptr) return getGlobalContext()->getEnumElement(value);
     return nullptr;
 }
 
@@ -216,26 +224,26 @@ void Context::createCompositeDefinition(CompositeTypeDefinition &&definition) {
     composites.emplace_back(std::make_unique<CompositeTypeDefinition>(std::move(definition)));
 }
 
-const EnumTypeDefinition *Context::getEnumDefinition(const std::string &name) {
+const EnumTypeDefinition *Context::getEnumDefinition(const std::string &name, bool global) {
     for (const auto &e : enums) {
         if (e->name == name) return e.get();
     }
-    if (parent != nullptr) return parent->getEnumDefinition(name);
+    if (global && parent != nullptr) return getGlobalContext()->getEnumDefinition(name);
     return nullptr;
 }
 
-const PointerTypeDefinition *Context::getPointerDefinition(const std::string &name) {
+const PointerTypeDefinition *Context::getPointerDefinition(const std::string &name, bool global) {
     for (const auto &p : pointers) {
         if (p->name == name) return p.get();
     }
-    if (parent != nullptr) return parent->getPointerDefinition(name);
+    if (global && parent != nullptr) return getGlobalContext()->getPointerDefinition(name);
     return nullptr;
 }
 
-const CompositeTypeDefinition *Context::getCompositeDefinition(const std::string &name) {
+const CompositeTypeDefinition *Context::getCompositeDefinition(const std::string &name, bool global) {
     for (const auto &c : composites) {
         if (c->name == name) return c.get();
     }
-    if (parent != nullptr) return parent->getCompositeDefinition(name);
+    if (global && parent != nullptr) return getGlobalContext()->getCompositeDefinition(name);
     return nullptr;
 }

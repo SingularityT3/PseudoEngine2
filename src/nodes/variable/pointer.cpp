@@ -12,8 +12,8 @@ std::unique_ptr<NodeResult> PointerDefineNode::evaluate(PSC::Context &ctx) {
     if (pointerType == PSC::DataType::NONE)
         throw PSC::NotDefinedError(token, ctx, "Type '" + type.value + "'");
 
-    if (ctx.isIdentifierType(name))
-        throw PSC::RuntimeError(token, ctx, "Redefinition of type '" + name.value + "'");
+    if (ctx.isIdentifierType(name, false))
+        throw PSC::RedefinitionError(token, ctx, name.value);
 
     PSC::PointerTypeDefinition definition(name.value, pointerType);
     ctx.createPointerDefinition(std::move(definition));
