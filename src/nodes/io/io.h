@@ -1,4 +1,5 @@
 #pragma once
+#include "nodes/variable/resolver.h"
 #include "nodes/base.h"
 
 class OutputNode : public Node {
@@ -13,10 +14,10 @@ public:
 
 class InputNode : public Node {
 private:
-    const Token &identifier;
+    const std::unique_ptr<AbstractVariableResolver> resolver;
 
 public:
-    InputNode(const Token &token, const Token &identifier);
+    InputNode(const Token &token, std::unique_ptr<AbstractVariableResolver> &&resolver);
 
     std::unique_ptr<NodeResult> evaluate(PSC::Context &ctx) override;
 };

@@ -23,11 +23,9 @@ Node *Parser::parseInput() {
 
     if (currentToken->type != TokenType::IDENTIFIER)
         throw PSC::ExpectedTokenError(*currentToken, "variable");
+    auto resolver = parseIdentifierExpression();
 
-    InputNode *inputNode = create<InputNode>(inputToken, *currentToken);
-    advance();
-
-    return inputNode;
+    return create<InputNode>(inputToken, std::move(resolver));
 }
 
 Node *Parser::parseOpenFile() {

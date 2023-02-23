@@ -4,9 +4,9 @@ Program -> {Block}
 
 Block -> {Expression}*
 
-Function -> FUNCTION IDENTIFIER [LPRN [BYREF | BYVAL] IDENTIFIER : DataType {, IDENTIFIER : DataType} RPRN] RETURNS DataType Block ENDPROCEDURE
+Function -> FUNCTION IDENTIFIER [LPRN [BYREF | BYVAL] IDENTIFIER : (DataType | IDENTIFIER) {, IDENTIFIER : (DataType | IDENTIFIER)} RPRN] RETURNS (DataType | IDENTIFIER) Block ENDPROCEDURE
 
-Procedure -> PROCEDURE IDENTIFIER [LPRN [BYREF | BYVAL] IDENTIFIER : DataType {, IDENTIFIER : DataType} RPRN] Block ENDPROCEDURE
+Procedure -> PROCEDURE IDENTIFIER [LPRN [BYREF | BYVAL] IDENTIFIER : (DataType | IDENTIFIER) {, IDENTIFIER : (DataType | IDENTIFIER)} RPRN] Block ENDPROCEDURE
 
 Expression -> EvaluationExpression
               | DeclareStatement
@@ -22,7 +22,7 @@ Expression -> EvaluationExpression
               | BREAK
               | CONTINUE
               | (OUTPUT | PRINT) EvaluationExpression {, EvaluationExpression}
-              | (INPUT | READ) IDENTIFIER
+              | (INPUT | READ) IdentifierExpression
               | OPENFILE StringExpression FOR (READ | WRITE | APPEND)
               | READFILE StringExpression, IDENTIFIER
               | WRITEFILE StringExpression, EvaluationExpression
@@ -38,7 +38,7 @@ RepeatUntilLoop -> REPEAT Block UNTIL EvaluationExpression
 
 WhileLoop -> WHILE EvaluationExpression DO Block ENDWHILE
 
-CaseStatement -> CASE OF IDENTIFIER {EvaluationExpression[ TO EvaluationExpression] : Block} [OTHERWISE : Block] ENDCASE
+CaseStatement -> CASE OF EvaluationExpression {EvaluationExpression[ TO EvaluationExpression] : Block} [OTHERWISE : Block] ENDCASE
 
 IfCondition -> IF EvaluationExpression THEN Block {ELSE IF EvaluationExpression THEN Block} [ELSE Block] ENDIF
 

@@ -48,14 +48,24 @@ std::unique_ptr<NodeResult> OutputNode::evaluate(PSC::Context &ctx) {
 }
 
 
-InputNode::InputNode(const Token &token, const Token &identifier)
-    : Node(token), identifier(identifier)
+InputNode::InputNode(const Token &token, std::unique_ptr<AbstractVariableResolver> &&resolver)
+    : Node(token), resolver(std::move(resolver))
 {}
 
 std::unique_ptr<NodeResult> InputNode::evaluate(PSC::Context &ctx) {
-    PSC::Variable *var = ctx.getVariable(identifier.value);
-    if (var == nullptr) {
-        var = new PSC::Variable(identifier.value, PSC::DataType::STRING, false, &ctx);
+    PSC::Variable *var;
+    try {
+        PSC::DataHolder &holder = resolver->resolve(ctx);
+        if (holder.isArray())
+            throw PSC::RuntimeError(token, ctx, "Expected indices for array");
+
+        var = static_cast<PSC::Variable*>(&holder);
+    } catch (PSC::NotDefinedError &e) {
+        const SimpleVariableSource *simpleSource = dynamic_cast<const SimpleVariableSource*>(resolver.get());
+        if (simpleSource == nullptr) throw e;
+        if (ctx.isIdentifierType(simpleSource->getToken())) throw e;
+
+        var = new PSC::Variable(simpleSource->getName(), PSC::DataType::STRING, false, &ctx);
         ctx.addVariable(var);
     }
 
