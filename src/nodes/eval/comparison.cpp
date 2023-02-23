@@ -46,21 +46,23 @@ std::unique_ptr<NodeResult> ComparisonNode::evaluate(PSC::Context &ctx) {
     auto leftRes = left.evaluate(ctx);
     auto rightRes = right.evaluate(ctx);
 
+    if (leftRes->type == PSC::DataType::CHAR && rightRes->type == PSC::DataType::CHAR) {
+        leftRes->type = rightRes->type = PSC::DataType::INTEGER;
+        leftRes->data = leftRes->get<PSC::Char>().toInteger();
+        rightRes->data = rightRes->get<PSC::Char>().toInteger();
+    }
+
     if ((leftRes->type != PSC::DataType::INTEGER && leftRes->type != PSC::DataType::REAL)
         || (rightRes->type != PSC::DataType::INTEGER && rightRes->type != PSC::DataType::REAL)
     ) {
         bool eq = token.type == TokenType::EQUALS;
         if (!eq && token.type != TokenType::NOT_EQUALS)
-            throw PSC::InvalidUsageError(token, ctx, "'" + op + "' operator, operands must be of type Integer or Real");
+            throw PSC::InvalidUsageError(token, ctx, "'" + op + "' operator, operands must be of numeric data type");
 
         if (leftRes->type != rightRes->type) {
             return std::make_unique<NodeResult>(new PSC::Boolean(!eq), PSC::DataType::BOOLEAN);
         } else if (leftRes->type == PSC::DataType::BOOLEAN) {
             bool comparisonEq = leftRes->get<PSC::Boolean>() == rightRes->get<PSC::Boolean>();
-            bool res = (!eq && !comparisonEq) || (eq && comparisonEq);
-            return std::make_unique<NodeResult>(new PSC::Boolean(res), PSC::DataType::BOOLEAN);
-        } else if (leftRes->type == PSC::DataType::CHAR) {
-            bool comparisonEq = leftRes->get<PSC::Char>().value == rightRes->get<PSC::Char>().value;
             bool res = (!eq && !comparisonEq) || (eq && comparisonEq);
             return std::make_unique<NodeResult>(new PSC::Boolean(res), PSC::DataType::BOOLEAN);
         } else if (leftRes->type == PSC::DataType::STRING) {
