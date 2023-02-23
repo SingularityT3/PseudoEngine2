@@ -53,7 +53,7 @@ Node *Parser::parseFunction() {
         advance();
     }
 
-    if (currentToken->type == TokenType::LINE_END) advance();
+    while (currentToken->type == TokenType::LINE_END) advance();
     if (currentToken->type != TokenType::RETURNS)
         throw PSC::ExpectedTokenError(*currentToken, "'RETURNS'");
     advance();

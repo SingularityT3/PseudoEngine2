@@ -8,7 +8,7 @@ Node *Parser::parseIfStatement() {
 
     Node *condition = parseEvaluationExpression();
 
-    if (currentToken->type == TokenType::LINE_END) advance();
+    while (currentToken->type == TokenType::LINE_END) advance();
     if (currentToken->type != TokenType::THEN)
         throw PSC::ExpectedTokenError(*currentToken, "'THEN'");
     advance();
@@ -24,7 +24,7 @@ Node *Parser::parseIfStatement() {
             advance();
             condition = parseEvaluationExpression();
 
-            if (currentToken->type == TokenType::LINE_END) advance();
+            while (currentToken->type == TokenType::LINE_END) advance();
             if (currentToken->type != TokenType::THEN)
                 throw PSC::ExpectedTokenError(*currentToken, "'THEN'");
             advance();
@@ -58,7 +58,7 @@ Node *Parser::parseCaseStatement() {
     AccessNode *variable = create<AccessNode>(*currentToken, std::make_unique<SimpleVariableSource>(*currentToken));
     advance();
 
-    if (currentToken->type == TokenType::LINE_END) advance();
+    while (currentToken->type == TokenType::LINE_END) advance();
 
     CaseNode *caseNode = create<CaseNode>(caseToken, *variable);
     while (currentToken->type != TokenType::ENDCASE) {
