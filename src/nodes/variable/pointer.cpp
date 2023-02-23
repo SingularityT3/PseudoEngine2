@@ -32,7 +32,7 @@ PointerAssignNode::PointerAssignNode(
 std::unique_ptr<NodeResult> PointerAssignNode::evaluate(PSC::Context &ctx) {
     auto &pointerHolder = pointerResolver->resolve(ctx);
     if (pointerHolder.isArray())
-        throw PSC::RuntimeError(token, ctx, "Expected indices for array");
+        throw PSC::ArrayDirectAccessError(token, ctx);
 
     auto &valueHolder = valueResolver->resolve(ctx);
     if (valueHolder.isArray())

@@ -1,6 +1,7 @@
 #pragma once
 #include "nodes/base.h"
 #include "nodes/variable/resolver.h"
+#include "psc/error.h"
 
 class DeclareNode : public Node {
 private:
@@ -29,6 +30,8 @@ class AssignNode : public UnaryNode {
 private:
     const std::unique_ptr<AbstractVariableResolver> resolver;
 
+    void assignArray(PSC::Context &ctx, const PSC::ArrayDirectAccessError &e);
+
 public:
     // token: ASSIGNMENT
     AssignNode(const Token &token, Node &node, std::unique_ptr<AbstractVariableResolver> &&resolver);
@@ -39,6 +42,7 @@ public:
 class AccessNode : public Node {
 private:
     const std::unique_ptr<AbstractVariableResolver> resolver;
+    friend AssignNode;
 
 public:
     // token: IDENTIFIER

@@ -86,7 +86,7 @@ std::unique_ptr<NodeResult> CallNode::evaluate(PSC::Context &ctx) {
 
             auto &holder = accsNode->getResolver().resolve(ctx);
             if (holder.isArray())
-                throw PSC::RuntimeError(token, ctx, "Expected indices for array");
+                throw PSC::ArrayDirectAccessError(token, ctx);
 
             PSC::Variable &original = *static_cast<PSC::Variable*>(&holder);
             var = original.createReference(procedure->parameters[i].name);

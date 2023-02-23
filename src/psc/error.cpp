@@ -103,6 +103,10 @@ NotDefinedError::NotDefinedError(const Token &token, const Context &context, con
     : RuntimeError(token, context, identifier + " is not defined")
 {}
 
+ArrayDirectAccessError::ArrayDirectAccessError(const Token &token, const Context &context)
+    : RuntimeError(token, context, "Attempting to access array without indices")
+{}
+
 inline std::string conditionTypeErrorMessage(TokenType type) {
     std::stringstream msg;
     msg << "Invalid condition for ";

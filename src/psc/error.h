@@ -89,6 +89,11 @@ namespace PSC {
         NotDefinedError(const Token &token, const Context &context, const std::string &identifier);
     };
 
+    class ArrayDirectAccessError : public RuntimeError {
+    public:
+        ArrayDirectAccessError(const Token &token, const Context &context);
+    };
+
     class ConditionTypeError : public RuntimeError {
     public:
         ConditionTypeError(const Token &token, const Context &context);

@@ -57,7 +57,7 @@ std::unique_ptr<NodeResult> InputNode::evaluate(PSC::Context &ctx) {
     try {
         PSC::DataHolder &holder = resolver->resolve(ctx);
         if (holder.isArray())
-            throw PSC::RuntimeError(token, ctx, "Expected indices for array");
+            throw PSC::ArrayDirectAccessError(token, ctx);
 
         var = static_cast<PSC::Variable*>(&holder);
     } catch (PSC::NotDefinedError &e) {

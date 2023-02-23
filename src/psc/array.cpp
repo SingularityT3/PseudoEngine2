@@ -16,6 +16,10 @@ bool ArrayDimension::isValidIndex(int_t idx) const {
     return idx >= lowerBound && idx <= upperBound;
 }
 
+bool PSC::operator==(const ArrayDimension &ad1, const ArrayDimension &ad2) {
+    return ad1.n == ad2.n && ad1.lowerBound == ad2.lowerBound && ad1.upperBound == ad2.upperBound;
+}
+
 
 Array::Array(const std::string &name, DataType type, const std::vector<ArrayDimension> &dimensions)
     : DataHolder(name), type(type), dimensions(dimensions)
@@ -26,6 +30,12 @@ Array::Array(const Array &other)
     type(other.type),
     dimensions(Array::copyDimensions(other.dimensions))
 {}
+
+void Array::copyData(const Array &other) {
+    for (size_t i = 0; i < data.size(); i++) {
+        data[i] = std::make_unique<PSC::Variable>(*(other.data[i]), other.data[i]->parent);
+    }
+}
 
 const std::vector<ArrayDimension> Array::copyDimensions(const std::vector<ArrayDimension> &source) {
     std::vector<ArrayDimension> copy;

@@ -46,14 +46,38 @@ AssignNode::AssignNode(const Token &token, Node &node, std::unique_ptr<AbstractV
     : UnaryNode(token, node), resolver(std::move(resolver))
 {}
 
+void AssignNode::assignArray(PSC::Context &ctx, const PSC::ArrayDirectAccessError &e) {
+    AccessNode *accsNode = dynamic_cast<AccessNode*>(&node);
+    if (accsNode == nullptr) throw e;
+    auto array = static_cast<PSC::Array*>(&accsNode->resolver->resolve(ctx));
+    
+    PSC::DataHolder &holder = resolver->resolve(ctx);
+    if (!holder.isArray()) throw e;
+    
+    PSC::Array *arr = static_cast<PSC::Array*>(&holder);
+    if (arr->type != array->type)
+        throw PSC::RuntimeError(token, ctx, "Cannot assign arrays of different data type");
+    if (arr->dimensions != array->dimensions)
+        throw PSC::RuntimeError(token, ctx, "Cannot assign arrays of different dimensions");
+
+    arr->copyData(*array);
+}
+
 std::unique_ptr<NodeResult> AssignNode::evaluate(PSC::Context &ctx) {
-    auto valueRes = node.evaluate(ctx);
+    std::unique_ptr<NodeResult> valueRes;
+    try {
+        valueRes = node.evaluate(ctx);
+    } catch (PSC::ArrayDirectAccessError &e) {
+        if (&e.context != &ctx) throw e;
+        assignArray(ctx, e);
+        return std::make_unique<NodeResult>(nullptr, PSC::DataType::NONE);
+    }
 
     PSC::Variable *var;
     try {
         PSC::DataHolder &holder = resolver->resolve(ctx);
         if (holder.isArray())
-            throw PSC::RuntimeError(token, ctx, "Expected indices for array");
+            throw PSC::ArrayDirectAccessError(token, ctx);
 
         var = static_cast<PSC::Variable*>(&holder);
     } catch (PSC::NotDefinedError &e) {
@@ -120,7 +144,7 @@ std::unique_ptr<NodeResult> AccessNode::evaluate(PSC::Context &ctx) {
     }
 
     if (holder->isArray())
-        throw PSC::RuntimeError(token, ctx, "Expected indices for array");
+        throw PSC::ArrayDirectAccessError(token, ctx);
     
     PSC::Variable &var = *static_cast<PSC::Variable*>(holder);
 
