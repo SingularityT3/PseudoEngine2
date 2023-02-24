@@ -58,6 +58,7 @@ Node *Parser::parseProcedure() {
             advance();
         }
 
+        int typeCount = 1;
         while (currentToken->type != TokenType::RPAREN) {
             if (parameterNames.size() > 0) {
                 if (currentToken->type != TokenType::COMMA)
@@ -70,9 +71,13 @@ Node *Parser::parseProcedure() {
             const std::string &paramName = currentToken->value;
             advance();
 
-            if (currentToken->type != TokenType::COLON)
-                throw PSC::ExpectedTokenError(*currentToken, "':'");
-            advance();
+            if (currentToken->type == TokenType::COLON) advance();
+            else if (currentToken->type == TokenType::COMMA) {
+                parameterNames.emplace_back(paramName);
+                typeCount++;
+                continue;
+            }
+            else throw PSC::ExpectedTokenError(*currentToken, "':'");
 
             if (currentToken->type != TokenType::DATA_TYPE && currentToken->type != TokenType::IDENTIFIER)
                 throw PSC::ExpectedTokenError(*currentToken, "data type");
@@ -80,9 +85,13 @@ Node *Parser::parseProcedure() {
             advance();
 
             parameterNames.emplace_back(paramName);
-            parameterTypes.emplace_back(type);
+            for (int i = 0; i < typeCount; i++) {
+                parameterTypes.emplace_back(type);
+            }
+            typeCount = 1;
         }
-        advance();
+        if (typeCount != 1) throw PSC::ExpectedTokenError(*currentToken, "data type"); 
+        advance(); // ')'
     }
 
     PSC::Block *block = parseBlock();

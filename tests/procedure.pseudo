@@ -1,10 +1,10 @@
-PROCEDURE Swap (BYREF X : INTEGER, Y : INTEGER)
+PROCEDURE Swap (BYREF X: INTEGER, Y : INTEGER)
         Temp <- X
         X <- Y
         Y <- Temp
 ENDPROCEDURE
 
-PROCEDURE SwapAndSum(BYREF A : INTEGER, B : INTEGER, Sum : INTEGER)
+PROCEDURE SwapAndSum(BYREF A, B, Sum : INTEGER)
     Sum <- A + B
 
     CALL Swap(A, B)
