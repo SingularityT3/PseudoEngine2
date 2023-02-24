@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.16)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-project(PseudoEngine2 VERSION 0.4)
+project(PseudoEngine2 VERSION 0.5)
 
 add_executable(PseudoEngine2)
 
@@ -81,3 +81,23 @@ target_sources(PseudoEngine2 PRIVATE
 
     src/main.cpp
 )
+
+install(TARGETS PseudoEngine2)
+
+enable_testing()
+
+function(test test_file)
+    add_test(NAME ${test_file} COMMAND PseudoEngine2 ${CMAKE_CURRENT_LIST_DIR}/tests/${test_file})
+endfunction()
+
+test(selection.pseudo)
+test(loop.pseudo)
+test(arrays.pseudo)
+test(procedure.pseudo)
+test(function.pseudo)
+test(builtin_functions.pseudo)
+test(str.pseudo)
+test(enum.pseudo)
+test(pointer.pseudo)
+test(types.pseudo)
+test(files.pseudo)
