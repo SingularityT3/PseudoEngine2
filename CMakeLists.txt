@@ -74,6 +74,7 @@ target_sources(PseudoEngine2 PRIVATE
     src/psc/builtinFunctions/string.cpp
     src/psc/builtinFunctions/char.cpp
     src/psc/builtinFunctions/numeric.cpp
+    src/psc/builtinFunctions/date.cpp
     src/psc/builtinFunctions/math.cpp
     src/psc/error.cpp
     

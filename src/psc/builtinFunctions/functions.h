@@ -93,6 +93,47 @@ namespace PSC {
     };
 
 
+    struct BuiltinFnDAY : public Function {
+        BuiltinFnDAY();
+
+        void run(PSC::Context &ctx) override;
+    };
+
+    struct BuiltinFnMONTH : public Function {
+        BuiltinFnMONTH();
+
+        void run(PSC::Context &ctx) override;
+    };
+
+    struct BuiltinFnYEAR : public Function {
+        BuiltinFnYEAR();
+
+        void run(PSC::Context &ctx) override;
+    };
+
+    struct BuiltinFnDAYINDEX : public Function {
+        BuiltinFnDAYINDEX();
+
+        void run(PSC::Context &ctx) override;
+    };
+
+    struct BuiltinFnSETDATE : public Function {
+    private:
+        static Token errToken;
+
+    public:
+        BuiltinFnSETDATE();
+
+        void run(PSC::Context &ctx) override;
+    };
+
+    struct BuiltinFnTODAY : public Function {
+        BuiltinFnTODAY();
+
+        void run(PSC::Context &ctx) override;
+    };
+
+
     struct BuiltinFnRand : public Function {
         BuiltinFnRand();
 

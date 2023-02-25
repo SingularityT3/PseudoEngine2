@@ -3,8 +3,25 @@ DECLARE date : DATE
 date <- 1/1/2000
 OUTPUT date
 
-OUTPUT date > 31/12/1999
+IF date < 31/12/1999 THEN
+    OUTPUT "ERROR"
+ENDIF
 
 DECLARE dateArray : ARRAY[1:5] OF DATE
-dateArray[1] <- 12/08/2984
+dateArray[1] <- SETDATE(12, 8, 2984)
 OUTPUT dateArray[1]
+
+FOR i <- 1 TO 15
+    OUTPUT DAYINDEX(SETDATE(1, 1, 2000 + i))
+NEXT i
+
+DECLARE Today : DATE
+DECLARE Day, Month, Year : INTEGER
+
+Today <- TODAY()
+Day <- DAY(Today)
+Month <- MONTH(Today)
+Year <- YEAR(Today)
+
+OUTPUT "Today: ", Today
+OUTPUT Day, " ", Month, " ", Year

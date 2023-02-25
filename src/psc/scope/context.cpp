@@ -48,7 +48,7 @@ void Context::copyVariableData(const Context &other) {
 std::unique_ptr<Context> Context::createGlobalContext() {
     auto ctx = std::make_unique<Context>(nullptr, "Program");
 
-    ctx->functions.reserve(28);
+    ctx->functions.reserve(34);
 
     ctx->addFunction(std::make_unique<PSC::BuiltinFnLength>());
     ctx->addFunction(std::make_unique<PSC::BuiltinFnRight>());
@@ -66,6 +66,13 @@ std::unique_ptr<Context> Context::createGlobalContext() {
     ctx->addFunction(std::make_unique<PSC::BuiltinFnUCase>());
     ctx->addFunction(std::make_unique<PSC::BuiltinFnASC>());
     ctx->addFunction(std::make_unique<PSC::BuiltinFnCHR>());
+
+    ctx->addFunction(std::make_unique<PSC::BuiltinFnDAY>());
+    ctx->addFunction(std::make_unique<PSC::BuiltinFnMONTH>());
+    ctx->addFunction(std::make_unique<PSC::BuiltinFnYEAR>());
+    ctx->addFunction(std::make_unique<PSC::BuiltinFnDAYINDEX>());
+    ctx->addFunction(std::make_unique<PSC::BuiltinFnSETDATE>());
+    ctx->addFunction(std::make_unique<PSC::BuiltinFnTODAY>());
 
     ctx->addFunction(std::make_unique<PSC::BuiltinFnRand>());
     ctx->addFunction(std::make_unique<PSC::BuiltinFnInt>());

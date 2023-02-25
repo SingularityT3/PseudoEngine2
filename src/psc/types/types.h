@@ -221,6 +221,8 @@ namespace PSC {
 
         Date(const Date&) = default;
 
+        Date &operator=(const Date &other) = default;
+
         std::unique_ptr<Integer> toInteger() const override;
 
         std::unique_ptr<Real> toReal() const override;
