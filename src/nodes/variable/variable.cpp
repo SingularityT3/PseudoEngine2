@@ -112,6 +112,9 @@ std::unique_ptr<NodeResult> AssignNode::evaluate(PSC::Context &ctx) {
         case PSC::DataType::STRING:
             var->get<PSC::String>() = valueRes->get<PSC::String>();
             break;
+        case PSC::DataType::DATE:
+            var->get<PSC::Date>() = valueRes->get<PSC::Date>();
+            break;
         case PSC::DataType::ENUM:
             var->get<PSC::Enum>() = valueRes->get<PSC::Enum>();
             break;
@@ -164,6 +167,9 @@ std::unique_ptr<NodeResult> AccessNode::evaluate(PSC::Context &ctx) {
             break;
         case PSC::DataType::STRING:
             data = new PSC::String(var.get<PSC::String>());
+            break;
+        case PSC::DataType::DATE:
+            data = new PSC::Date(var.get<PSC::Date>());
             break;
         case PSC::DataType::ENUM:
             data = new PSC::Enum(var.get<PSC::Enum>());

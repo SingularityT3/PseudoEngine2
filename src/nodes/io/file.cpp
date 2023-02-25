@@ -89,7 +89,10 @@ std::unique_ptr<NodeResult> WriteFileNode::evaluate(PSC::Context &ctx) {
             auto str = nodeRes->get<PSC::String>();
             data = std::make_unique<PSC::String>(str);
             break;
-        } case PSC::DataType::NONE:
+        } case PSC::DataType::DATE:
+            data = nodeRes->get<PSC::Date>().toString();
+            break;
+        case PSC::DataType::NONE:
             throw PSC::RuntimeError(token, ctx, "Expected value for writing");
         case PSC::DataType::ENUM:
         case PSC::DataType::POINTER:

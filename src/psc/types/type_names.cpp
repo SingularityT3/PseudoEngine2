@@ -22,6 +22,9 @@ std::ostream &PSC::operator<<(std::ostream &os, PSC::DataType &type) {
         case PSC::DataType::STRING:
             os << "String";
             break;
+        case PSC::DataType::DATE:
+            os << "Date";
+            break;
         case PSC::DataType::ENUM:
             os << "Enum";
             if (type.name != nullptr) os << "(" << *type.name << ")";

@@ -34,6 +34,8 @@ bool EqualsCaseComponent::match(const NodeResult &value, PSC::Context &ctx) {
             return value.get<PSC::Char>().value == res->get<PSC::Char>().value;
         case PSC::DataType::STRING:
             return value.get<PSC::String>().value == res->get<PSC::String>().value;
+        case PSC::DataType::DATE:
+            return value.get<PSC::Date>().date == res->get<PSC::Date>().date;
         case PSC::DataType::ENUM:
             return *value.get<PSC::Enum>().value == *res->get<PSC::Enum>().value;
         case PSC::DataType::POINTER:

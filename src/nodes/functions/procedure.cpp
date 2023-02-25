@@ -109,6 +109,9 @@ std::unique_ptr<NodeResult> CallNode::evaluate(PSC::Context &ctx) {
                 case PSC::DataType::STRING:
                     var->get<PSC::String>() = argRes->get<PSC::String>();
                     break;
+                case PSC::DataType::DATE:
+                    var->get<PSC::Date>() = argRes->get<PSC::Date>();
+                    break;
                 case PSC::DataType::ENUM:
                     var->get<PSC::Enum>() = argRes->get<PSC::Enum>();
                     break;

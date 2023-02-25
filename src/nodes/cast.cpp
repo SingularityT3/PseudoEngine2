@@ -33,6 +33,7 @@ std::unique_ptr<NodeResult> CastNode::evaluate(PSC::Context &ctx) {
         case PSC::DataType::STRING:
             result = pvalue->toString();
             break;
+        case PSC::DataType::DATE:
         case PSC::DataType::ENUM:
         case PSC::DataType::POINTER:
         case PSC::DataType::COMPOSITE:

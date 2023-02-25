@@ -137,6 +137,8 @@ Node *Parser::parseAtom() {
         return parseLiteral<CharNode>();
     } else if (currentToken->type == TokenType::STRING) {
         return parseLiteral<StringNode>();
+    } else if (currentToken->type == TokenType::DATE) {
+        return parseLiteral<DateNode>();
     } else if (currentToken->type == TokenType::IDENTIFIER) {
         if (compareNextType(1, TokenType::LPAREN)) return parseFunctionCall();
         

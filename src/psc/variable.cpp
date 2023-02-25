@@ -33,6 +33,9 @@ Variable::Variable(const std::string &name, DataType type, bool isConstant, Cont
         case DataType::STRING:
             data = new PSC::String();
             break;
+        case DataType::DATE:
+            data = new PSC::Date();
+            break;
         case DataType::ENUM:
             data = new PSC::Enum(*type.name);
             break;
@@ -77,6 +80,9 @@ void Variable::set(Value *_data, bool copy) {
             break;
         case DataType::STRING:
             data = new PSC::String(*((const PSC::String*) _data));
+            break;
+        case DataType::DATE:
+            data = new PSC::Date(*((const PSC::Date*) _data));
             break;
         case DataType::ENUM:
             data = new PSC::Enum(*((const PSC::Enum*) _data));

@@ -33,7 +33,11 @@ void Block::runNodeREPL(Node *node, PSC::Context &ctx) {
         case PSC::DataType::STRING:
             std::cout << "\"" << result->get<PSC::String>().value << "\"";
             break;
-        case PSC::DataType::ENUM: {
+        case PSC::DataType::DATE: {
+            auto str = result->get<PSC::Date>().toString();
+            std::cout << str->value;
+            break;
+        } case PSC::DataType::ENUM: {
             auto &resEnum = result->get<PSC::Enum>();
             std::cout << resEnum.definitionName << ": " << *resEnum.value;
             break;

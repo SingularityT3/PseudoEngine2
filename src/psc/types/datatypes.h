@@ -4,7 +4,7 @@
 namespace PSC {
     struct DataType {
         enum class Type {
-            NONE, INTEGER, REAL, BOOLEAN, CHAR, STRING, ENUM, POINTER, COMPOSITE
+            NONE, INTEGER, REAL, BOOLEAN, CHAR, STRING, DATE, ENUM, POINTER, COMPOSITE
         };
 
         using enum Type;

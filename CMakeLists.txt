@@ -60,6 +60,7 @@ target_sources(PseudoEngine2 PRIVATE
     src/psc/types/numeric.cpp
     src/psc/types/boolean.cpp
     src/psc/types/character.cpp
+    src/psc/types/date.cpp
     src/psc/types/userType.cpp
     src/psc/types/types.cpp
     src/psc/types/type_definitions.cpp
@@ -92,6 +93,7 @@ endfunction()
 
 test(selection.pseudo)
 test(loop.pseudo)
+test(date.pseudo)
 test(arrays.pseudo)
 test(procedure.pseudo)
 test(function.pseudo)

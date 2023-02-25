@@ -167,6 +167,7 @@ PSC::DataType Context::getType(const Token &token, bool global) {
         else if (token.value == "BOOLEAN") return PSC::DataType(PSC::DataType::BOOLEAN);
         else if (token.value == "CHAR") return PSC::DataType(PSC::DataType::CHAR);
         else if (token.value == "STRING") return PSC::DataType(PSC::DataType::STRING);
+        else if (token.value == "DATE") return PSC::DataType(PSC::DataType::DATE);
         else std::abort();
     } else if (token.type == TokenType::IDENTIFIER) {
         auto *enumDefinition = getEnumDefinition(token.value, global);

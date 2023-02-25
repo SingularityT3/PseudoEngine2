@@ -50,6 +50,10 @@ std::unique_ptr<NodeResult> ComparisonNode::evaluate(PSC::Context &ctx) {
         leftRes->type = rightRes->type = PSC::DataType::INTEGER;
         leftRes->data = leftRes->get<PSC::Char>().toInteger();
         rightRes->data = rightRes->get<PSC::Char>().toInteger();
+    } else if (leftRes->type == PSC::DataType::DATE && rightRes->type == PSC::DataType::DATE) {
+        leftRes->type = rightRes->type = PSC::DataType::INTEGER;
+        leftRes->data = leftRes->get<PSC::Date>().toInteger();
+        rightRes->data = rightRes->get<PSC::Date>().toInteger();
     }
 
     if ((leftRes->type != PSC::DataType::INTEGER && leftRes->type != PSC::DataType::REAL)

@@ -1,0 +1,10 @@
+DECLARE date : DATE
+
+date <- 1/1/2000
+OUTPUT date
+
+OUTPUT date > 31/12/1999
+
+DECLARE dateArray : ARRAY[1:5] OF DATE
+dateArray[1] <- 12/08/2984
+OUTPUT dateArray[1]

@@ -36,7 +36,7 @@ void Lexer::makeWord() {
         tokens.emplace_back(new Token(TokenType::DECLARE, line, startColumn));
     } else if (word == "CONSTANT") {
         tokens.emplace_back(new Token(TokenType::CONSTANT, line, startColumn));
-    } else if (word == "INTEGER" || word == "REAL" || word == "BOOLEAN" || word == "CHAR" || word == "STRING") {
+    } else if (word == "INTEGER" || word == "REAL" || word == "BOOLEAN" || word == "CHAR" || word == "STRING" || word == "DATE") {
         tokens.emplace_back(new Token(TokenType::DATA_TYPE, line, startColumn, word));
     } else if (word == "ARRAY") {
         tokens.emplace_back(new Token(TokenType::ARRAY, line, startColumn));
@@ -163,7 +163,19 @@ void Lexer::makeNumber() {
     }
 
     TokenType type = decimal ? TokenType::REAL : TokenType::INTEGER;
-    tokens.emplace_back(new Token(type, line, startColumn, expr->substr(startIdx, idx - startIdx).c_str()));
+    tokens.emplace_back(new Token(type, line, startColumn, expr->substr(startIdx, idx - startIdx)));
+    // Check for date
+    if (currentChar != '/' || decimal) return;
+
+    int i = 0;
+    char c = getNextChar(i);
+    while (isdigit(c = getNextChar(++i))) {}
+    if (c != '/' || !isdigit(c = getNextChar(++i))) return;
+
+    for (int j = 0; j < i; j++) advance();
+    while (isdigit(currentChar) && idx < expr->size()) advance();
+    tokens.pop_back();
+    tokens.emplace_back(new Token(TokenType::DATE, line, startColumn, expr->substr(startIdx, idx - startIdx)));
 }
 
 char escSeqFmt(char code) {

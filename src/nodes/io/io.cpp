@@ -28,7 +28,11 @@ std::unique_ptr<NodeResult> OutputNode::evaluate(PSC::Context &ctx) {
             case PSC::DataType::STRING:
                 std::cout << result->get<PSC::String>().value;
                 break;
-            case PSC::DataType::ENUM:
+            case PSC::DataType::DATE: {
+                auto str = result->get<PSC::Date>().toString();
+                std::cout << str->value;
+                break;
+            } case PSC::DataType::ENUM:
                 std::cout << *result->get<PSC::Enum>().value;
                 break;
             case PSC::DataType::POINTER:
@@ -88,6 +92,7 @@ std::unique_ptr<NodeResult> InputNode::evaluate(PSC::Context &ctx) {
         case PSC::DataType::STRING:
             var->get<PSC::String>().value = std::move(inputStr.value);
             break;
+        case PSC::DataType::DATE:
         case PSC::DataType::ENUM:
         case PSC::DataType::POINTER:
         case PSC::DataType::COMPOSITE:

@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <memory>
+#include <chrono>
 
 #include "psc/types/datatypes.h"
 #include "psc/types/type_definitions.h"
@@ -210,6 +211,28 @@ namespace PSC {
         std::unique_ptr<String> toString() const override;
     };
 
+    class Date : public Primitive {
+    public:
+        std::chrono::year_month_day date;
+
+        Date() = default;
+
+        Date(std::chrono::year_month_day date);
+
+        Date(const Date&) = default;
+
+        std::unique_ptr<Integer> toInteger() const override;
+
+        std::unique_ptr<Real> toReal() const override;
+
+        std::unique_ptr<Boolean> toBoolean() const override;
+
+        std::unique_ptr<Char> toChar() const override;
+
+        std::unique_ptr<String> toString() const override;
+    };
+
+
     class Custom : public Value {
     public:
         constexpr bool isPrimitive() const override {return false;}
@@ -228,7 +251,6 @@ namespace PSC {
 
         const EnumTypeDefinition &getDefinition(Context &ctx) const;
     };
-
 
     class Pointer : public Custom {
     private:

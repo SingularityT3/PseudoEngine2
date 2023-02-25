@@ -7,6 +7,7 @@ enum class TokenType {
     REAL,
     CHAR,
     STRING,
+    DATE,
 
     RPAREN,
     LPAREN,

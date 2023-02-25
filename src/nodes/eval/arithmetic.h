@@ -42,6 +42,16 @@ public:
     std::unique_ptr<NodeResult> evaluate(PSC::Context &ctx) override;
 };
 
+class DateNode : public Node {
+private:
+    const PSC::Date valueDate;
+
+public:
+    DateNode(const Token &token);
+
+    std::unique_ptr<NodeResult> evaluate(PSC::Context &ctx) override;
+};
+
 
 class NegateNode : public UnaryNode {
 public:

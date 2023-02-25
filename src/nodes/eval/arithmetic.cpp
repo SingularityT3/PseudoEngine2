@@ -1,5 +1,6 @@
 #include "pch.h"
 
+#include <chrono>
 #include "psc/error.h"
 #include "nodes/eval/arithmetic.h"
 
@@ -35,6 +36,37 @@ StringNode::StringNode(const Token &token)
 
 std::unique_ptr<NodeResult> StringNode::evaluate(PSC::Context&) {
     return std::make_unique<NodeResult>(new PSC::String(valueStr), PSC::DataType::STRING);
+}
+
+inline PSC::Date makeDate(const std::string &dateStr) {
+    std::string dayStr, monthStr, yearStr;
+    int x = 0;
+    for (char c : dateStr) {
+        if (c == '/') {
+            x++;
+            continue;
+        }
+
+        if (x == 0) dayStr += c;
+        else if (x == 1) monthStr += c;
+        else yearStr += c;
+    }
+
+    std::chrono::day day(std::stoul(dayStr));
+    std::chrono::month month(std::stoul(monthStr));
+    std::chrono::year year(std::stoul(yearStr));
+
+    return PSC::Date(std::chrono::year_month_day(year, month, day));
+}
+
+DateNode::DateNode(const Token &token)
+    : Node(token), valueDate(makeDate(token.value))
+{}
+
+std::unique_ptr<NodeResult> DateNode::evaluate(PSC::Context &ctx) {
+    if (!valueDate.date.ok())
+        throw PSC::RuntimeError(token, ctx, "Invalid Date!");
+    return std::make_unique<NodeResult>(new PSC::Date(valueDate), PSC::DataType::DATE);
 }
 
 

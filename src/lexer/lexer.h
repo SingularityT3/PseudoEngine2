@@ -25,6 +25,8 @@ private:
 
     void makeString();
 
+    char getNextChar(size_t n);
+
 public:
     Lexer() = default;
 

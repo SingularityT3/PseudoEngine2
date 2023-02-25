@@ -30,6 +30,11 @@ void Lexer::setExpr(std::string *_expr) {
     advance();
 }
 
+char Lexer::getNextChar(size_t n) {
+    if (idx + n >= expr->size()) return 0;
+    return (*expr)[idx + n];
+}
+
 const std::vector<Token*> Lexer::makeTokens() {
     size_t reserve = expr->size() / 10;
     if (reserve < 1) reserve = 1;

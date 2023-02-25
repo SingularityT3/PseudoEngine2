@@ -11,6 +11,7 @@ static const char *TT_STR[] = {
     "TT_REAL",
     "TT_CHAR",
     "TT_STRING",
+    "TT_DATE",
 
     "TT_LPAREN",
     "TT_RPAREN",
