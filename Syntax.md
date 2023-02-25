@@ -15,6 +15,9 @@ Available data types:
 - BOOLEAN
 - CHAR
 - STRING
+- DATE
+
+Dates are in the format dd/mm/yyyy, literals are used like `3/14/2020`
 
 Multiple variables of the same type can be declared with
 ```
@@ -105,7 +108,10 @@ DECLARE <variable name> : <type name>
 ### Accessing pointers
 ```
 // Access value of ptrVar and store it in var
-<var> <- ^<ptrVar>
+<var> <- <ptrVar>^
+
+// Assign to variable referenced by pointer
+<ptrVar>^ <- <value>
 ```
 
 ## Arithmetic operations
@@ -242,6 +248,7 @@ ENDFUNCTION
 Function calls may be used inside expressions since they return a data type
 
 ### In-built functions
+#### String functions
 ```
 // Returns the length of a string
 LENGTH(s : STRING) RETURNS INTEGER
@@ -269,10 +276,11 @@ STR_TO_NUM(s : STRING) RETURNS REAL
 
 // Returns whether a string is a valid number
 IS_NUM(s : STRING) RETURNS BOOLEAN
+```
 
-// Checks if end of file is reached
-EOF(filename : STRING) RETURNS BOOLEAN
+#### Char functions
 
+```
 // Converts a character into lowercase if it is alphabetic
 LCASE(c : CHAR) RETURNS CHAR
 
@@ -284,12 +292,27 @@ ASC(c : CHAR) RETURNS INTEGER
 
 // Returns the character representation of an ASCII value
 CHR(x : INTEGER) RETURNS CHAR
+```
 
-// Returns the integer part of a real(floor)
-INT(x : REAL) RETURNS INTEGER
+#### Date functions
+```
+// Returns day of month
+DAY(Date : DATE) RETURNS INTEGER
 
-// Returns a random number from 0 to x inclusive
-RAND(x : INTEGER) RETURNS REAL
+// Returns the month
+MONTH(Date : DATE) RETURNS INTEGER
+
+// Returns the year
+YEAR(Date : DATE) RETURNS INTEGER
+
+// Returns day of week(Starting on Sunday with value 1)
+DAYINDEX(Date : DATE) RETURNS INTEGER
+
+// Returns a date with corresponding day, month and year
+SETDATE(Day, Month, Year : INTEGER) RETURNS DATE
+
+// Returns current date
+TODAY() RETURNS DATE
 ```
 
 #### Math functions
@@ -317,6 +340,17 @@ LOG(x : REAL) RETURNS REAL
 
 // Natural logarithm
 LN(x : REAL) RETURNS REAL
+```
+#### Misc functions
+```
+// Returns the integer part of a real(floor)
+INT(x : REAL) RETURNS INTEGER
+
+// Returns a random number from 0 to x inclusive
+RAND(x : INTEGER) RETURNS REAL
+
+// Checks if end of file is reached
+EOF(filename : STRING) RETURNS BOOLEAN
 ```
 
 ## I/O
@@ -358,6 +392,7 @@ CLOSEFILE <filename>
 - `BREAK` - Break out of loops early
 - `CONTINUE` - Skip to next iteration of loop
 - Alternate method of type conversion(apart from in-built functions): `<data type>(<value>)`. For example: `INTEGER("57")` 
+- Character escape codes like `\n`, `\t` etc.
 
 # Examples
 See [tests](./tests)
