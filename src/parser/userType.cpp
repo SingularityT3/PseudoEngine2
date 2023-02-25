@@ -6,6 +6,8 @@ Node *Parser::parseType() {
     const Token &token = *currentToken;
     advance();
 
+    while (currentToken->type == TokenType::LINE_END) advance();
+
     const Token &identifier = *currentToken;
     if (identifier.type != TokenType::IDENTIFIER)
         throw PSC::ExpectedTokenError(*currentToken, "identifier");
