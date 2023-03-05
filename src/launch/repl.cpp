@@ -4,6 +4,7 @@
 #include "launch/run.h"
 
 extern std::string psfilename;
+extern bool REPLMode;
 
 static const std::string multilineKeywords[] = {
     "IF",
@@ -37,9 +38,14 @@ bool startREPL() {
                 continue;
             }
             psfilename = code.substr(8, size - 8);
+            REPLMode = false;
+            
             std::cout << "Running file " << psfilename << "\n";
             std::string exit = runFile() ? "successfully" : "with an error";
             std::cout << "\nProgram exited " << exit << "\n";
+            
+            psfilename = "<stdin>";
+            REPLMode = true;
             continue;
         }
 
