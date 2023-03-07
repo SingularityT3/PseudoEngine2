@@ -80,8 +80,6 @@ PSC::BuiltinFnSETDATE::BuiltinFnSETDATE()
     parameters.emplace_back("Year", PSC::DataType::INTEGER);
 }
 
-Token PSC::BuiltinFnSETDATE::errToken {TokenType::FUNCTION, 0, 0};
-
 void PSC::BuiltinFnSETDATE::run(PSC::Context &ctx) {
     PSC::Variable *dayVar = ctx.getVariable("Day");
     if (dayVar == nullptr || dayVar->type != PSC::DataType::INTEGER) std::abort();
@@ -98,7 +96,7 @@ void PSC::BuiltinFnSETDATE::run(PSC::Context &ctx) {
 
     year_month_day ymd(year, month, day);
     if (!ymd.ok())
-        throw PSC::RuntimeError(errToken, ctx, "Invalid Date!");
+        throw PSC::RuntimeError(PSC::errToken, ctx, "Invalid Date!");
 
     auto ret = std::make_unique<PSC::Date>(ymd);
 

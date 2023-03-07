@@ -39,9 +39,15 @@ void PSC::BuiltinFnRight::run(PSC::Context &ctx) {
     PSC::Variable *x = ctx.getVariable("x");
     if (x == nullptr || x->type != PSC::DataType::INTEGER) std::abort();
 
-    int_t xVal = x->get<PSC::Integer>().value;
     std::string &strVal = str->get<PSC::String>().value;
     size_t strLen = strVal.size();
+
+    int_t xVal = x->get<PSC::Integer>().value;
+    if (xVal < 0)
+        throw PSC::RuntimeError(PSC::errToken, ctx, "Length for 'RIGHT' function cannot be negative");
+    if (static_cast<size_t>(xVal) > strLen)
+        throw PSC::RuntimeError(PSC::errToken, ctx, "Length for 'RIGHT' function cannot exceed string length");
+
     auto ret = std::make_unique<PSC::String>();
 
     size_t start = strLen - xVal;
@@ -75,11 +81,19 @@ void PSC::BuiltinFnMid::run(PSC::Context &ctx) {
 
     auto ret = std::make_unique<PSC::String>();
     std::string &strVal = str->get<PSC::String>().value;
+    size_t strLen = strVal.size();
 
     int_t xVal = x->get<PSC::Integer>().value - 1;
-    if (xVal < 0) xVal = 0;
+    if (xVal < 0)
+        throw PSC::RuntimeError(PSC::errToken, ctx, "Index for 'MID' function cannot be negative");
+    if (static_cast<size_t>(xVal) >= strLen)
+        throw PSC::RuntimeError(PSC::errToken, ctx, "Index for 'MID' function cannot exceed string length");
+
     int_t yVal = y->get<PSC::Integer>().value;
-    if (yVal < 0) yVal = 0;
+    if (yVal < 0)
+        throw PSC::RuntimeError(PSC::errToken, ctx, "Length for 'MID' function cannot be negative");
+    if (static_cast<size_t>(yVal + xVal) > strLen)
+        throw PSC::RuntimeError(PSC::errToken, ctx, "Substring length in 'MID' function cannot exceed string length");
 
     ret->value = strVal.substr(xVal, yVal);
 
@@ -102,9 +116,13 @@ void PSC::BuiltinFnLeft::run(PSC::Context &ctx) {
     PSC::Variable *x = ctx.getVariable("x");
     if (x == nullptr || x->type != PSC::DataType::INTEGER) std::abort();
 
-    int_t xVal = x->get<PSC::Integer>().value;
-    if (xVal < 0) xVal = 0;
     std::string &strVal = str->get<PSC::String>().value;
+
+    int_t xVal = x->get<PSC::Integer>().value;
+    if (xVal < 0)
+        throw PSC::RuntimeError(PSC::errToken, ctx, "Length for 'LEFT' function cannot be negative");
+    if (static_cast<size_t>(xVal) > strVal.size())
+        throw PSC::RuntimeError(PSC::errToken, ctx, "Length for 'LEFT' function cannot exceed string length");
 
     auto ret = std::make_unique<PSC::String>();
     ret->value = strVal.substr(0, xVal);
@@ -214,8 +232,6 @@ void PSC::BuiltinFnIsNum::run(PSC::Context &ctx) {
     ctx.returnValue = std::make_unique<NodeResult>(std::move(ret), PSC::DataType::BOOLEAN);
 }
 
-Token PSC::BuiltinFnEOF::errToken {TokenType::FUNCTION, 0, 0};
-
 PSC::BuiltinFnEOF::BuiltinFnEOF()
     : Function("EOF", PSC::DataType::BOOLEAN)
 {
@@ -230,9 +246,9 @@ void PSC::BuiltinFnEOF::run(PSC::Context &ctx) {
     PSC::File *file = PSC::FileManager::getFile(filenameStr);
     
     if (file == nullptr)
-        throw PSC::FileNotOpenError(errToken, ctx, filenameStr.value);
+        throw PSC::FileNotOpenError(PSC::errToken, ctx, filenameStr.value);
     if (file->getMode() != FileMode::READ)
-        throw PSC::RuntimeError(errToken, ctx, "File is not open in READ mode");
+        throw PSC::RuntimeError(PSC::errToken, ctx, "File is not open in READ mode");
     
     PSC::Boolean *eof = new PSC::Boolean;
     *eof = file->eof();

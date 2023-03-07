@@ -2,6 +2,8 @@
 #include "psc/procedure.h"
 
 namespace PSC {
+    static Token errToken{TokenType::FUNCTION, 0, 0};
+
     struct BuiltinFnLength : public Function {
         BuiltinFnLength();
 
@@ -58,10 +60,6 @@ namespace PSC {
     };
 
     struct BuiltinFnEOF : public Function {
-    private:
-        static Token errToken;
-    
-    public:
         BuiltinFnEOF();
 
         void run(PSC::Context &ctx) override;
@@ -118,10 +116,6 @@ namespace PSC {
     };
 
     struct BuiltinFnSETDATE : public Function {
-    private:
-        static Token errToken;
-
-    public:
         BuiltinFnSETDATE();
 
         void run(PSC::Context &ctx) override;
