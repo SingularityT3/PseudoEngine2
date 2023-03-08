@@ -14,11 +14,11 @@ std::unique_ptr<NodeResult> OpenFileNode::evaluate(PSC::Context &ctx) {
 
     const PSC::String &filename = filenameRes->get<PSC::String>();
 
-    PSC::File *file = PSC::FileManager::getFile(filename);
+    PSC::File *file = ctx.getFileManager().getFile(filename);
     if (file != nullptr)
         throw PSC::RuntimeError(token, ctx, "File '" + filename.value + "' is already open");
 
-    bool success = PSC::FileManager::createFile(filename, mode);
+    bool success = ctx.getFileManager().createFile(filename, mode);
     if (!success)
         throw PSC::RuntimeError(token, ctx, "Failed to open file '" + filename.value + "'");
 
@@ -43,7 +43,7 @@ std::unique_ptr<NodeResult> ReadFileNode::evaluate(PSC::Context &ctx) {
         throw PSC::RuntimeError(token, ctx, "Variable of type STRING expected");
 
     auto &filename = filenameRes->get<PSC::String>();
-    PSC::File *file = PSC::FileManager::getFile(filename);
+    PSC::File *file = ctx.getFileManager().getFile(filename);
     if (file == nullptr)
         throw PSC::FileNotOpenError(token, ctx, filename.value);
     
@@ -64,7 +64,7 @@ std::unique_ptr<NodeResult> WriteFileNode::evaluate(PSC::Context &ctx) {
         throw PSC::RuntimeError(token, ctx, "Expected string for file name");
     
     auto &filename = filenameRes->get<PSC::String>();
-    PSC::File *file = PSC::FileManager::getFile(filename);
+    PSC::File *file = ctx.getFileManager().getFile(filename);
     if (file == nullptr)
         throw PSC::FileNotOpenError(token, ctx, filename.value);
     if (file->getMode() == PSC::FileMode::READ)
@@ -115,11 +115,11 @@ std::unique_ptr<NodeResult> CloseFileNode::evaluate(PSC::Context &ctx) {
         throw PSC::RuntimeError(token, ctx, "Expected string for file name");
     
     auto &filename = filenameRes->get<PSC::String>();
-    PSC::File *file = PSC::FileManager::getFile(filename);
+    PSC::File *file = ctx.getFileManager().getFile(filename);
     if (file == nullptr)
         throw PSC::FileNotOpenError(token, ctx, filename.value);
 
-    PSC::FileManager::closeFile(filename);
+    ctx.getFileManager().closeFile(filename);
 
     return std::make_unique<NodeResult>(nullptr, PSC::DataType::NONE);
 }

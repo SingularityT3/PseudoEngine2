@@ -243,7 +243,7 @@ void PSC::BuiltinFnEOF::run(PSC::Context &ctx) {
     if (fileName == nullptr || fileName->type != PSC::DataType::STRING) std::abort();
 
     auto &filenameStr = fileName->get<PSC::String>();
-    PSC::File *file = PSC::FileManager::getFile(filenameStr);
+    PSC::File *file = ctx.getFileManager().getFile(filenameStr);
     
     if (file == nullptr)
         throw PSC::FileNotOpenError(PSC::errToken, ctx, filenameStr.value);

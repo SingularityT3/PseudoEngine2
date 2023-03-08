@@ -7,6 +7,7 @@
 #include "psc/array.h"
 #include "psc/procedure.h"
 #include "nodes/nodeResult.h"
+#include "psc/file.h"
 
 namespace PSC {
     class Context {
@@ -20,6 +21,7 @@ namespace PSC {
         std::vector<std::unique_ptr<EnumTypeDefinition>> enums;
         std::vector<std::unique_ptr<PointerTypeDefinition>> pointers;
         std::vector<std::unique_ptr<CompositeTypeDefinition>> composites;
+        std::unique_ptr<FileManager> fileManager;
 
     public:
         const Token *switchToken = nullptr;
@@ -83,5 +85,7 @@ namespace PSC {
         const PointerTypeDefinition *getPointerDefinition(const std::string &name, bool global = true);
 
         const CompositeTypeDefinition *getCompositeDefinition(const std::string &name, bool global = true);
+    
+        FileManager &getFileManager();
     };
 }

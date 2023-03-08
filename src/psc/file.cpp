@@ -55,8 +55,6 @@ void File::write(const String &data) {
 }
 
 
-std::vector<std::unique_ptr<PSC::File>> FileManager::files = std::vector<std::unique_ptr<PSC::File>>();
-
 bool FileManager::createFile(const String &name, FileMode mode) {
     namespace fs = std::filesystem;
     if (!fs::exists(fs::path(name.value)) && mode != FileMode::WRITE) return false;

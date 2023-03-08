@@ -38,13 +38,13 @@ namespace PSC {
 
     class FileManager {
     private:
-        static std::vector<std::unique_ptr<File>> files;
+        std::vector<std::unique_ptr<File>> files;
     
     public:
-        static bool createFile(const String &name, FileMode mode);
+        bool createFile(const String &name, FileMode mode);
 
-        static File *getFile(const String &name);
+        File *getFile(const String &name);
 
-        static void closeFile(const String &name);
+        void closeFile(const String &name);
     };
 }

@@ -90,6 +90,8 @@ std::unique_ptr<Context> Context::createGlobalContext() {
     ctx->addFunction(std::make_unique<PSC::BuiltinFnLog>());
     ctx->addFunction(std::make_unique<PSC::BuiltinFnLn>());
 
+    ctx->fileManager = std::make_unique<FileManager>();
+
     return ctx;
 }
 
@@ -254,4 +256,8 @@ const CompositeTypeDefinition *Context::getCompositeDefinition(const std::string
     }
     if (global && parent != nullptr) return getGlobalContext()->getCompositeDefinition(name);
     return nullptr;
+}
+
+FileManager &Context::getFileManager() {
+    return *(getGlobalContext()->fileManager);
 }
