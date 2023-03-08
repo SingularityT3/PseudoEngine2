@@ -8,7 +8,7 @@ private:
     const std::string functionName;
     const std::vector<std::string> parameterNames;
     const std::vector<const Token*> parameterTypes;
-    const bool byRef;
+    const std::vector<bool> parameterPassTypes;
     PSC::Block &block;
     const Token &returnType;
 
@@ -18,7 +18,7 @@ public:
         const std::string &functionName,
         std::vector<std::string> &&parameterNames,
         std::vector<const Token*> &&parameterTypes,
-        bool byRef,
+        std::vector<bool> &&parameterPassTypes,
         PSC::Block &block,
         const Token &returnType
     );

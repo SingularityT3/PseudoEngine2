@@ -10,7 +10,7 @@
 PSC::BuiltinFnLength::BuiltinFnLength()
     : Function("LENGTH", PSC::DataType::INTEGER)
 {
-    parameters.emplace_back("String", PSC::DataType::STRING);
+    parameters.emplace_back("String", PSC::DataType::STRING, false);
 }
 
 void PSC::BuiltinFnLength::run(PSC::Context &ctx) {
@@ -28,8 +28,8 @@ PSC::BuiltinFnRight::BuiltinFnRight()
     : Function("RIGHT", PSC::DataType::STRING)
 {
     parameters.reserve(2);
-    parameters.emplace_back("String", PSC::DataType::STRING);
-    parameters.emplace_back("x", PSC::DataType::INTEGER);
+    parameters.emplace_back("String", PSC::DataType::STRING, false);
+    parameters.emplace_back("x", PSC::DataType::INTEGER, false);
 }
 
 void PSC::BuiltinFnRight::run(PSC::Context &ctx) {
@@ -63,9 +63,9 @@ PSC::BuiltinFnMid::BuiltinFnMid()
     : Function("MID", PSC::DataType::STRING)
 {
     parameters.reserve(3);
-    parameters.emplace_back("String", PSC::DataType::STRING);
-    parameters.emplace_back("x", PSC::DataType::INTEGER);
-    parameters.emplace_back("y", PSC::DataType::INTEGER);
+    parameters.emplace_back("String", PSC::DataType::STRING, false);
+    parameters.emplace_back("x", PSC::DataType::INTEGER, false);
+    parameters.emplace_back("y", PSC::DataType::INTEGER, false);
 }
 
 void PSC::BuiltinFnMid::run(PSC::Context &ctx) {
@@ -105,8 +105,8 @@ PSC::BuiltinFnLeft::BuiltinFnLeft()
     : Function("LEFT", PSC::DataType::STRING)
 {
     parameters.reserve(2);
-    parameters.emplace_back("String", PSC::DataType::STRING);
-    parameters.emplace_back("x", PSC::DataType::INTEGER);
+    parameters.emplace_back("String", PSC::DataType::STRING, false);
+    parameters.emplace_back("x", PSC::DataType::INTEGER, false);
 }
 
 void PSC::BuiltinFnLeft::run(PSC::Context &ctx) {
@@ -134,7 +134,7 @@ void PSC::BuiltinFnLeft::run(PSC::Context &ctx) {
 PSC::BuiltinFnToUpper::BuiltinFnToUpper()
     : Function("TO_UPPER", PSC::DataType::STRING)
 {
-    parameters.emplace_back("String", PSC::DataType::STRING);
+    parameters.emplace_back("String", PSC::DataType::STRING, false);
 }
 
 void PSC::BuiltinFnToUpper::run(PSC::Context &ctx) {
@@ -153,7 +153,7 @@ void PSC::BuiltinFnToUpper::run(PSC::Context &ctx) {
 PSC::BuiltinFnToLower::BuiltinFnToLower()
     : Function("TO_LOWER", PSC::DataType::STRING)
 {
-    parameters.emplace_back("String", PSC::DataType::STRING);
+    parameters.emplace_back("String", PSC::DataType::STRING, false);
 }
 
 void PSC::BuiltinFnToLower::run(PSC::Context &ctx) {
@@ -172,7 +172,7 @@ void PSC::BuiltinFnToLower::run(PSC::Context &ctx) {
 PSC::BuiltinFnNumToStr::BuiltinFnNumToStr()
     : Function("NUM_TO_STR", PSC::DataType::STRING)
 {
-    parameters.emplace_back("x", PSC::DataType::REAL);
+    parameters.emplace_back("x", PSC::DataType::REAL, false);
 }
 
 void PSC::BuiltinFnNumToStr::run(PSC::Context &ctx) {
@@ -188,7 +188,7 @@ void PSC::BuiltinFnNumToStr::run(PSC::Context &ctx) {
 PSC::BuiltinFnStrToNum::BuiltinFnStrToNum()
     : Function("STR_TO_NUM", PSC::DataType::REAL)
 {
-    parameters.emplace_back("String", PSC::DataType::STRING);
+    parameters.emplace_back("String", PSC::DataType::STRING, false);
 }
 
 void PSC::BuiltinFnStrToNum::run(PSC::Context &ctx) {
@@ -204,7 +204,7 @@ void PSC::BuiltinFnStrToNum::run(PSC::Context &ctx) {
 PSC::BuiltinFnIsNum::BuiltinFnIsNum()
     : Function("IS_NUM", PSC::DataType::BOOLEAN)
 {
-    parameters.emplace_back("String", PSC::DataType::STRING);
+    parameters.emplace_back("String", PSC::DataType::STRING, false);
 }
 
 void PSC::BuiltinFnIsNum::run(PSC::Context &ctx) {
@@ -235,7 +235,7 @@ void PSC::BuiltinFnIsNum::run(PSC::Context &ctx) {
 PSC::BuiltinFnEOF::BuiltinFnEOF()
     : Function("EOF", PSC::DataType::BOOLEAN)
 {
-    parameters.emplace_back("File", PSC::DataType::STRING);
+    parameters.emplace_back("File", PSC::DataType::STRING, false);
 }
 
 void PSC::BuiltinFnEOF::run(PSC::Context &ctx) {

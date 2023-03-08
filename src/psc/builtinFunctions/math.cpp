@@ -7,8 +7,8 @@
 PSC::BuiltinFnPow::BuiltinFnPow()
     : Function("POW", PSC::DataType::REAL)
 {
-    parameters.emplace_back("x", PSC::DataType::REAL);
-    parameters.emplace_back("y", PSC::DataType::REAL);
+    parameters.emplace_back("x", PSC::DataType::REAL, false);
+    parameters.emplace_back("y", PSC::DataType::REAL, false);
 }
 
 void PSC::BuiltinFnPow::run(PSC::Context &ctx) {
@@ -28,7 +28,7 @@ void PSC::BuiltinFnPow::run(PSC::Context &ctx) {
 PSC::BuiltinFnExp::BuiltinFnExp()
     : Function("EXP", PSC::DataType::REAL)
 {
-    parameters.emplace_back("x", PSC::DataType::REAL);
+    parameters.emplace_back("x", PSC::DataType::REAL, false);
 }
 
 void PSC::BuiltinFnExp::run(PSC::Context &ctx) {
@@ -44,7 +44,7 @@ void PSC::BuiltinFnExp::run(PSC::Context &ctx) {
 PSC::BuiltinFnSin::BuiltinFnSin()
     : Function("SIN", PSC::DataType::REAL)
 {
-    parameters.emplace_back("x", PSC::DataType::REAL);
+    parameters.emplace_back("x", PSC::DataType::REAL, false);
 }
 
 void PSC::BuiltinFnSin::run(PSC::Context &ctx) {
@@ -60,7 +60,7 @@ void PSC::BuiltinFnSin::run(PSC::Context &ctx) {
 PSC::BuiltinFnCos::BuiltinFnCos()
     : Function("COS", PSC::DataType::REAL)
 {
-    parameters.emplace_back("x", PSC::DataType::REAL);
+    parameters.emplace_back("x", PSC::DataType::REAL, false);
 }
 
 void PSC::BuiltinFnCos::run(PSC::Context &ctx) {
@@ -76,7 +76,7 @@ void PSC::BuiltinFnCos::run(PSC::Context &ctx) {
 PSC::BuiltinFnTan::BuiltinFnTan()
     : Function("TAN", PSC::DataType::REAL)
 {
-    parameters.emplace_back("x", PSC::DataType::REAL);
+    parameters.emplace_back("x", PSC::DataType::REAL, false);
 }
 
 void PSC::BuiltinFnTan::run(PSC::Context &ctx) {
@@ -92,7 +92,7 @@ void PSC::BuiltinFnTan::run(PSC::Context &ctx) {
 PSC::BuiltinFnASin::BuiltinFnASin()
     : Function("ASIN", PSC::DataType::REAL)
 {
-    parameters.emplace_back("x", PSC::DataType::REAL);
+    parameters.emplace_back("x", PSC::DataType::REAL, false);
 }
 
 void PSC::BuiltinFnASin::run(PSC::Context &ctx) {
@@ -108,7 +108,7 @@ void PSC::BuiltinFnASin::run(PSC::Context &ctx) {
 PSC::BuiltinFnACos::BuiltinFnACos()
     : Function("ACOS", PSC::DataType::REAL)
 {
-    parameters.emplace_back("x", PSC::DataType::REAL);
+    parameters.emplace_back("x", PSC::DataType::REAL, false);
 }
 
 void PSC::BuiltinFnACos::run(PSC::Context &ctx) {
@@ -124,7 +124,7 @@ void PSC::BuiltinFnACos::run(PSC::Context &ctx) {
 PSC::BuiltinFnATan::BuiltinFnATan()
     : Function("ATAN", PSC::DataType::REAL)
 {
-    parameters.emplace_back("x", PSC::DataType::REAL);
+    parameters.emplace_back("x", PSC::DataType::REAL, false);
 }
 
 void PSC::BuiltinFnATan::run(PSC::Context &ctx) {
@@ -140,8 +140,8 @@ void PSC::BuiltinFnATan::run(PSC::Context &ctx) {
 PSC::BuiltinFnATan2::BuiltinFnATan2()
     : Function("ATAN2", PSC::DataType::REAL)
 {
-    parameters.emplace_back("y", PSC::DataType::REAL);
-    parameters.emplace_back("x", PSC::DataType::REAL);
+    parameters.emplace_back("y", PSC::DataType::REAL, false);
+    parameters.emplace_back("x", PSC::DataType::REAL, false);
 }
 
 void PSC::BuiltinFnATan2::run(PSC::Context &ctx) {
@@ -161,7 +161,7 @@ void PSC::BuiltinFnATan2::run(PSC::Context &ctx) {
 PSC::BuiltinFnSqrt::BuiltinFnSqrt()
     : Function("SQRT", PSC::DataType::REAL)
 {
-    parameters.emplace_back("x", PSC::DataType::REAL);
+    parameters.emplace_back("x", PSC::DataType::REAL, false);
 }
 
 void PSC::BuiltinFnSqrt::run(PSC::Context &ctx) {
@@ -177,7 +177,7 @@ void PSC::BuiltinFnSqrt::run(PSC::Context &ctx) {
 PSC::BuiltinFnLog::BuiltinFnLog()
     : Function("LOG", PSC::DataType::REAL)
 {
-    parameters.emplace_back("x", PSC::DataType::REAL);
+    parameters.emplace_back("x", PSC::DataType::REAL, false);
 }
 
 void PSC::BuiltinFnLog::run(PSC::Context &ctx) {
@@ -193,7 +193,7 @@ void PSC::BuiltinFnLog::run(PSC::Context &ctx) {
 PSC::BuiltinFnLn::BuiltinFnLn()
     : Function("LN", PSC::DataType::REAL)
 {
-    parameters.emplace_back("x", PSC::DataType::REAL);
+    parameters.emplace_back("x", PSC::DataType::REAL, false);
 }
 
 void PSC::BuiltinFnLn::run(PSC::Context &ctx) {

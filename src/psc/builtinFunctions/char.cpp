@@ -8,7 +8,7 @@
 PSC::BuiltinFnLCase::BuiltinFnLCase()
     : Function("LCASE", PSC::DataType::CHAR)
 {
-    parameters.emplace_back("Char", PSC::DataType::CHAR);
+    parameters.emplace_back("Char", PSC::DataType::CHAR, false);
 }
 
 void PSC::BuiltinFnLCase::run(PSC::Context &ctx) {
@@ -25,7 +25,7 @@ void PSC::BuiltinFnLCase::run(PSC::Context &ctx) {
 PSC::BuiltinFnUCase::BuiltinFnUCase()
     : Function("UCASE", PSC::DataType::CHAR)
 {
-    parameters.emplace_back("Char", PSC::DataType::CHAR);
+    parameters.emplace_back("Char", PSC::DataType::CHAR, false);
 }
 
 void PSC::BuiltinFnUCase::run(PSC::Context &ctx) {
@@ -42,7 +42,7 @@ void PSC::BuiltinFnUCase::run(PSC::Context &ctx) {
 PSC::BuiltinFnASC::BuiltinFnASC()
     : Function("ASC", PSC::DataType::INTEGER)
 {
-    parameters.emplace_back("Char", PSC::DataType::CHAR);
+    parameters.emplace_back("Char", PSC::DataType::CHAR, false);
 }
 
 void PSC::BuiltinFnASC::run(PSC::Context &ctx) {
@@ -59,7 +59,7 @@ void PSC::BuiltinFnASC::run(PSC::Context &ctx) {
 PSC::BuiltinFnCHR::BuiltinFnCHR()
     : Function("CHR", PSC::DataType::CHAR)
 {
-    parameters.emplace_back("x", PSC::DataType::INTEGER);
+    parameters.emplace_back("x", PSC::DataType::INTEGER, false);
 }
 
 void PSC::BuiltinFnCHR::run(PSC::Context &ctx) {

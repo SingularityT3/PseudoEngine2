@@ -6,24 +6,22 @@
 
 using namespace PSC;
 
-Parameter::Parameter(const std::string &name, PSC::DataType type)
-    : name(name), type(type)
+Parameter::Parameter(const std::string &name, PSC::DataType type, bool byRef)
+    : name(name), type(type), byRef(byRef)
 {}
 
 Procedure::Procedure(
     const std::string &name,
     std::vector<Parameter> &&parameters,
-    bool byRef,
     PSC::Block *block
 )
 : name(name),
     parameters(std::move(parameters)),
-    byRef(byRef),
     block(block)
 {}
 
 Procedure::Procedure(const std::string &name)
-    : name(name), parameters(), byRef(false), block(nullptr)
+    : name(name), parameters(), block(nullptr)
 {}
 
 std::vector<PSC::DataType> Procedure::getTypes() const {
@@ -40,12 +38,11 @@ void Procedure::run(PSC::Context &ctx) {
 Function::Function(
     const std::string &name,
     std::vector<Parameter> &&parameters,
-    bool byRef,
     PSC::Block *block,
     PSC::DataType returnType,
     const Token *defToken
 )
-: Procedure(name, std::move(parameters), byRef, block),
+: Procedure(name, std::move(parameters), block),
     returnType(returnType),
     defToken(defToken)
 {}

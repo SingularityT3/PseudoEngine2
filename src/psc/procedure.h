@@ -11,20 +11,19 @@ namespace PSC {
     struct Parameter {
         const std::string name;
         const PSC::DataType type;
+        const bool byRef;
 
-        Parameter(const std::string &name, PSC::DataType type);
+        Parameter(const std::string &name, PSC::DataType type, bool byRef);
     };
 
     struct Procedure {
         const std::string name;
         std::vector<Parameter> parameters;
-        const bool byRef;
         PSC::Block *const block;
 
         Procedure(
             const std::string &name,
             std::vector<Parameter> &&parameters,
-            bool byRef,
             PSC::Block *block
         );
 
@@ -44,7 +43,6 @@ namespace PSC {
         Function(
             const std::string &name,
             std::vector<Parameter> &&parameters,
-            bool byRef,
             PSC::Block *block,
             PSC::DataType returnType,
             const Token *defToken

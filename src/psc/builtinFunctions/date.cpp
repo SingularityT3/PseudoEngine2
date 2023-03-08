@@ -9,7 +9,7 @@ using namespace std::chrono;
 PSC::BuiltinFnDAY::BuiltinFnDAY()
     : Function("DAY", PSC::DataType::INTEGER)
 {
-    parameters.emplace_back("Date", PSC::DataType::DATE);
+    parameters.emplace_back("Date", PSC::DataType::DATE, false);
 }
 
 void PSC::BuiltinFnDAY::run(PSC::Context &ctx) {
@@ -25,7 +25,7 @@ void PSC::BuiltinFnDAY::run(PSC::Context &ctx) {
 PSC::BuiltinFnMONTH::BuiltinFnMONTH()
     : Function("MONTH", PSC::DataType::INTEGER)
 {
-    parameters.emplace_back("Date", PSC::DataType::DATE);
+    parameters.emplace_back("Date", PSC::DataType::DATE, false);
 }
 
 void PSC::BuiltinFnMONTH::run(PSC::Context &ctx) {
@@ -41,7 +41,7 @@ void PSC::BuiltinFnMONTH::run(PSC::Context &ctx) {
 PSC::BuiltinFnYEAR::BuiltinFnYEAR()
     : Function("YEAR", PSC::DataType::INTEGER)
 {
-    parameters.emplace_back("Date", PSC::DataType::DATE);
+    parameters.emplace_back("Date", PSC::DataType::DATE, false);
 }
 
 void PSC::BuiltinFnYEAR::run(PSC::Context &ctx) {
@@ -57,7 +57,7 @@ void PSC::BuiltinFnYEAR::run(PSC::Context &ctx) {
 PSC::BuiltinFnDAYINDEX::BuiltinFnDAYINDEX()
     : Function("DAYINDEX", PSC::DataType::INTEGER)
 {
-    parameters.emplace_back("Date", PSC::DataType::DATE);
+    parameters.emplace_back("Date", PSC::DataType::DATE, false);
 }
 
 void PSC::BuiltinFnDAYINDEX::run(PSC::Context &ctx) {
@@ -75,9 +75,9 @@ void PSC::BuiltinFnDAYINDEX::run(PSC::Context &ctx) {
 PSC::BuiltinFnSETDATE::BuiltinFnSETDATE()
     : Function("SETDATE", PSC::DataType::DATE)
 {
-    parameters.emplace_back("Day", PSC::DataType::INTEGER);
-    parameters.emplace_back("Month", PSC::DataType::INTEGER);
-    parameters.emplace_back("Year", PSC::DataType::INTEGER);
+    parameters.emplace_back("Day", PSC::DataType::INTEGER, false);
+    parameters.emplace_back("Month", PSC::DataType::INTEGER, false);
+    parameters.emplace_back("Year", PSC::DataType::INTEGER, false);
 }
 
 void PSC::BuiltinFnSETDATE::run(PSC::Context &ctx) {

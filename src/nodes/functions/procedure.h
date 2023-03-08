@@ -9,7 +9,7 @@ private:
     const std::string procedureName;
     const std::vector<std::string> parameterNames;
     const std::vector<const Token*> parameterTypes;
-    const bool byRef;
+    const std::vector<bool> parameterPassTypes;
     PSC::Block &block;
 
 public:
@@ -18,7 +18,7 @@ public:
         const std::string &procedureName,
         std::vector<std::string> &&parameterNames,
         std::vector<const Token*> &&parameterTypes,
-        bool byRef,
+        std::vector<bool> &&parameterPassTypes,
         PSC::Block &block
     );
 

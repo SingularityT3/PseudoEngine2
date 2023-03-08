@@ -47,23 +47,30 @@ Node *Parser::parseProcedure() {
     bool byRef = false;
     std::vector<std::string> parameterNames;
     std::vector<const Token*> parameterTypes;
+    std::vector<bool> parameterPassTypes;
 
     if (currentToken->type == TokenType::LPAREN) {
         advance();
 
-        if (currentToken->type == TokenType::BYREF) {
-            byRef = true;
-            advance();
-        } else if (currentToken->type == TokenType::BYVAL) {
-            advance();
-        }
-
         int typeCount = 1;
+        int passTypeCount = 0;
         while (currentToken->type != TokenType::RPAREN) {
             if (parameterNames.size() > 0) {
                 if (currentToken->type != TokenType::COMMA)
                     throw PSC::ExpectedTokenError(*currentToken, "','");
                 advance();
+            }
+
+            if ((currentToken->type == TokenType::BYREF && !byRef)
+                || (currentToken->type == TokenType::BYVAL && byRef)
+            ) {
+                for (int i = 0; i < passTypeCount; i++)
+                    parameterPassTypes.push_back(byRef);
+                byRef = !byRef;
+                passTypeCount = 1;
+                advance();
+            } else {
+                passTypeCount++;
             }
 
             if (currentToken->type != TokenType::IDENTIFIER)
@@ -91,6 +98,10 @@ Node *Parser::parseProcedure() {
             typeCount = 1;
         }
         if (typeCount != 1) throw PSC::ExpectedTokenError(*currentToken, "data type"); 
+        if (passTypeCount > 0) {
+            for (int i = 0; i < passTypeCount; i++)
+                parameterPassTypes.push_back(byRef);
+        }
         advance(); // ')'
     }
 
@@ -104,7 +115,7 @@ Node *Parser::parseProcedure() {
         procedureName,
         std::move(parameterNames),
         std::move(parameterTypes),
-        byRef,
+        std::move(parameterPassTypes),
         *block
     );
 }

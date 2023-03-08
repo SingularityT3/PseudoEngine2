@@ -11,7 +11,7 @@ FunctionNode::FunctionNode(
     const std::string &functionName,
     std::vector<std::string> &&parameterNames,
     std::vector<const Token*> &&parameterTypes,
-    bool byRef,
+    std::vector<bool> &&parameterPassTypes,
     PSC::Block &block,
     const Token &returnType
 )
@@ -19,7 +19,7 @@ FunctionNode::FunctionNode(
     functionName(functionName),
     parameterNames(std::move(parameterNames)),
     parameterTypes(std::move(parameterTypes)),
-    byRef(byRef),
+    parameterPassTypes(std::move(parameterPassTypes)),
     block(block),
     returnType(returnType)
 {}
@@ -40,10 +40,10 @@ std::unique_ptr<NodeResult> FunctionNode::evaluate(PSC::Context &ctx) {
         PSC::DataType type = ctx.getType(*typeToken);
         if (type == PSC::DataType::NONE)
             throw PSC::NotDefinedError(*typeToken, ctx, "Type '" + typeToken->value + "'");
-        parameters.emplace_back(parameterNames[i], type);
+        parameters.emplace_back(parameterNames[i], type, parameterPassTypes[i]);
     }
 
-    auto function = std::make_unique<PSC::Function>(functionName, std::move(parameters), byRef, &block, returnDataType, &token);
+    auto function = std::make_unique<PSC::Function>(functionName, std::move(parameters), &block, returnDataType, &token);
     ctx.addFunction(std::move(function));
 
     return std::make_unique<NodeResult>(nullptr, PSC::DataType::NONE);
@@ -79,14 +79,15 @@ std::unique_ptr<NodeResult> FunctionCallNode::evaluate(PSC::Context &ctx) {
 
     for (size_t i = 0; i < args.size(); i++) {
         auto &argRes = argResults[i];
+        const PSC::Parameter &parameter = function->parameters[i];
 
-        if (!function->byRef) argRes->implicitCast(function->parameters[i].type);
-        if (function->parameters[i].type != argRes->type) {
+        if (!parameter.byRef) argRes->implicitCast(parameter.type);
+        if (parameter.type != argRes->type) {
             throw PSC::InvalidArgsError(token, ctx, function->getTypes(), std::move(argTypes));
         }
 
         PSC::Variable *var;
-        if (function->byRef) {
+        if (parameter.byRef) {
             AccessNode *accsNode = dynamic_cast<AccessNode*>(args[i]);
             if (!accsNode) {
                 throw PSC::RuntimeError(token, ctx, "Only variables can be used as arguements when passing by reference");
@@ -97,9 +98,9 @@ std::unique_ptr<NodeResult> FunctionCallNode::evaluate(PSC::Context &ctx) {
                 throw PSC::ArrayDirectAccessError(token, ctx);
 
             PSC::Variable &original = *static_cast<PSC::Variable*>(&holder);
-            var = original.createReference(function->parameters[i].name);
+            var = original.createReference(parameter.name);
         } else {
-            var = new PSC::Variable(function->parameters[i].name, argRes->type, false, functionCtx.get());
+            var = new PSC::Variable(parameter.name, argRes->type, false, functionCtx.get());
 
             switch (var->type.type) {
                 case PSC::DataType::INTEGER:
