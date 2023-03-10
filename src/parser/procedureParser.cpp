@@ -61,13 +61,19 @@ Node *Parser::parseProcedure() {
                 advance();
             }
 
-            if ((currentToken->type == TokenType::BYREF && !byRef)
-                || (currentToken->type == TokenType::BYVAL && byRef)
+            if (currentToken->type == TokenType::BYREF
+                || currentToken->type == TokenType::BYVAL
             ) {
-                for (int i = 0; i < passTypeCount; i++)
-                    parameterPassTypes.push_back(byRef);
-                byRef = !byRef;
-                passTypeCount = 1;
+                TokenType currentType = byRef ? TokenType::BYREF : TokenType::BYVAL;
+                if (currentType != currentToken->type) {
+                    parameterPassTypes.reserve(passTypeCount);
+                    for (int i = 0; i < passTypeCount; i++)
+                        parameterPassTypes.push_back(byRef);
+                    byRef = !byRef;
+                    passTypeCount = 1;
+                } else {
+                    passTypeCount++;
+                }
                 advance();
             } else {
                 passTypeCount++;
@@ -92,6 +98,7 @@ Node *Parser::parseProcedure() {
             advance();
 
             parameterNames.emplace_back(paramName);
+            parameterTypes.reserve(typeCount);
             for (int i = 0; i < typeCount; i++) {
                 parameterTypes.emplace_back(type);
             }
@@ -99,6 +106,7 @@ Node *Parser::parseProcedure() {
         }
         if (typeCount != 1) throw PSC::ExpectedTokenError(*currentToken, "data type"); 
         if (passTypeCount > 0) {
+            parameterPassTypes.reserve(passTypeCount);
             for (int i = 0; i < passTypeCount; i++)
                 parameterPassTypes.push_back(byRef);
         }
