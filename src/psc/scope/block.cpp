@@ -21,10 +21,14 @@ void Block::runNodeREPL(Node *node, PSC::Context &ctx) {
         case PSC::DataType::INTEGER:
             std::cout << result->get<PSC::Integer>();
             break;
-        case PSC::DataType::REAL:
-            std::cout << result->get<PSC::Real>();
+        case PSC::DataType::REAL: {
+            PSC::real_t value = result->get<PSC::Real>().value;
+            std::cout << value;
+
+            double integerValue;
+            if (std::modf(value, &integerValue) == 0.0) std::cout << ".0";
             break;
-        case PSC::DataType::BOOLEAN:
+        } case PSC::DataType::BOOLEAN:
             std::cout << (result->get<PSC::Boolean>() ? "TRUE" : "FALSE");
             break;
         case PSC::DataType::CHAR:
