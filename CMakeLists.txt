@@ -12,7 +12,11 @@ target_include_directories(PseudoEngine2 PRIVATE src)
 if(MSVC)
     string(REPLACE "/W3" "/W4" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 else()
-    target_compile_options(PseudoEngine2 PRIVATE -Wall -Wextra -pedantic -Werror)
+    target_compile_options(PseudoEngine2 PRIVATE -Wall -Wextra -pedantic)
+endif()
+
+if (CMAKE_BUILD_TYPE STREQUAL "Release")
+    target_link_options(PseudoEngine2 PRIVATE -static)
 endif()
 
 target_precompile_headers(PseudoEngine2 PRIVATE src/pch.h)
