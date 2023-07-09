@@ -10,11 +10,16 @@ Enum::Enum(const std::string &name) : definitionName(name) {}
 
 void Enum::operator=(const Enum &other) {
     if (definitionName != other.definitionName) std::abort();
-    value = other.value;
+    idx = other.idx;
 }
 
 const EnumTypeDefinition &Enum::getDefinition(Context &ctx) const {
     return *ctx.getEnumDefinition(definitionName);
+}
+
+std::string Enum::getString(Context &ctx) const {
+    const EnumTypeDefinition &definition = getDefinition(ctx);
+    return definition.values[idx];
 }
 
 Pointer::Pointer(const std::string &name)

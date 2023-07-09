@@ -213,7 +213,7 @@ Enum *Context::getEnumElement(const std::string &value, bool global) {
         for (size_t i = 0; i < definition->values.size(); i++) {
             if (definition->values[i] == value) {
                 auto ptr = new Enum(definition->name);
-                ptr->value = &definition->values[i];
+                ptr->idx = i;
                 return ptr;
             }
         }

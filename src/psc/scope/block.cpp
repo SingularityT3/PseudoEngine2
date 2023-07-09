@@ -43,7 +43,7 @@ void Block::runNodeREPL(Node *node, PSC::Context &ctx) {
             break;
         } case PSC::DataType::ENUM: {
             auto &resEnum = result->get<PSC::Enum>();
-            std::cout << resEnum.definitionName << ": " << *resEnum.value;
+            std::cout << resEnum.definitionName << ": " << resEnum.getString(ctx);
             break;
         } case PSC::DataType::POINTER: {
             auto &resPtr = result->get<PSC::Pointer>();

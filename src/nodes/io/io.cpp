@@ -37,7 +37,7 @@ std::unique_ptr<NodeResult> OutputNode::evaluate(PSC::Context &ctx) {
                 std::cout << str->value;
                 break;
             } case PSC::DataType::ENUM:
-                std::cout << *result->get<PSC::Enum>().value;
+                std::cout << result->get<PSC::Enum>().getString(ctx);
                 break;
             case PSC::DataType::POINTER:
                 std::cout << result->get<PSC::Pointer>().definitionName << " object";

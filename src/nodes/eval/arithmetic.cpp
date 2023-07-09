@@ -1,8 +1,14 @@
+#include "lexer/tokens.h"
+#include "nodes/nodeResult.h"
 #include "pch.h"
 
 #include <chrono>
+#include <memory>
 #include "psc/error.h"
 #include "nodes/eval/arithmetic.h"
+#include "psc/types/datatypes.h"
+#include "psc/types/type_definitions.h"
+#include "psc/types/types.h"
 
 IntegerNode::IntegerNode(const Token &token)
     : Node(token), valueInt(std::stol(token.value))
@@ -113,6 +119,42 @@ ArithmeticOperationNode::ArithmeticOperationNode(const Token &token, Node &left,
 std::unique_ptr<NodeResult> ArithmeticOperationNode::evaluate(PSC::Context &ctx) {
     auto leftRes = left.evaluate(ctx);
     auto rightRes = right.evaluate(ctx);
+
+    bool enumSwap = false;
+    if (leftRes->type == PSC::DataType::INTEGER && rightRes->type == PSC::DataType::ENUM) {
+        leftRes.swap(rightRes);
+        enumSwap = true;
+    }
+    if (leftRes->type == PSC::DataType::ENUM && rightRes->type == PSC::DataType::INTEGER
+        && (token.type == TokenType::PLUS || token.type == TokenType::MINUS)) {
+        const PSC::Enum &enumVal = leftRes->get<PSC::Enum>();
+        const PSC::Integer &integer = rightRes->get<PSC::Integer>();
+
+        PSC::int_t left, right;
+        if (enumSwap) {
+            left = integer.value;
+            right = enumVal.idx;
+        } else {
+            left = enumVal.idx;
+            right = integer.value;
+        }
+
+        PSC::int_t res;
+        if (token.type == TokenType::PLUS) {
+            res = left + right;
+        } else {
+            res = left - right;
+        }
+
+        const PSC::EnumTypeDefinition &definition = enumVal.getDefinition(ctx);
+        std::size_t enumSize = definition.values.size();
+        res %= enumSize;
+        if (res < 0) res += enumSize;
+
+        std::unique_ptr<PSC::Enum> resEnum = std::make_unique<PSC::Enum>(definition.name);
+        resEnum->idx = res;
+        return std::make_unique<NodeResult>(std::move(resEnum), PSC::DataType::ENUM);
+    }
 
     if ((leftRes->type != PSC::DataType::INTEGER && leftRes->type != PSC::DataType::REAL)
         || (rightRes->type != PSC::DataType::INTEGER && rightRes->type != PSC::DataType::REAL)

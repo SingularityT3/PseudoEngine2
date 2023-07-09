@@ -1,4 +1,5 @@
 #pragma once
+#include <cstddef>
 #include <string>
 #include <memory>
 #include <chrono>
@@ -243,7 +244,7 @@ namespace PSC {
     class Enum : public Custom {
     public:
         const std::string definitionName;
-        const std::string *value;
+        std::size_t idx = 0;
 
         Enum(const std::string &name);
 
@@ -252,6 +253,8 @@ namespace PSC {
         void operator=(const Enum &other);
 
         const EnumTypeDefinition &getDefinition(Context &ctx) const;
+
+        std::string getString(Context &ctx) const;
     };
 
     class Pointer : public Custom {

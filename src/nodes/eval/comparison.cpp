@@ -74,7 +74,7 @@ std::unique_ptr<NodeResult> ComparisonNode::evaluate(PSC::Context &ctx) {
             bool res = (!eq && !comparisonEq) || (eq && comparisonEq);
             return std::make_unique<NodeResult>(new PSC::Boolean(res), PSC::DataType::BOOLEAN);
         } else if (leftRes->type == PSC::DataType::ENUM) {
-            bool comparisonEq = *leftRes->get<PSC::Enum>().value == *rightRes->get<PSC::Enum>().value;
+            bool comparisonEq = leftRes->get<PSC::Enum>().idx == rightRes->get<PSC::Enum>().idx;
             bool res = (!eq && !comparisonEq) || (eq && comparisonEq);
             return std::make_unique<NodeResult>(new PSC::Boolean(res), PSC::DataType::BOOLEAN);
         } else {
