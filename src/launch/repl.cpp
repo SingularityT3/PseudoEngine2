@@ -30,6 +30,10 @@ bool startREPL() {
         std::getline(std::cin, code);
 
         size_t size = code.size();
+        if (std::cin.eof()) {
+            std::cout << std::endl;
+            break;
+        }
         if (size == 0) continue;
         if (code == "EXIT") break;
         if (code.starts_with("RUNFILE")) {
