@@ -1,6 +1,8 @@
 #include "pch.h"
 
+#include "lexer/tokens.h"
 #include "psc/error.h"
+#include "psc/types/datatypes.h"
 #include "psc/types/types.h"
 #include "nodes/eval/logic.h"
 
@@ -20,7 +22,15 @@ LogicNode::LogicNode(const Token &token, Node &left, Node &right)
 }
 
 std::unique_ptr<NodeResult> LogicNode::evaluate(PSC::Context &ctx) {
+    PSC::Boolean *res = new PSC::Boolean();
+
     auto leftRes = left.evaluate(ctx);
+    // Don't check 2nd condition if first is false when using AND
+    if (token.type == TokenType::AND && leftRes->type == PSC::DataType::BOOLEAN && !leftRes->get<PSC::Boolean>().value) {
+        *res = false;
+        return std::make_unique<NodeResult>(res, PSC::DataType::BOOLEAN);
+    }
+
     auto rightRes = right.evaluate(ctx);
 
     if (leftRes->type != PSC::DataType::BOOLEAN || rightRes->type != PSC::DataType::BOOLEAN) {
@@ -30,7 +40,6 @@ std::unique_ptr<NodeResult> LogicNode::evaluate(PSC::Context &ctx) {
     const PSC::Boolean &leftBool = leftRes->get<PSC::Boolean>();
     const PSC::Boolean &rightBool = rightRes->get<PSC::Boolean>();
 
-    PSC::Boolean *res = new PSC::Boolean();
     switch (token.type) {
         case TokenType::AND:
             *res = leftBool && rightBool;
