@@ -1,6 +1,7 @@
 #include "pch.h"
 #include <math.h>
 
+#include "psc/types/types.h"
 #include "psc/variable.h"
 #include "psc/scope/context.h"
 #include "psc/builtinFunctions/functions.h"
@@ -16,8 +17,16 @@ void PSC::BuiltinFnRand::run(PSC::Context &ctx) {
     PSC::Variable *x = ctx.getVariable("x");
     if (x == nullptr || x->type != PSC::DataType::INTEGER) std::abort();
 
-    auto ret = std::make_unique<PSC::Real>(rand() % x->get<PSC::Integer>().value);
-    ret->value += rand() / (real_t) RAND_MAX;
+    PSC::int_t maxValue = x->get<PSC::Integer>().value;
+    PSC::real_t random;
+
+    if (maxValue > 0) {
+        random = (rand() % maxValue) + (rand() / (PSC::real_t) RAND_MAX);
+    } else {
+        random = 0.0f;
+    }
+
+    auto ret = std::make_unique<PSC::Real>(random);
 
     ctx.returnValue = std::make_unique<NodeResult>(std::move(ret), PSC::DataType::REAL);
 }
