@@ -187,6 +187,6 @@ std::unique_ptr<NodeResult> AccessNode::evaluate(PSC::Context &ctx) {
     return std::make_unique<NodeResult>(data, var.type);
 }
 
-const AbstractVariableResolver &AccessNode::getResolver() const {
+AbstractVariableResolver &AccessNode::getResolver() const {
     return *resolver;
 }

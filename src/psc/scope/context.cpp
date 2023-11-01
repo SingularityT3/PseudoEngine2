@@ -2,6 +2,7 @@
 
 #include "psc/builtinFunctions/functions.h"
 #include "context.h"
+#include "nodes/variable/resolver.h"
 
 using namespace PSC;
 
@@ -42,6 +43,12 @@ Context::Context(const Context &other)
 void Context::copyVariableData(const Context &other) {
     for (size_t i = 0; i < variables.size(); i++) {
         variables[i]->set(&other.variables[i]->get<Value>(), true);
+    }
+}
+
+Context::~Context() {
+    for (ResolverCache *c : cache) {
+        c->clear();
     }
 }
 
@@ -260,4 +267,8 @@ const CompositeTypeDefinition *Context::getCompositeDefinition(const std::string
 
 FileManager &Context::getFileManager() {
     return *(getGlobalContext()->fileManager);
+}
+
+void Context::addCache(ResolverCache *c) {
+    cache.push_back(c);
 }

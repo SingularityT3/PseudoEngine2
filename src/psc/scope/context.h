@@ -9,6 +9,8 @@
 #include "nodes/nodeResult.h"
 #include "psc/file.h"
 
+class ResolverCache;
+
 namespace PSC {
     class Context {
     private:
@@ -22,6 +24,8 @@ namespace PSC {
         std::vector<std::unique_ptr<PointerTypeDefinition>> pointers;
         std::vector<std::unique_ptr<CompositeTypeDefinition>> composites;
         std::unique_ptr<FileManager> fileManager;
+
+        std::vector<ResolverCache*> cache;
 
     public:
         const Token *switchToken = nullptr;
@@ -43,6 +47,8 @@ namespace PSC {
 
         // Only for composites
         void copyVariableData(const Context &other);
+
+        ~Context();
 
         static std::unique_ptr<Context> createGlobalContext();
 
@@ -87,5 +93,7 @@ namespace PSC {
         const CompositeTypeDefinition *getCompositeDefinition(const std::string &name, bool global = true);
     
         FileManager &getFileManager();
+
+        void addCache(ResolverCache *c);
     };
 }

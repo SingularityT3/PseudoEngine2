@@ -14,7 +14,7 @@ public:
 
 class InputNode : public Node {
 private:
-    const std::unique_ptr<AbstractVariableResolver> resolver;
+    std::unique_ptr<AbstractVariableResolver> resolver;
 
 public:
     InputNode(const Token &token, std::unique_ptr<AbstractVariableResolver> &&resolver);

@@ -28,7 +28,7 @@ public:
 
 class AssignNode : public UnaryNode {
 private:
-    const std::unique_ptr<AbstractVariableResolver> resolver;
+    std::unique_ptr<AbstractVariableResolver> resolver;
 
     void assignArray(PSC::Context &ctx, const PSC::ArrayDirectAccessError &e);
 
@@ -41,7 +41,7 @@ public:
 
 class AccessNode : public Node {
 private:
-    const std::unique_ptr<AbstractVariableResolver> resolver;
+    std::unique_ptr<AbstractVariableResolver> resolver;
     friend AssignNode;
 
 public:
@@ -51,5 +51,5 @@ public:
     std::unique_ptr<NodeResult> evaluate(PSC::Context &ctx) override;
 
     // For BYREF
-    const AbstractVariableResolver &getResolver() const;
+    AbstractVariableResolver &getResolver() const;
 };
