@@ -1,7 +1,6 @@
 #include "pch.h"
 
 #include <math.h>
-#include <format>
 #include "psc/types/types.h"
 
 using namespace PSC;
@@ -414,7 +413,7 @@ std::unique_ptr<String> Real::toString() const {
 }
 
 void Real::dump(std::ostream &out) const {
-    out << "REAL " << std::format("{}", value);
+    out << "REAL " << std::setprecision(std::numeric_limits<real_t>::digits10+2) << value;
 }
 
 bool Real::load(std::istream &in, Context&) {
