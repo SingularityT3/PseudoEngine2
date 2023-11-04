@@ -103,6 +103,11 @@ static const char *TT_STR[] = {
     "TT_READ",
     "TT_WRITE",
     "TT_APPEND",
+    "TT_RANDOM",
+
+    "TT_SEEK",
+    "TT_GETRECORD",
+    "TT_PUTRECORD",
 
     "TT_LINE_END",
     "TT_EXPRESSION_END"

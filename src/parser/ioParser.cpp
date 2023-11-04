@@ -49,8 +49,11 @@ Node *Parser::parseOpenFile() {
         case TokenType::APPEND:
             mode = PSC::FileMode::APPEND;
             break;
+        case TokenType::RANDOM:
+            mode = PSC::FileMode::RANDOM;
+            break;
         default:
-            throw PSC::ExpectedTokenError(*currentToken, "READ, WRITE or APPEND");
+            throw PSC::ExpectedTokenError(*currentToken, "READ, WRITE, APPEND or RANDOM");
     }
     advance();
 
@@ -99,4 +102,56 @@ Node *Parser::parseCloseFile() {
     Node *filename = parseStringExpression();
     Node *closeFileNode = create<CloseFileNode>(token, *filename);
     return closeFileNode;
+}
+
+Node *Parser::parseSeek() {
+    const Token &token = *currentToken;
+    advance();
+
+    Node *filename = parseStringExpression();
+
+    if (currentToken->type != TokenType::COMMA)
+        throw PSC::ExpectedTokenError(*currentToken, "','");
+    advance();
+
+    Node *address = parseEvaluationExpression();
+
+    Node *seekNode = create<SeekFileNode>(token, *filename, *address);
+    return seekNode;
+}
+
+Node *Parser::parseGetRecord() {
+    const Token &token = *currentToken;
+    advance();
+
+    Node *filename = parseStringExpression();
+
+    if (currentToken->type != TokenType::COMMA)
+        throw PSC::ExpectedTokenError(*currentToken, "','");
+    advance();
+
+    if (currentToken->type != TokenType::IDENTIFIER)
+        throw PSC::ExpectedTokenError(*currentToken, "variable");
+    
+    Node *getRecordNode = create<GetRecordNode>(token, *filename, *currentToken);
+    advance();
+    return getRecordNode;
+}
+
+Node *Parser::parsePutRecord() {
+    const Token &token = *currentToken;
+    advance();
+
+    Node *filename = parseStringExpression();
+
+    if (currentToken->type != TokenType::COMMA)
+        throw PSC::ExpectedTokenError(*currentToken, "','");
+    advance();
+
+    if (currentToken->type != TokenType::IDENTIFIER)
+        throw PSC::ExpectedTokenError(*currentToken, "variable");
+    
+    Node *putRecordNode = create<PutRecordNode>(token, *filename, *currentToken);
+    advance();
+    return putRecordNode;
 }

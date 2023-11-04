@@ -100,6 +100,11 @@ enum class TokenType {
     READ,
     WRITE,
     APPEND,
+    RANDOM,
+
+    SEEK,
+    GETRECORD,
+    PUTRECORD,
 
     LINE_END,
     EXPRESSION_END

@@ -24,12 +24,13 @@ public:
     std::unique_ptr<NodeResult> evaluate(PSC::Context &ctx) override;
 };
 
-class WriteFileNode : public UnaryNode {
+class WriteFileNode : public Node {
 private:
     Node &filename;
+    Node &data;
 
 public:
-    WriteFileNode(const Token &token, Node &filename, Node &node);
+    WriteFileNode(const Token &token, Node &filename, Node &data);
 
     std::unique_ptr<NodeResult> evaluate(PSC::Context &ctx) override;
 };
@@ -40,6 +41,39 @@ private:
 
 public:
     CloseFileNode(const Token &token, Node &filename);
+
+    std::unique_ptr<NodeResult> evaluate(PSC::Context &ctx) override;
+};
+
+class SeekFileNode : public Node {
+private:
+    Node &filename;
+    Node &address;
+
+public:
+    SeekFileNode(const Token &token, Node &filename, Node &address);
+
+    std::unique_ptr<NodeResult> evaluate(PSC::Context &ctx) override;
+};
+
+class GetRecordNode : public Node {
+private:
+    Node &filename;
+    const Token &identifier;
+
+public:
+    GetRecordNode(const Token &token, Node &filename, const Token &identifier);
+
+    std::unique_ptr<NodeResult> evaluate(PSC::Context &ctx) override;
+};
+
+class PutRecordNode : public Node {
+private:
+    Node &filename;
+    const Token &identifier;
+
+public:
+    PutRecordNode(const Token &token, Node &filename, const Token &identifier);
 
     std::unique_ptr<NodeResult> evaluate(PSC::Context &ctx) override;
 };

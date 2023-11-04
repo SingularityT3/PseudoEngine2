@@ -66,6 +66,12 @@ private:
 
     Node *parseCloseFile();
 
+    Node *parseSeek();
+
+    Node *parseGetRecord();
+
+    Node *parsePutRecord();
+
     Node *parseType();
 
     Node *parseComposite(const Token &token, const Token &identifier);

@@ -136,6 +136,12 @@ Node *Parser::parseExpression() {
             return parseWriteFile();
         case TokenType::CLOSEFILE:
             return parseCloseFile();
+        case TokenType::SEEK:
+            return parseSeek();
+        case TokenType::GETRECORD:
+            return parseGetRecord();
+        case TokenType::PUTRECORD:
+            return parsePutRecord();
         case TokenType::RETURN: {
             const Token &returnToken = *currentToken;
             advance();

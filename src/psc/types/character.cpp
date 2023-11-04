@@ -40,6 +40,21 @@ std::unique_ptr<String> Char::toString() const {
     return std::make_unique<String>(s);
 }
 
+void Char::dump(std::ostream &out) const {
+    out << "CHAR " << value;
+    if (value == '\n') out << '#';
+}
+
+bool Char::load(std::istream &in, Context&) {
+    std::string s;
+    in >> s;
+    if (s != "CHAR") return false;
+
+    in.ignore(1); // whitespace
+    value = in.get();
+
+    return !in.fail();
+}
 
 
 String::String(const std::string &value) : value(value) {}
@@ -92,4 +107,37 @@ std::unique_ptr<Char> String::toChar() const {
 
 std::unique_ptr<String> String::toString() const {
     return std::make_unique<String>(*this);
+}
+
+void String::dump(std::ostream &out) const {
+    std::string s;
+    s.reserve(value.size());
+    for (size_t i = 0; i < value.size(); i++) {
+        s += value[i];
+        if (value[i] == '\n') s += '#';
+    }
+    out << "STRING " << s.length() << " " << s;
+}
+
+bool String::load(std::istream &in, Context&) {
+    std::string s;
+    in >> s;
+    if (s != "STRING") return false;
+
+    in >> s;
+    if (in.fail()) return false;
+    size_t length = std::stoul(s, nullptr);
+
+    char *buf = new char[length];
+    in.ignore(1); // whitespace
+    in.read(buf, length);
+    value.clear();
+    value.reserve(length);
+    for (size_t i = 0; i < length; i++) {
+        if (i > 0 && buf[i] == '#' && buf[i-1] == '\n') continue;
+        value += buf[i];
+    }
+    delete[] buf;
+
+    return true;
 }

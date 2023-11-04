@@ -98,6 +98,10 @@ void Variable::set(Value *_data, bool copy) {
     }
 }
 
+Value &Variable::getRawValue() {
+    return *data;
+}
+
 Variable *Variable::createReference(const std::string &refName) {
     Variable *v = ref == nullptr ? this : ref;
     return new Variable(refName, v);

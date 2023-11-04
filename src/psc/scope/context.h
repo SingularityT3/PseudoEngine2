@@ -62,6 +62,8 @@ namespace PSC {
 
         Variable *getVariable(const std::string &varName, bool global = true);
 
+        const std::vector<std::unique_ptr<Variable>> &getVariables() const;
+
         void addProcedure(std::unique_ptr<Procedure> &&procedure);
 
         Procedure *getProcedure(const std::string &procedureName);

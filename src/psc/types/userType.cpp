@@ -22,6 +22,27 @@ std::string Enum::getString(Context &ctx) const {
     return definition.values[idx];
 }
 
+void Enum::dump(std::ostream &out) const {
+    out << "ENUM " << definitionName << " " << idx;
+}
+
+bool Enum::load(std::istream &in, Context &ctx) {
+    std::string s;
+    in >> s;
+    if (s != "ENUM") return false;
+
+    in >> s;
+    const EnumTypeDefinition *def = ctx.getEnumDefinition(s);
+    if (def == nullptr || (def->name != definitionName)) return false;
+
+    size_t idx1;
+    in >> idx1;
+    if (in.fail() || idx1 >= def->values.size()) return false;
+
+    idx = idx1;
+    return true;
+}
+
 Pointer::Pointer(const std::string &name)
     : definitionName(name) {}
 
@@ -55,6 +76,13 @@ const PointerTypeDefinition &Pointer::getDefinition(Context &ctx) const {
     return *ctx.getPointerDefinition(definitionName);
 }
 
+void Pointer::dump(std::ostream&) const {}
+
+bool Pointer::load(std::istream&, Context&) {
+    return false;
+}
+
+
 Composite::Composite(const std::string &name, Context &parent)
     : definitionName(name),
     ctx(std::make_unique<Context>(&parent, definitionName, true))
@@ -82,4 +110,29 @@ DataHolder *Composite::getMember(const std::string &name) {
 
 const CompositeTypeDefinition &Composite::getDefinition(PSC::Context &ctx) const {
     return *ctx.getCompositeDefinition(definitionName);
+}
+
+void Composite::dump(std::ostream &out) const {
+    out << "COMPOSITE " << definitionName << " ";
+    const auto &vars = ctx->getVariables();
+    for (size_t i = 0; i < vars.size(); i++) {
+        vars[i]->getRawValue().dump(out);
+        if (i < vars.size() - 1) out << " ";
+    }
+}
+
+bool Composite::load(std::istream &in, Context &ctx) {
+    std::string s;
+    in >> s;
+    if (s != "COMPOSITE") return false;
+
+    in >> s;
+    const CompositeTypeDefinition *def = ctx.getCompositeDefinition(s);
+    if (def == nullptr || (def->name != definitionName)) return false;
+
+    for (const auto &var : this->ctx->getVariables()) {
+        if (!var->getRawValue().load(in, ctx)) return false;
+    }
+
+    return true;
 }

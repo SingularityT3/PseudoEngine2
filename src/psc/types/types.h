@@ -28,6 +28,10 @@ namespace PSC {
         virtual ~Value() = default;
 
         virtual bool isPrimitive() const = 0;
+
+        virtual void dump(std::ostream &out) const = 0;
+
+        virtual bool load(std::istream &in, Context &ctx) = 0;
     };
 
     class Primitive : public Value {
@@ -102,6 +106,10 @@ namespace PSC {
         std::unique_ptr<Char> toChar() const override;
 
         std::unique_ptr<String> toString() const override;
+
+        virtual void dump(std::ostream &out) const override;
+
+        virtual bool load(std::istream &in, Context&) override;
     };
 
     class Real : public Number {
@@ -129,6 +137,10 @@ namespace PSC {
         std::unique_ptr<Char> toChar() const override;
 
         std::unique_ptr<String> toString() const override;
+
+        virtual void dump(std::ostream &out) const override;
+
+        virtual bool load(std::istream &in, Context&) override;
     };
 
     class Boolean : public Primitive {
@@ -156,6 +168,10 @@ namespace PSC {
         std::unique_ptr<Char> toChar() const override;
 
         std::unique_ptr<String> toString() const override;
+
+        virtual void dump(std::ostream &out) const override;
+
+        virtual bool load(std::istream &in, Context&) override;
     };
 
     class Char : public Primitive {
@@ -183,6 +199,10 @@ namespace PSC {
         std::unique_ptr<Char> toChar() const override;
 
         std::unique_ptr<String> toString() const override;
+
+        virtual void dump(std::ostream &out) const override;
+
+        virtual bool load(std::istream &in, Context&) override;
     };
 
     class String : public Primitive {
@@ -210,6 +230,10 @@ namespace PSC {
         std::unique_ptr<Char> toChar() const override;
 
         std::unique_ptr<String> toString() const override;
+
+        virtual void dump(std::ostream &out) const override;
+
+        virtual bool load(std::istream &in, Context&) override;
     };
 
     class Date : public Primitive {
@@ -233,6 +257,10 @@ namespace PSC {
         std::unique_ptr<Char> toChar() const override;
 
         std::unique_ptr<String> toString() const override;
+
+        virtual void dump(std::ostream &out) const override;
+
+        virtual bool load(std::istream &in, Context&) override;
     };
 
 
@@ -255,6 +283,10 @@ namespace PSC {
         const EnumTypeDefinition &getDefinition(Context &ctx) const;
 
         std::string getString(Context &ctx) const;
+
+        virtual void dump(std::ostream &out) const override;
+
+        virtual bool load(std::istream &in, Context &ctx) override;
     };
 
     class Pointer : public Custom {
@@ -278,6 +310,10 @@ namespace PSC {
         const Context *getCtx() const;
 
         const PointerTypeDefinition &getDefinition(Context &ctx) const;
+    
+        virtual void dump(std::ostream&) const override;
+
+        virtual bool load(std::istream&, Context&) override;
     };
 
     class Composite : public Custom {
@@ -294,5 +330,9 @@ namespace PSC {
         DataHolder *getMember(const std::string &name);
 
         const CompositeTypeDefinition &getDefinition(Context &ctx) const;
+    
+        virtual void dump(std::ostream &out) const override;
+
+        virtual bool load(std::istream &in, Context &ctx) override;
     };
 }

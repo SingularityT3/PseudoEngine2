@@ -55,8 +55,8 @@ std::unique_ptr<NodeResult> ReadFileNode::evaluate(PSC::Context &ctx) {
 }
 
 
-WriteFileNode::WriteFileNode(const Token &token, Node &filename, Node &node)
-    : UnaryNode(token, node), filename(filename) {}
+WriteFileNode::WriteFileNode(const Token &token, Node &filename, Node &data)
+    : Node(token), filename(filename), data(data) {}
 
 std::unique_ptr<NodeResult> WriteFileNode::evaluate(PSC::Context &ctx) {
     auto filenameRes = filename.evaluate(ctx);
@@ -70,7 +70,7 @@ std::unique_ptr<NodeResult> WriteFileNode::evaluate(PSC::Context &ctx) {
     if (file->getMode() == PSC::FileMode::READ)
         throw PSC::RuntimeError(token, ctx, "File '" + filename.value + "' is opened as read-only");
 
-    auto nodeRes = node.evaluate(ctx);
+    auto nodeRes = data.evaluate(ctx);
     std::unique_ptr<PSC::String> data;
     switch (nodeRes->type.type) {
         case PSC::DataType::INTEGER:
@@ -120,6 +120,91 @@ std::unique_ptr<NodeResult> CloseFileNode::evaluate(PSC::Context &ctx) {
         throw PSC::FileNotOpenError(token, ctx, filename.value);
 
     ctx.getFileManager().closeFile(filename);
+
+    return std::make_unique<NodeResult>(nullptr, PSC::DataType::NONE);
+}
+
+
+SeekFileNode::SeekFileNode(const Token &token, Node &filename, Node &address)
+    : Node(token), filename(filename), address(address) {}
+
+std::unique_ptr<NodeResult> SeekFileNode::evaluate(PSC::Context &ctx) {
+    auto addressRes = address.evaluate(ctx);
+    if (addressRes->type != PSC::DataType::INTEGER)
+        throw PSC::RuntimeError(token, ctx, "Seek address must be of integer data type");
+    const PSC::Integer &address = addressRes->get<PSC::Integer>();
+
+    if (address.value < 1)
+        throw PSC::RuntimeError(token, ctx, "Seek address must be greater than 0");
+
+    auto filenameRes = filename.evaluate(ctx);
+    if (filenameRes->type != PSC::DataType::STRING)
+        throw PSC::RuntimeError(token, ctx, "Filename must be of string data type");
+    const PSC::String &filenameStr = filenameRes->get<PSC::String>().value;
+
+    PSC::File *file = ctx.getFileManager().getFile(filenameStr);
+    if (file == nullptr)
+        throw PSC::FileNotOpenError(token, ctx, filenameStr.value);
+    if (file->getMode() != PSC::FileMode::RANDOM)
+        throw PSC::RuntimeError(token, ctx, "'SEEK' can only be used for random files");
+    
+    if (!file->seek(address))
+        throw PSC::RuntimeError(token, ctx, "Seek address exceeds file size");
+
+    return std::make_unique<NodeResult>(nullptr, PSC::DataType::NONE);
+}
+
+
+GetRecordNode::GetRecordNode(const Token &token, Node &filename, const Token &identifier)
+    : Node(token), filename(filename), identifier(identifier) {}
+
+std::unique_ptr<NodeResult> GetRecordNode::evaluate(PSC::Context &ctx) {
+    auto filenameRes = filename.evaluate(ctx);
+    if (filenameRes->type != PSC::DataType::STRING)
+        throw PSC::RuntimeError(token, ctx, "Filename must be of string data type");
+    const PSC::String &filenameStr = filenameRes->get<PSC::String>().value;
+
+    PSC::File *file = ctx.getFileManager().getFile(filenameStr);
+    if (file == nullptr)
+        throw PSC::FileNotOpenError(token, ctx, filenameStr.value);
+    if (file->getMode() != PSC::FileMode::RANDOM)
+        throw PSC::RuntimeError(token, ctx, "'GETRECORD' can only be used for random files");
+
+    PSC::Variable *variable = ctx.getVariable(identifier.value);
+    if (variable == nullptr)
+        throw PSC::NotDefinedError(identifier, ctx, identifier.value);
+    if (variable->type == PSC::DataType::POINTER)
+        throw PSC::RuntimeError(token, ctx, "Pointers cannot be stored in random files");
+
+    if (!file->getRecord(variable->getRawValue(), ctx))
+        throw PSC::RuntimeError(token, ctx, "Failed to read data from random file");
+
+    return std::make_unique<NodeResult>(nullptr, PSC::DataType::NONE);
+}
+
+
+PutRecordNode::PutRecordNode(const Token &token, Node &filename, const Token &identifier)
+    : Node(token), filename(filename), identifier(identifier) {}
+
+std::unique_ptr<NodeResult> PutRecordNode::evaluate(PSC::Context &ctx) {
+    auto filenameRes = filename.evaluate(ctx);
+    if (filenameRes->type != PSC::DataType::STRING)
+        throw PSC::RuntimeError(token, ctx, "Filename must be of string data type");
+    const PSC::String &filenameStr = filenameRes->get<PSC::String>().value;
+
+    PSC::File *file = ctx.getFileManager().getFile(filenameStr);
+    if (file == nullptr)
+        throw PSC::FileNotOpenError(token, ctx, filenameStr.value);
+    if (file->getMode() != PSC::FileMode::RANDOM)
+        throw PSC::RuntimeError(token, ctx, "'PUTRECORD' can only be used for random files");
+
+    PSC::Variable *variable = ctx.getVariable(identifier.value);
+    if (variable == nullptr)
+        throw PSC::NotDefinedError(identifier, ctx, identifier.value);
+    if (variable->type == PSC::DataType::POINTER)
+        throw PSC::RuntimeError(token, ctx, "Pointers cannot be stored in random files");
+
+    file->putRecord(variable->getRawValue());
 
     return std::make_unique<NodeResult>(nullptr, PSC::DataType::NONE);
 }

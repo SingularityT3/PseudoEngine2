@@ -8,7 +8,7 @@
 
 namespace PSC {
     enum class FileMode {
-        READ, WRITE, APPEND
+        READ, WRITE, APPEND, RANDOM
     };
 
     class File {
@@ -16,7 +16,10 @@ namespace PSC {
         FileMode mode;
         std::unique_ptr<std::ofstream> ofile;
         std::unique_ptr<std::ifstream> ifile;
+        std::vector<std::string> records;
+        size_t ptr = 0;
         bool open = true;
+        bool modified = false;
 
     public:
         const String name;
@@ -34,6 +37,12 @@ namespace PSC {
         String read();
 
         void write(const String &data);
+
+        bool seek(const Integer &address);
+
+        bool getRecord(Value &value, Context &ctx);
+
+        void putRecord(Value &value);
     };
 
     class FileManager {

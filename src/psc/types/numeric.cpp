@@ -1,6 +1,7 @@
 #include "pch.h"
 
 #include <math.h>
+#include <format>
 #include "psc/types/types.h"
 
 using namespace PSC;
@@ -355,6 +356,19 @@ std::unique_ptr<String> Integer::toString() const {
     return std::make_unique<String>(std::to_string(value));
 }
 
+void Integer::dump(std::ostream &out) const {
+    out << "INTEGER " << value;
+}
+
+bool Integer::load(std::istream &in, Context&) {
+    std::string s;
+    in >> s;
+    if (s != "INTEGER") return false;
+
+    in >> value;
+    return !in.fail();
+}
+
 
 Real::Real()
     : Number(true)
@@ -397,4 +411,17 @@ std::unique_ptr<String> Real::toString() const {
     s.erase(s.find_last_not_of('0') + 1);
     if (s.back() == '.') s.erase(s.size() - 1);
     return std::make_unique<String>(s);
+}
+
+void Real::dump(std::ostream &out) const {
+    out << "REAL " << std::format("{}", value);
+}
+
+bool Real::load(std::istream &in, Context&) {
+    std::string s;
+    in >> s;
+    if (s != "REAL") return false;
+
+    in >> value;
+    return !in.fail();
 }

@@ -142,6 +142,16 @@ void Lexer::makeWord() {
         tokens.emplace_back(new Token(TokenType::WRITE, line, startColumn));
     } else if (word == "APPEND") {
         tokens.emplace_back(new Token(TokenType::APPEND, line, startColumn));
+    } else if (word == "RANDOM") {
+        tokens.emplace_back(new Token(TokenType::RANDOM, line, startColumn));
+    }
+
+    else if (word == "SEEK") {
+        tokens.emplace_back(new Token(TokenType::SEEK, line, startColumn));
+    } else if (word == "GETRECORD") {
+        tokens.emplace_back(new Token(TokenType::GETRECORD, line, startColumn));
+    } else if (word == "PUTRECORD") {
+        tokens.emplace_back(new Token(TokenType::PUTRECORD, line, startColumn));
     }
 
     else {

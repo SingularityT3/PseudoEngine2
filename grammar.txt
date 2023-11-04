@@ -23,9 +23,12 @@ Expression -> EvaluationExpression
               | CONTINUE
               | (OUTPUT | PRINT) EvaluationExpression {, EvaluationExpression}
               | (INPUT | READ) IdentifierExpression
-              | OPENFILE StringExpression FOR (READ | WRITE | APPEND)
+              | OPENFILE StringExpression FOR (READ | WRITE | APPEND | RANDOM)
               | READFILE StringExpression, IDENTIFIER
               | WRITEFILE StringExpression, EvaluationExpression
+              | SEEK StringExpression, EvaluationExpression
+              | GETRECORD StringExpression, IDENTIFIER
+              | PUTRECORD StringExpression, IDENTIFIER
               | CLOSEFILE StringExpression
 
 CompositeType -> TYPE IDENTIFIER {DeclareStatement}* ENDTYPE

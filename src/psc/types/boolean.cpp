@@ -40,3 +40,24 @@ std::unique_ptr<String> Boolean::toString() const {
     std::string s = value ? "TRUE" : "FALSE";
     return std::make_unique<String>(s);
 }
+
+void Boolean::dump(std::ostream &out) const {
+    out << "BOOLEAN " << (value ? "TRUE" : "FALSE");
+}
+
+bool Boolean::load(std::istream &in, Context&) {
+    std::string s;
+    in >> s;
+    if (s != "BOOLEAN") return false;
+
+    in >> s;
+    if (s == "TRUE") {
+        value = true;
+    } else if (s == "FALSE") {
+        value = false;
+    } else {
+        return false;
+    }
+
+    return true;
+}

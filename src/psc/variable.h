@@ -45,6 +45,8 @@ namespace PSC {
         template<std::derived_from<Value> T>
         T &getConst() const { return *((const T*) data); }
 
+        Value &getRawValue();
+
         Variable *createReference(const std::string &refName);
 
         Variable *getReference();

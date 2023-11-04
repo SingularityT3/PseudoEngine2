@@ -129,6 +129,10 @@ Variable *Context::getVariable(const std::string &varName, bool global) {
     return getGlobalContext()->getVariable(varName);
 }
 
+const std::vector<std::unique_ptr<Variable>> &Context::getVariables() const {
+    return variables;
+}
+
 void Context::addProcedure(std::unique_ptr<Procedure> &&procedure) {
     procedures.emplace_back(std::move(procedure));
 }
