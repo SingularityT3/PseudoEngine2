@@ -17,7 +17,7 @@ Available data types:
 - STRING
 - DATE
 
-Dates are in the format dd/mm/yyyy, literals are used like `3/14/2020`
+Dates are in the format dd/mm/yyyy, literals are used like `14/3/2020`
 
 Multiple variables of the same type can be declared with
 ```
@@ -372,6 +372,7 @@ INPUT <variableName>
 Gets user input and stores it in the given variable
 
 ### File Handling
+Text files
 ```
 // Open a file
 // Modes are READ, WRITE and APPEND
@@ -388,9 +389,29 @@ WRITEFILE <filename>, <data>
 CLOSEFILE <filename>
 ```
 
+Random files
+```
+// Creates empty file if it does not exist
+OPENFILE <filename> FOR RANDOM
+
+// Move file pointer to address
+// First address is 1
+// Last address is number of records in file + 1 and is write-only to allow appending to the file
+SEEK <filename>, <address>
+
+// Read the record at the file pointer into the variable
+GETRECORD <filename>, <variable>
+
+// Write the record stored in the variable into the file
+PUTRECORD <filename>, <variable>
+
+CLOSEFILE <filename>
+```
+
 ## Other features(outside cambridge format)
 - `BREAK` - Break out of loops early
 - `CONTINUE` - Skip to next iteration of loop
+- `ELSE IF` - Alternative to reduce nesting
 - Alternate method of type conversion(apart from in-built functions): `<data type>(<value>)`. For example: `INTEGER("57")` 
 - Character escape codes like `\n`, `\t` etc.
 
