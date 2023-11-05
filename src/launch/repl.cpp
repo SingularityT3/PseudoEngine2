@@ -42,8 +42,12 @@ bool startREPL() {
                 continue;
             }
             psfilename = code.substr(8, size - 8);
+            for (size_t i = psfilename.size() - 1; i > 0; i--) {
+                if (psfilename[i] != ' ' && psfilename[i] != '\t') break;
+                psfilename.pop_back();
+            }
             REPLMode = false;
-            
+
             std::cout << "Running file " << psfilename << "\n";
             std::string exit = runFile() ? "successfully" : "with an error";
             std::cout << "\nProgram exited " << exit << "\n";
