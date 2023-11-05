@@ -3,6 +3,12 @@
 #include <string>
 #include "launch/run.h"
 
+#ifdef READLINE
+#include <stdlib.h>
+#include <readline/readline.h>
+#include <readline/history.h>
+#endif
+
 extern std::string psfilename;
 extern bool REPLMode;
 
@@ -17,23 +23,42 @@ static const std::string multilineKeywords[] = {
     "TYPE"
 };
 
+bool getLine(std::string &line, const char *prompt) {
+#ifdef READLINE
+    char *buf = readline(prompt);
+    if (buf != NULL) {
+        line = buf;
+        if (buf[0] != '\0') add_history(buf);
+        free(buf);
+    } else {
+        line.clear();
+        return false;
+    }
+#else
+    std::cout << prompt << std::flush;
+    std::getline(std::cin, line);
+    if (std::cin.eof()) return false;
+#endif
+
+    return true;
+}
+
 bool startREPL() {
     std::cout << "PseudoEngine2 v0.5.1 REPL\nEnter 'EXIT' to quit\n";
+
+#ifdef READLINE
+    rl_bind_key('\t', rl_tab_insert);
+#endif
 
     Lexer lexer;
     Parser parser;
     auto globalCtx = PSC::Context::createGlobalContext();
 
     while (true) {
-        std::cout << "> " << std::flush;
         std::string code;
-        std::getline(std::cin, code);
+        if (!getLine(code, "> ")) break;
 
         size_t size = code.size();
-        if (std::cin.eof()) {
-            std::cout << std::endl;
-            break;
-        }
         if (size == 0) continue;
         if (code == "EXIT") break;
         if (code.starts_with("RUNFILE")) {
@@ -63,8 +88,7 @@ bool startREPL() {
                 std::string line = " ";
                 while (line.size() > 0) {
                     code += "\n";
-                    std::cout << ". " << std::flush;
-                    std::getline(std::cin, line);
+                    if (!getLine(line, ". ")) return true;
                     code += line;
                 }
                 break;

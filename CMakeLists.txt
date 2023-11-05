@@ -15,7 +15,15 @@ else()
     target_compile_options(PseudoEngine2 PRIVATE -Wall -Wextra -pedantic)
 endif()
 
-if (CMAKE_BUILD_TYPE STREQUAL "Release")
+if (NOT WIN32)
+    find_library(HAS_READLINE readline)
+    if (HAS_READLINE)
+        target_compile_definitions(PseudoEngine2 PRIVATE "READLINE")
+        target_link_libraries(PseudoEngine2 PRIVATE readline)
+    endif()
+endif()
+
+if (CMAKE_BUILD_TYPE STREQUAL "Release" AND WIN32)
     target_link_options(PseudoEngine2 PRIVATE -static)
 endif()
 
