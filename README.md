@@ -24,6 +24,9 @@ The REPL stands for Read Execute Print Loop and is an interface where pseudocode
 
 - Alternatively, double click the executable file if supported by the OS to directly start the REPL. It is also possible to run files from the REPL using the command `RUNFILE <filename>`.
 
+## Examples
+See [examples](./examples) and [tests](./tests)
+
 ## Building
 Make sure cmake and a c++ compiler is installed, then clone the repository and inside its folder run the following commands:
 ```

@@ -1,0 +1,30 @@
+// ROT13 is an encryption algorithm that works
+// by shifting(rotating) the alphabet by 13 letters
+FUNCTION ROT13(Data : STRING) RETURNS STRING
+    DECLARE NewData : STRING
+    DECLARE Ch : CHAR
+    DECLARE AsciiValue : INTEGER
+
+    NewData <- ""
+    FOR i <- 1 TO LENGTH(Data)
+        Ch <- MID(Data, i, 1)
+        IF ('a' <= Ch AND Ch <= 'z') OR ('A' <= Ch AND Ch <= 'Z') THEN
+            AsciiValue <- ASC(Ch) + 13
+            IF AsciiValue > ASC('z') OR (Ch <= 'Z' AND AsciiValue > ASC('Z')) THEN
+                AsciiValue <- AsciiValue - 26
+            ENDIF
+            Ch <- CHR(AsciiValue)
+        ENDIF
+        NewData <- NewData & Ch
+    NEXT i
+
+    RETURN NewData
+ENDFUNCTION
+
+DECLARE In : STRING
+In <- " "
+WHILE LENGTH(In) > 0 DO
+    OUTPUT "Enter data:"
+    INPUT In
+    OUTPUT "ROT13: ", ROT13(In)
+ENDWHILE

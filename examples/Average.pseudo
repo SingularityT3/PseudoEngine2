@@ -1,0 +1,11 @@
+DECLARE Value, Total, Average : REAL
+Total <- 0.0
+
+FOR i <- 1 TO 5
+    OUTPUT "Enter a value:"
+    INPUT Value
+    Total <- Total + Value
+NEXT i
+
+Average <- Total / 5
+OUTPUT "Total: ", Total, " Average: ", Average

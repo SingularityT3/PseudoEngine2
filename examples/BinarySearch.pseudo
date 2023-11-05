@@ -1,0 +1,36 @@
+DECLARE Array : ARRAY[1:100] OF INTEGER
+
+FOR i <- 1 TO 100
+    Array[i] <- i * i
+NEXT i
+
+FUNCTION BinarySearch(Element, Lower, Upper : INTEGER) RETURNS INTEGER
+    IF Lower > Upper THEN
+        RETURN -1
+    ENDIF
+
+    DECLARE Mid : INTEGER
+    Mid <- (Lower + Upper) DIV 2
+
+    IF Element = Array[Mid] THEN
+        RETURN Mid
+    ENDIF
+
+    IF Element > Array[Mid] THEN
+        RETURN BinarySearch(Element, Mid+1, Upper)
+    ELSE
+        RETURN BinarySearch(Element, Lower, Mid-1)
+    ENDIF
+ENDFUNCTION
+
+DECLARE SearchItem : INTEGER
+OUTPUT "Enter item to search for:"
+INPUT SearchItem
+
+DECLARE Position : INTEGER
+Position <- BinarySearch(SearchItem, 1, 100)
+IF Position = -1 THEN
+    OUTPUT "Item not found"
+ELSE
+    OUTPUT "Item found at index ", Position
+ENDIF

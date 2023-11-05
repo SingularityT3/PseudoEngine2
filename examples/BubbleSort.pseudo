@@ -1,0 +1,27 @@
+DECLARE Array : ARRAY[1:20] OF INTEGER
+
+// Initialize array with random numbers
+FOR i <- 1 TO 20
+	Array[i] <- INT(RAND(100))
+NEXT i
+
+DECLARE Swapped : BOOLEAN
+DECLARE Temp : INTEGER
+i <- 1
+
+REPEAT
+    Swapped <- FALSE
+    FOR j <- 1 TO 20 - i
+        IF Array[j] > Array[j+1] THEN
+            Temp <- Array[j]
+            Array[j] <- Array[j+1]
+            Array[j+1] <- Temp
+            Swapped <- TRUE
+        ENDIF
+    NEXT j
+    i <- i + 1
+UNTIL NOT Swapped
+
+FOR i <- 1 TO 20
+	OUTPUT Array[i]
+NEXT i

@@ -1,0 +1,9 @@
+FUNCTION Factorial(x : INTEGER) RETURNS INTEGER
+    IF x = 0 THEN
+        RETURN 1
+    ELSE
+        RETURN x * Factorial(x-1)
+    ENDIF
+ENDFUNCTION
+
+OUTPUT "6! = ", Factorial(6)

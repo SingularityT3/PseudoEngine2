@@ -357,7 +357,7 @@ EOF(filename : STRING) RETURNS BOOLEAN
 ### Output to screen
 ```
 OUTPUT <value>
-or
+// or
 PRINT <value>
 ```
 Multiple values can be output at once with
@@ -368,11 +368,13 @@ OUTPUT <value1>, <value2>, ...
 ### Get user input
 ```
 INPUT <variableName>
+// or
+READ <variableName>
 ```
 Gets user input and stores it in the given variable
 
 ### File Handling
-Text files
+#### Text files
 ```
 // Open a file
 // Modes are READ, WRITE and APPEND
@@ -389,7 +391,7 @@ WRITEFILE <filename>, <data>
 CLOSEFILE <filename>
 ```
 
-Random files
+#### Random files
 ```
 // Creates empty file if it does not exist
 OPENFILE <filename> FOR RANDOM
@@ -414,6 +416,3 @@ CLOSEFILE <filename>
 - `ELSE IF` - Alternative to reduce nesting
 - Alternate method of type conversion(apart from in-built functions): `<data type>(<value>)`. For example: `INTEGER("57")` 
 - Character escape codes like `\n`, `\t` etc.
-
-# Examples
-See [tests](./tests)

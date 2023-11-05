@@ -1,0 +1,17 @@
+DECLARE Src, Dest, Line : STRING
+
+OUTPUT "Enter source path:"
+INPUT Src
+OPENFILE Src FOR READ
+
+OUTPUT "Enter destination path:"
+INPUT Dest
+OPENFILE Dest FOR WRITE
+
+WHILE NOT EOF(Src) DO
+    READFILE Src, Line
+    WRITEFILE Dest, Line
+ENDWHILE
+
+CLOSEFILE Src
+CLOSEFILE Dest
