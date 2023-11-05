@@ -114,9 +114,17 @@ const CompositeTypeDefinition &Composite::getDefinition(PSC::Context &ctx) const
 
 void Composite::dump(std::ostream &out) const {
     out << "COMPOSITE " << definitionName << " ";
+
     const auto &vars = ctx->getVariables();
     for (size_t i = 0; i < vars.size(); i++) {
-        vars[i]->getRawValue().dump(out);
+        vars[i]->dump(out);
+        if (i < vars.size() - 1) out << " ";
+    }
+
+    const auto &arrays = ctx->getArrays();
+    if (arrays.size() > 0) out << " ";
+    for (size_t i = 0; i < arrays.size(); i++) {
+        arrays[i]->dump(out);
         if (i < vars.size() - 1) out << " ";
     }
 }
@@ -131,7 +139,11 @@ bool Composite::load(std::istream &in, Context &ctx) {
     if (def == nullptr || (def->name != definitionName)) return false;
 
     for (const auto &var : this->ctx->getVariables()) {
-        if (!var->getRawValue().load(in, ctx)) return false;
+        if (!var->load(in, ctx)) return false;
+    }
+
+    for (const auto &array : this->ctx->getArrays()) {
+        if (!array->load(in, ctx)) return false;
     }
 
     return true;

@@ -64,6 +64,8 @@ namespace PSC {
 
         const std::vector<std::unique_ptr<Variable>> &getVariables() const;
 
+        const std::vector<std::unique_ptr<Array>> &getArrays() const;
+
         void addProcedure(std::unique_ptr<Procedure> &&procedure);
 
         Procedure *getProcedure(const std::string &procedureName);

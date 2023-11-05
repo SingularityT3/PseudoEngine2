@@ -98,10 +98,6 @@ void Variable::set(Value *_data, bool copy) {
     }
 }
 
-Value &Variable::getRawValue() {
-    return *data;
-}
-
 Variable *Variable::createReference(const std::string &refName) {
     Variable *v = ref == nullptr ? this : ref;
     return new Variable(refName, v);
@@ -109,4 +105,12 @@ Variable *Variable::createReference(const std::string &refName) {
 
 Variable *Variable::getReference() {
     return ref;
+}
+
+void Variable::dump(std::ostream &out) const {
+    data->dump(out);
+}
+
+bool Variable::load(std::istream &in, Context &ctx) {
+    return data->load(in, ctx);
 }

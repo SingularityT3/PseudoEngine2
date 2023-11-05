@@ -1,5 +1,6 @@
 #include "pch.h"
 
+#include "psc/types/types.h"
 #include "psc/array.h"
 
 using namespace PSC;
@@ -73,4 +74,29 @@ Variable &Array::getElement(const std::vector<int_t> &index) {
     }
 
     return *(data[realIndex]);
+}
+
+void Array::dump(std::ostream &out) const {
+    using namespace PSC;
+    out << "ARRAY " << data.size() << " ";
+    for (size_t i = 0; i < data.size(); i++) {
+        data[i]->dump(out);
+        if (i < data.size() - 1) out << " ";
+    }
+}
+
+bool Array::load(std::istream &in, Context &ctx) {
+    std::string s;
+    in >> s;
+    if (s != "ARRAY") return false;
+
+    size_t size = 0;
+    in >> size;
+    if (size != data.size()) return false;
+
+    for (const auto &el : data) {
+        if (!el->load(in, ctx)) return false;
+    }
+
+    return true;
 }

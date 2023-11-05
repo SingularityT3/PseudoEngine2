@@ -14,6 +14,10 @@ namespace PSC {
         virtual ~DataHolder() = default;
 
         virtual bool isArray() const = 0;
+
+        virtual void dump(std::ostream &out) const = 0;
+
+        virtual bool load(std::istream &in, Context &ctx) = 0;
     };
 
     class Variable : public DataHolder {
@@ -45,10 +49,12 @@ namespace PSC {
         template<std::derived_from<Value> T>
         T &getConst() const { return *((const T*) data); }
 
-        Value &getRawValue();
-
         Variable *createReference(const std::string &refName);
 
         Variable *getReference();
+
+        void dump(std::ostream &out) const override;
+
+        bool load(std::istream &in, Context &ctx) override;
     };
 }

@@ -44,5 +44,9 @@ namespace PSC {
         void init(Context &ctx);
 
         Variable &getElement(const std::vector<int_t> &index);
+
+        void dump(std::ostream &out) const override;
+
+        bool load(std::istream &in, Context &ctx) override;
     };
 };

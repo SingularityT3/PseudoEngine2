@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <memory>
+#include "psc/array.h"
 #include "psc/types/types.h"
 
 namespace PSC {
@@ -40,9 +41,9 @@ namespace PSC {
 
         bool seek(const Integer &address);
 
-        bool getRecord(Value &value, Context &ctx);
+        bool getRecord(DataHolder &data, Context &ctx);
 
-        void putRecord(Value &value);
+        void putRecord(DataHolder &data);
     };
 
     class FileManager {

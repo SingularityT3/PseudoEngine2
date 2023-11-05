@@ -133,6 +133,10 @@ const std::vector<std::unique_ptr<Variable>> &Context::getVariables() const {
     return variables;
 }
 
+const std::vector<std::unique_ptr<Array>> &Context::getArrays() const {
+    return arrays;
+}
+
 void Context::addProcedure(std::unique_ptr<Procedure> &&procedure) {
     procedures.emplace_back(std::move(procedure));
 }

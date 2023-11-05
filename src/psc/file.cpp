@@ -96,16 +96,16 @@ bool File::seek(const Integer &address) {
     return true;
 }
 
-bool File::getRecord(Value &value, Context &ctx) {
+bool File::getRecord(DataHolder &data, Context &ctx) {
     if (ptr == records.size()) return false;
     const std::string &line = records[ptr];
     std::istringstream ss(line);
-    return value.load(ss, ctx);
+    return data.load(ss, ctx);
 }
 
-void File::putRecord(Value &value) {
+void File::putRecord(DataHolder &data) {
     std::ostringstream ss;
-    value.dump(ss);
+    data.dump(ss);
     if (ptr == records.size()) {
         records.push_back(ss.str());
     } else {
@@ -113,7 +113,6 @@ void File::putRecord(Value &value) {
     }
     modified = true;
 }
-
 
 bool FileManager::createFile(const String &name, FileMode mode) {
     namespace fs = std::filesystem;

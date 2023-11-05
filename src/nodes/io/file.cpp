@@ -171,13 +171,20 @@ std::unique_ptr<NodeResult> GetRecordNode::evaluate(PSC::Context &ctx) {
         throw PSC::RuntimeError(token, ctx, "'GETRECORD' can only be used for random files");
 
     PSC::Variable *variable = ctx.getVariable(identifier.value);
-    if (variable == nullptr)
+    PSC::Array *array = ctx.getArray(identifier.value);
+    if (variable == nullptr && array == nullptr)
         throw PSC::NotDefinedError(identifier, ctx, identifier.value);
-    if (variable->type == PSC::DataType::POINTER)
+    if ((variable != nullptr && variable->type == PSC::DataType::POINTER)
+        || (array != nullptr && array->type == PSC::DataType::POINTER))
         throw PSC::RuntimeError(token, ctx, "Pointers cannot be stored in random files");
 
-    if (!file->getRecord(variable->getRawValue(), ctx))
-        throw PSC::RuntimeError(token, ctx, "Failed to read data from random file");
+    if (variable != nullptr) {
+        if (!file->getRecord(*variable, ctx))
+            throw PSC::RuntimeError(token, ctx, "Failed to read data from random file");
+    } else {
+        if (!file->getRecord(*array, ctx))
+            throw PSC::RuntimeError(token, ctx, "Failed to read data from random file");
+    }
 
     return std::make_unique<NodeResult>(nullptr, PSC::DataType::NONE);
 }
@@ -199,12 +206,18 @@ std::unique_ptr<NodeResult> PutRecordNode::evaluate(PSC::Context &ctx) {
         throw PSC::RuntimeError(token, ctx, "'PUTRECORD' can only be used for random files");
 
     PSC::Variable *variable = ctx.getVariable(identifier.value);
-    if (variable == nullptr)
+    PSC::Array *array = ctx.getArray(identifier.value);
+    if (variable == nullptr && array == nullptr)
         throw PSC::NotDefinedError(identifier, ctx, identifier.value);
-    if (variable->type == PSC::DataType::POINTER)
+    if ((variable != nullptr && variable->type == PSC::DataType::POINTER)
+        || (array != nullptr && array->type == PSC::DataType::POINTER))
         throw PSC::RuntimeError(token, ctx, "Pointers cannot be stored in random files");
 
-    file->putRecord(variable->getRawValue());
+    if (variable != nullptr) {
+        file->putRecord(*variable);
+    } else {
+        file->putRecord(*array);
+    }
 
     return std::make_unique<NodeResult>(nullptr, PSC::DataType::NONE);
 }
