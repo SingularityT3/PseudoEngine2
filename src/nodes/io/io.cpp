@@ -4,6 +4,8 @@
 #include "psc/error.h"
 #include "nodes/io/io.h"
 
+#include "line_util.h"
+
 OutputNode::OutputNode(const Token &token, std::vector<Node*> &&nodes)
     : Node(token), nodes(std::move(nodes))
 {}
@@ -78,7 +80,7 @@ std::unique_ptr<NodeResult> InputNode::evaluate(PSC::Context &ctx) {
     }
 
     PSC::String inputStr;
-    std::getline(std::cin, inputStr.value);
+    getLine(inputStr.value, "");
 
     switch (var->type.type) {
         case PSC::DataType::INTEGER:

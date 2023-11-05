@@ -3,11 +3,7 @@
 #include <string>
 #include "launch/run.h"
 
-#ifdef READLINE
-#include <stdlib.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#endif
+#include "line_util.h"
 
 extern std::string psfilename;
 extern bool REPLMode;
@@ -23,32 +19,8 @@ static const std::string multilineKeywords[] = {
     "TYPE"
 };
 
-bool getLine(std::string &line, const char *prompt) {
-#ifdef READLINE
-    char *buf = readline(prompt);
-    if (buf != NULL) {
-        line = buf;
-        if (buf[0] != '\0') add_history(buf);
-        free(buf);
-    } else {
-        line.clear();
-        return false;
-    }
-#else
-    std::cout << prompt << std::flush;
-    std::getline(std::cin, line);
-    if (std::cin.eof()) return false;
-#endif
-
-    return true;
-}
-
 bool startREPL() {
     std::cout << "PseudoEngine2 v0.5.1 REPL\nEnter 'EXIT' to quit\n";
-
-#ifdef READLINE
-    rl_bind_key('\t', rl_tab_insert);
-#endif
 
     Lexer lexer;
     Parser parser;
