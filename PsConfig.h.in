@@ -1,0 +1,5 @@
+#pragma once
+
+#define PseudoEngine2_VERSION_MAJOR @PseudoEngine2_VERSION_MAJOR@
+#define PseudoEngine2_VERSION_MINOR @PseudoEngine2_VERSION_MINOR@
+#define PseudoEngine2_VERSION_PATCH @PseudoEngine2_VERSION_PATCH@

@@ -18,7 +18,7 @@ The REPL stands for Read Execute Print Loop and is an interface where pseudocode
   ```
   ./PseudoEngine2 [filename]
   ```
-  NOTE: `PseudoEngine2` would be replaced by the name of the executable which may be something like `Pseudoengine2-v0.5.exe` if it is downloaded from the releases
+  NOTE: `PseudoEngine2` would be replaced by the name of the executable which may be something like `Pseudoengine2-v0.5.exe` if it is downloaded from the [releases](https://github.com/SingularityT3/PseudoEngine2/releases)
 
   Filename is an optional arguement. If it is provided the program in the corresponding file is run otherwise the REPL is launched.
 

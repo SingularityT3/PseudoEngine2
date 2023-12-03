@@ -3,11 +3,13 @@ cmake_minimum_required(VERSION 3.16)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-project(PseudoEngine2 VERSION 0.5.1)
+project(PseudoEngine2 VERSION 1.0.0)
 
+configure_file(PsConfig.h.in PsConfig.h)
 add_executable(PseudoEngine2)
 
 target_include_directories(PseudoEngine2 PRIVATE src)
+target_include_directories(PseudoEngine2 PRIVATE "${PROJECT_BINARY_DIR}")
 
 if(MSVC)
     string(REPLACE "/W3" "/W4" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")

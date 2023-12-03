@@ -4,6 +4,7 @@
 #include <stdlib.h>
 
 #include "launch/run.h"
+#include "PsConfig.h"
 
 #include "line_util.h"
 #ifdef READLINE
@@ -23,7 +24,7 @@ int main(int argc, char **argv) {
             std::cout << "Usage: " << argv[0] << " [options] [filename]\n\nOptions:\n -h\t--help\n -v\t--version\n -p\t--pedantic\tForce variable declarations and disallow `CONTINUE`, `BREAK`, `ELSE IF` and type casting" << std::endl;
             return EXIT_SUCCESS;
         } else if (strcmp(argv[1], "-v") == 0 || strcmp(argv[1], "--version") == 0) {
-            std::cout << "PseudoEngine2 v0.5.1" << std::endl;
+            std::cout << "PseudoEngine2 v" << PseudoEngine2_VERSION_MAJOR << '.' << PseudoEngine2_VERSION_MINOR << '.' << PseudoEngine2_VERSION_PATCH << std::endl;
             return EXIT_SUCCESS;
         } else if (strcmp(argv[1], "-p") == 0 || strcmp(argv[1], "--pedantic") == 0) {
             pedantic = true;
