@@ -2,6 +2,8 @@
 
 #include "parser/parser.h"
 
+extern bool pedantic;
+
 Node *Parser::parseEvaluationExpression() {
     Node *logicalExpression = parseLogicalExpression();
 
@@ -164,18 +166,6 @@ Node *Parser::parseAtom() {
         } else {
             return create<AccessNode>(identifier, std::move(resolver));
         }
-
-        /*
-        else if (compareNextType(1, TokenType::ASSIGNMENT)) {
-            return parseAssignmentExpression();
-        } else if (compareNextType(1, TokenType::LSQRBRACKET)) {
-            return parseArrayOperation();
-        } else {
-            AccessNode *node = create<AccessNode>(*currentToken);
-            advance();
-            return node;
-        }
-        */
     } else if (currentToken->type == TokenType::LPAREN) {
         advance();
         Node *expr = parseEvaluationExpression();
@@ -218,6 +208,9 @@ Node *Parser::parseModDivFn() {
 
 Node *Parser::parseCast() {
     const Token &token = *currentToken;
+    if (pedantic)
+        throw PSC::PedanticError(token, "Use of type casting");
+
     PSC::DataType type = getPSCType();
     advance();
 

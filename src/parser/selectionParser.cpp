@@ -2,6 +2,8 @@
 
 #include "parser/parser.h"
 
+extern bool pedantic;
+
 Node *Parser::parseIfStatement() {
     const Token &ifToken = *currentToken;
     advance();
@@ -21,6 +23,8 @@ Node *Parser::parseIfStatement() {
     while (currentToken->type == TokenType::ELSE) {
         advance();
         if (currentToken->type == TokenType::IF) {
+            if (pedantic)
+                throw PSC::PedanticError(*currentToken, "Use of ELSE IF");
             advance();
             condition = parseEvaluationExpression();
 

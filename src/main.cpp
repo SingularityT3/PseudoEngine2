@@ -13,22 +13,31 @@
 
 std::string psfilename = "<stdin>";
 bool REPLMode = true;
+bool pedantic = false;
 
 int main(int argc, char **argv) {
     auto fn = startREPL;
 
     if (argc > 1) {
         if (strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help") == 0) {
-            std::cout << "Usage: " << argv[0] << " [options] [filename]\n\nOptions:\n -h\t--help\n -v\t--version\n" << std::endl;
+            std::cout << "Usage: " << argv[0] << " [options] [filename]\n\nOptions:\n -h\t--help\n -v\t--version\n -p\t--pedantic\tForce variable declarations and disallow `CONTINUE`, `BREAK`, `ELSE IF` and type casting" << std::endl;
             return EXIT_SUCCESS;
         } else if (strcmp(argv[1], "-v") == 0 || strcmp(argv[1], "--version") == 0) {
             std::cout << "PseudoEngine2 v0.5.1" << std::endl;
             return EXIT_SUCCESS;
+        } else if (strcmp(argv[1], "-p") == 0 || strcmp(argv[1], "--pedantic") == 0) {
+            pedantic = true;
         } else if (argv[1][0] == '-') {
             std::cerr << "Unknown option '" << argv[1] << "'\nUse `" << argv[0] << " --help` for more info" << std::endl;
             return EXIT_FAILURE;
-        } else {
+        }
+
+        if (!pedantic) {
             psfilename = argv[1];
+            REPLMode = false;
+            fn = runFile;
+        } else if (argc > 2) {
+            psfilename = argv[2];
             REPLMode = false;
             fn = runFile;
         }

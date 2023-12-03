@@ -23,6 +23,12 @@ namespace PSC {
     };
 
 
+    class PedanticError : public Error {
+    public:
+        PedanticError(const Token &token, const std::string &info);
+    };
+
+
     class SyntaxError : public Error {
     public:
         SyntaxError(const Token &token, const std::string &info = "");

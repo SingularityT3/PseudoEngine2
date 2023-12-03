@@ -3,6 +3,8 @@
 #include "psc/error.h"
 #include "nodes/variable/variable.h"
 
+extern bool pedantic;
+
 DeclareNode::DeclareNode(const Token &token, std::vector<const Token*> &&identifiers, const Token &type)
     : Node(token), identifiers(std::move(identifiers)), type(type)
 {}
@@ -84,7 +86,10 @@ std::unique_ptr<NodeResult> AssignNode::evaluate(PSC::Context &ctx) {
         const SimpleVariableSource *simpleSource = dynamic_cast<const SimpleVariableSource*>(resolver.get());
         if (simpleSource == nullptr) throw e;
         if (ctx.isIdentifierType(simpleSource->getToken())) throw e;
-
+        
+        if (pedantic)
+            throw PSC::PedanticError(token, "Assigning to undeclared variable");
+        
         var = new PSC::Variable(simpleSource->getName(), valueRes->type, false, &ctx);
         ctx.addVariable(var);
     }

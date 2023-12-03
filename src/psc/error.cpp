@@ -29,6 +29,10 @@ void Error::print(std::ostream &os) const {
 }
 
 
+PedanticError::PedanticError(const Token &token, const std::string &info)
+    : Error(token, "Error(pedantic)", info)
+{}
+
 SyntaxError::SyntaxError(const Token &token, const std::string &info)
     : Error(token, "Syntax Error", info)
 {}

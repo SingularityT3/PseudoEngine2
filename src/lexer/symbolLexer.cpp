@@ -3,6 +3,8 @@
 
 #include "lexer/lexer.h"
 
+extern bool pedantic;
+
 void Lexer::makeWord() {
     size_t startIdx = idx;
     int startColumn = column;
@@ -94,8 +96,12 @@ void Lexer::makeWord() {
 
     else if (word == "BREAK") {
         tokens.emplace_back(new Token(TokenType::BREAK, line, startColumn));
+        if (pedantic)
+            throw PSC::PedanticError(*tokens[tokens.size()-1], "Use of BREAK statement");
     } else if (word == "CONTINUE") {
         tokens.emplace_back(new Token(TokenType::CONTINUE, line, startColumn));
+        if (pedantic)
+            throw PSC::PedanticError(*tokens[tokens.size()-1], "Use of CONTINUE statement");
     }
 
     else if (word == "PROCEDURE") {
