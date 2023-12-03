@@ -95,6 +95,7 @@ DECLARE <variable name> : <type name>
 ```
 // Enum
 <enumVar> <- <state>
+<enumVar> <- <enumVar> + <integer>
 
 // Pointer
 <pointerVar> <- <otherPointerVar>
