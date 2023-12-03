@@ -17,13 +17,21 @@ bool REPLMode = true;
 int main(int argc, char **argv) {
     auto fn = startREPL;
 
-    if (argc == 2) {
-        psfilename = argv[1];
-        REPLMode = false;
-        fn = runFile;
-    } else if (argc > 2) {
-        std::cerr << "Too many arguements!\nUsage:\n" << argv[0] << " <filename>" << std::endl;
-        return EXIT_FAILURE;
+    if (argc > 1) {
+        if (strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help") == 0) {
+            std::cout << "Usage: " << argv[0] << " [options] [filename]\n\nOptions:\n -h\t--help\n -v\t--version\n" << std::endl;
+            return EXIT_SUCCESS;
+        } else if (strcmp(argv[1], "-v") == 0 || strcmp(argv[1], "--version") == 0) {
+            std::cout << "PseudoEngine2 v0.5.1" << std::endl;
+            return EXIT_SUCCESS;
+        } else if (argv[1][0] == '-') {
+            std::cerr << "Unknown option '" << argv[1] << "'\nUse `" << argv[0] << " --help` for more info" << std::endl;
+            return EXIT_FAILURE;
+        } else {
+            psfilename = argv[1];
+            REPLMode = false;
+            fn = runFile;
+        }
     }
 
 #ifdef READLINE
