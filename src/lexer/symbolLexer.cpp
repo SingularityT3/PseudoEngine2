@@ -207,7 +207,7 @@ char escSeqFmt(char code) {
 
 void Lexer::makeChar() {
     if (idx + 2 >= expr->size()) 
-        throw PSC::LexerError(line, column, "Char must contain at least once character");
+        throw PSC::LexerError(line, column, "Char must contain at least one character");
 
     int startColumn = column;
     advance();
@@ -218,7 +218,7 @@ void Lexer::makeChar() {
         c = escSeqFmt(currentChar);
         if (c == -1) throw PSC::LexerError(line, column, "Invalid escape sequence");
     } else if (currentChar == '\'') {
-        throw PSC::LexerError(line, column, "Char must contain at least once character");
+        throw PSC::LexerError(line, column, "Char must contain at least one character");
     } else {
         c = currentChar;
     }

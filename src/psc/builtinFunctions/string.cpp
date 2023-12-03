@@ -85,7 +85,7 @@ void PSC::BuiltinFnMid::run(PSC::Context &ctx) {
 
     int_t xVal = x->get<PSC::Integer>().value - 1;
     if (xVal < 0)
-        throw PSC::RuntimeError(PSC::errToken, ctx, "Index for 'MID' function cannot be negative");
+        throw PSC::RuntimeError(PSC::errToken, ctx, "Index for 'MID' function cannot be less than 1");
     if (static_cast<size_t>(xVal) >= strLen)
         throw PSC::RuntimeError(PSC::errToken, ctx, "Index for 'MID' function cannot exceed string length");
 
