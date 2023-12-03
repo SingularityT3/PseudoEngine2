@@ -1,6 +1,7 @@
 #include "pch.h"
 #include <string>
 #include <ctime>
+#include <cstring>
 #include <stdlib.h>
 
 #include "launch/run.h"
