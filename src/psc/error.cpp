@@ -42,7 +42,7 @@ LexerError::LexerError(int line, int column, const std::string &info)
 {}
 
 inline std::string invalidCharMsg(char c) {
-    std::string s = "Invalid characher '";
+    std::string s = "Invalid character '";
     s += c;
     s += '\'';
     return s;
