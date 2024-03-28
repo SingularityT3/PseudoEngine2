@@ -416,4 +416,5 @@ CLOSEFILE <filename>
 - `CONTINUE` - Skip to next iteration of loop
 - `ELSE IF` - Alternative to reduce nesting
 - Alternate method of type conversion(apart from in-built functions): `<data type>(<value>)`. For example: `INTEGER("57")` 
+- Math functions like `SIN`, `EXP`
 - Character escape codes like `\n`, `\t` etc.
