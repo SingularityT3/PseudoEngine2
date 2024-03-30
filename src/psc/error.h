@@ -97,7 +97,12 @@ namespace PSC {
 
     class NotDefinedError : public RuntimeError {
     public:
-        NotDefinedError(const Token &token, const Context &context, const std::string &identifier);
+        NotDefinedError(const Token &token, const Context &context, const std::string &identifier, const std::string &hint = "");
+    };
+
+    class TypeNotDefinedError : public NotDefinedError {
+    public:
+        TypeNotDefinedError(const Token &token, const Context &context, const std::string &type);
     };
 
     class ArrayDirectAccessError : public RuntimeError {

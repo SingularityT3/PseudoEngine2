@@ -33,7 +33,7 @@ std::unique_ptr<NodeResult> ProcedureNode::evaluate(PSC::Context &ctx) {
         const Token *typeToken = parameterTypes[i];
         PSC::DataType type = ctx.getType(*typeToken);
         if (type == PSC::DataType::NONE)
-            throw PSC::NotDefinedError(*typeToken, ctx, "Type '" + typeToken->value + "'");
+            throw PSC::TypeNotDefinedError(*typeToken, ctx, typeToken->value);
         parameters.emplace_back(parameterNames[i], type, parameterPassTypes[i]);
     }
 

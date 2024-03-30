@@ -10,7 +10,7 @@ PointerDefineNode::PointerDefineNode(const Token &token, const Token &name, cons
 std::unique_ptr<NodeResult> PointerDefineNode::evaluate(PSC::Context &ctx) {
     PSC::DataType pointerType = ctx.getType(type);
     if (pointerType == PSC::DataType::NONE)
-        throw PSC::NotDefinedError(token, ctx, "Type '" + type.value + "'");
+        throw PSC::TypeNotDefinedError(token, ctx, type.value);
 
     if (ctx.isIdentifierType(name, false))
         throw PSC::RedefinitionError(token, ctx, name.value);

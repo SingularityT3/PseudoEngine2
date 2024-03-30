@@ -68,7 +68,13 @@ const std::vector<Token*> Lexer::makeTokens() {
         } else if (currentChar == ']') {
             tokens.emplace_back(new Token(TokenType::RSQRBRACKET, line, column));
         } else if (currentChar == '=') {
-            tokens.emplace_back(new Token(TokenType::EQUALS, line, column));
+            advance();
+            if (idx >= expr->size() || currentChar != '=') {
+                tokens.emplace_back(new Token(TokenType::EQUALS, line, column));
+                continue;
+            } else {
+                throw PSC::LexerError(line, column - 1, "Invalid token '=='\nIf you want to check for equality, use single '=' instead");
+            }
         } else if (currentChar == ':') {
             tokens.emplace_back(new Token(TokenType::COLON, line, column));
         } else if (currentChar == ',') {

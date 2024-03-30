@@ -30,7 +30,7 @@ std::unique_ptr<NodeResult> FunctionNode::evaluate(PSC::Context &ctx) {
 
     PSC::DataType returnDataType = ctx.getType(returnType);
     if (returnDataType == PSC::DataType::NONE)
-        throw PSC::NotDefinedError(returnType, ctx, "Type '" + returnType.value + "'");
+        throw PSC::TypeNotDefinedError(returnType, ctx, returnType.value);
 
     size_t parametersSize = parameterNames.size();
     std::vector<PSC::Parameter> parameters;
@@ -39,7 +39,7 @@ std::unique_ptr<NodeResult> FunctionNode::evaluate(PSC::Context &ctx) {
         const Token *typeToken = parameterTypes[i];
         PSC::DataType type = ctx.getType(*typeToken);
         if (type == PSC::DataType::NONE)
-            throw PSC::NotDefinedError(*typeToken, ctx, "Type '" + typeToken->value + "'");
+            throw PSC::TypeNotDefinedError(*typeToken, ctx, typeToken->value);
         parameters.emplace_back(parameterNames[i], type, parameterPassTypes[i]);
     }
 

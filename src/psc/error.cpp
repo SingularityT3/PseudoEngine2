@@ -107,8 +107,29 @@ ConstAssignError::ConstAssignError(const Token &token, const Context &context, c
     : RuntimeError(token, context, "Assignment to constant '" + constant + "'")
 {}
 
-NotDefinedError::NotDefinedError(const Token &token, const Context &context, const std::string &identifier)
-    : RuntimeError(token, context, identifier + " is not defined")
+NotDefinedError::NotDefinedError(const Token &token, const Context &context, const std::string &identifier, const std::string &hint)
+    : RuntimeError(token, context, identifier + " is not defined" + hint)
+{}
+
+inline std::string getTypeHint(const std::string &s) {
+    std::string hint = "";
+
+    if (s == "INT")
+        hint = "\nDid you mean 'INTEGER'?";
+    else if (s == "FLOAT")
+        hint = "\nDid you mean 'REAL'?";
+    else if (s == "CHARACTER")
+        hint = "\nDid you mean 'CHAR'?";
+    else if (s == "BOOL")
+        hint = "\nDid you mean 'BOOLEAN'?";
+    else if (s == "STR")
+        hint = "\nDid you mean 'STRING'?";
+
+    return hint;
+}
+
+TypeNotDefinedError::TypeNotDefinedError(const Token &token, const Context &context, const std::string &type)
+    : NotDefinedError(token, context, "Type '" + type + "'", getTypeHint(type))
 {}
 
 ArrayDirectAccessError::ArrayDirectAccessError(const Token &token, const Context &context)

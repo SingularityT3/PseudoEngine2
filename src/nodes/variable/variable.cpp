@@ -19,7 +19,7 @@ std::unique_ptr<NodeResult> DeclareNode::evaluate(PSC::Context &ctx) {
 
         PSC::DataType dataType = ctx.getType(type);
         if (dataType == PSC::DataType::NONE)
-            throw PSC::NotDefinedError(token, ctx, "Type '" + type.value + "'");
+            throw PSC::TypeNotDefinedError(token, ctx, type.value);
 
         ctx.addVariable(new PSC::Variable(identifier->value, dataType, false, &ctx));
     }
