@@ -156,7 +156,7 @@ std::unique_ptr<NodeResult> AccessNode::evaluate(PSC::Context &ctx) {
     
     PSC::Variable &var = *static_cast<PSC::Variable*>(holder);
 
-    PSC::Value *data;
+    PSC::Value *data = nullptr;
     switch (var.type.type) {
         case PSC::DataType::INTEGER:
             data = new PSC::Integer(var.get<PSC::Integer>());
