@@ -1,6 +1,6 @@
 # PseudoEngine 2
 
-A pseudocode interpreter designed to be compatible with the Cambridge IGCSE and A level pseudocode [syntax](./Syntax.md)
+A pseudocode interpreter designed to be compatible with the Cambridge IGCSE and A level [pseudocode syntax](./Syntax.md)
 
 ![Demo](./HelloWorld.gif)
 
@@ -37,14 +37,12 @@ OUTPUT "Hello World!"
 Run it with `RUNFILE hello.pseudo` \
 Example output:
 ```
-PseudoEngine2 v1.0.0 REPL
-Enter 'EXIT' to quit
 > RUNFILE hello.pseudo
-Running file hello.pseudo
+==> Running file 'hello.pseudo'
 Hello World!
 
-Program exited successfully
->
+==> Program exited successfully
+> 
 ```
 > Tip:
 > The program must be stored in the _same folder_ as the executable **or** the full path of the program has to be mentioned when using `RUNFILE`

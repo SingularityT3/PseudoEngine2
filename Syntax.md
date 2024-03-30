@@ -42,7 +42,7 @@ myArray[index]
 ```
 Multi-dimensional array:
 ```
-myArray[index1, index2, ...]
+myArray[index1, index2, ..., indexn]
 ```
 
 ## Variable assignment
@@ -54,7 +54,7 @@ Assigning to an undefined variable will define and initialise it to the value as
 ### Assigning to array element
 ```
 myArray[index] <- <value>
-myArray[index1, index2, ...] <- <value>
+my3dArray[index1, index2, index3] <- <value>
 ```
 
 ## Constants
@@ -224,7 +224,9 @@ ENDPROCEDURE
 No parameters:
 ```
 CALL <procedureName>
+```
 OR
+```
 CALL <procedureName>()
 ```
 
@@ -426,7 +428,7 @@ PUTRECORD <filename>, <variable>
 CLOSEFILE <filename>
 ```
 
-## Other features(outside cambridge format)
+## Features outside cambridge syntax
 - `BREAK` - Break out of loops early
 - `CONTINUE` - Skip to next iteration of loop
 - `ELSE IF` - Alternative to reduce nesting
