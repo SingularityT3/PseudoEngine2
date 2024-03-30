@@ -316,6 +316,21 @@ SETDATE(Day, Month, Year : INTEGER) RETURNS DATE
 TODAY() RETURNS DATE
 ```
 
+#### Time functions
+```
+// Returns the unix timestamp(Seconds elapsed since 1st January 1970 UTC)
+TIME() RETURNS INTEGER
+
+// Returns the hours on the local clock
+HOURS() RETURNS INTEGER
+
+// Returns the minutes on the local clock
+MINUTES() RETURNS INTEGER
+
+// Returns the seconds on the local clock
+SECONDS() RETURNS INTEGER
+```
+
 #### Math functions
 ```
 // Power
@@ -417,4 +432,5 @@ CLOSEFILE <filename>
 - `ELSE IF` - Alternative to reduce nesting
 - Alternate method of type conversion(apart from in-built functions): `<data type>(<value>)`. For example: `INTEGER("57")` 
 - Math functions like `SIN`, `EXP`
+- Time functions
 - Character escape codes like `\n`, `\t` etc.

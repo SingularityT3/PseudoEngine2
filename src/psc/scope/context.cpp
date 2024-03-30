@@ -55,7 +55,7 @@ Context::~Context() {
 std::unique_ptr<Context> Context::createGlobalContext() {
     auto ctx = std::make_unique<Context>(nullptr, "Program");
 
-    ctx->functions.reserve(34);
+    ctx->functions.reserve(38);
 
     ctx->addFunction(std::make_unique<PSC::BuiltinFnLength>());
     ctx->addFunction(std::make_unique<PSC::BuiltinFnRight>());
@@ -80,6 +80,11 @@ std::unique_ptr<Context> Context::createGlobalContext() {
     ctx->addFunction(std::make_unique<PSC::BuiltinFnDAYINDEX>());
     ctx->addFunction(std::make_unique<PSC::BuiltinFnSETDATE>());
     ctx->addFunction(std::make_unique<PSC::BuiltinFnTODAY>());
+
+    ctx->addFunction(std::make_unique<PSC::BuiltinFnTIME>());
+    ctx->addFunction(std::make_unique<PSC::BuiltinFnHOURS>());
+    ctx->addFunction(std::make_unique<PSC::BuiltinFnMINUTES>());
+    ctx->addFunction(std::make_unique<PSC::BuiltinFnSECONDS>());
 
     ctx->addFunction(std::make_unique<PSC::BuiltinFnRand>());
     ctx->addFunction(std::make_unique<PSC::BuiltinFnInt>());

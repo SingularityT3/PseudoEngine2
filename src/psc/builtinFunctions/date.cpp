@@ -120,3 +120,49 @@ void PSC::BuiltinFnTODAY::run(PSC::Context &ctx) {
 
     ctx.returnValue = std::make_unique<NodeResult>(std::move(ret), PSC::DataType::DATE);
 }
+
+PSC::BuiltinFnTIME::BuiltinFnTIME()
+    : Function("TIME", PSC::DataType::INTEGER)
+{}
+
+void PSC::BuiltinFnTIME::run(PSC::Context &ctx) {
+    PSC::int_t t = system_clock::to_time_t(system_clock::now());
+    auto ret = std::make_unique<PSC::Integer>(t);
+    ctx.returnValue = std::make_unique<NodeResult>(std::move(ret), PSC::DataType::INTEGER);
+}
+
+PSC::BuiltinFnHOURS::BuiltinFnHOURS()
+    : Function("HOURS", PSC::DataType::INTEGER)
+{}
+
+void PSC::BuiltinFnHOURS::run(PSC::Context &ctx) {
+    auto tp = system_clock::now();
+    time_t tt = system_clock::to_time_t(tp);
+    tm local_tm = *localtime(&tt);
+    auto ret = std::make_unique<PSC::Integer>(local_tm.tm_hour);
+    ctx.returnValue = std::make_unique<NodeResult>(std::move(ret), PSC::DataType::INTEGER);
+}
+
+PSC::BuiltinFnMINUTES::BuiltinFnMINUTES()
+    : Function("MINUTES", PSC::DataType::INTEGER)
+{}
+
+void PSC::BuiltinFnMINUTES::run(PSC::Context &ctx) {
+    auto tp = system_clock::now();
+    time_t tt = system_clock::to_time_t(tp);
+    tm local_tm = *localtime(&tt);
+    auto ret = std::make_unique<PSC::Integer>(local_tm.tm_min);
+    ctx.returnValue = std::make_unique<NodeResult>(std::move(ret), PSC::DataType::INTEGER);
+}
+
+PSC::BuiltinFnSECONDS::BuiltinFnSECONDS()
+    : Function("SECONDS", PSC::DataType::INTEGER)
+{}
+
+void PSC::BuiltinFnSECONDS::run(PSC::Context &ctx) {
+    auto tp = system_clock::now();
+    time_t tt = system_clock::to_time_t(tp);
+    tm local_tm = *localtime(&tt);
+    auto ret = std::make_unique<PSC::Integer>(local_tm.tm_sec);
+    ctx.returnValue = std::make_unique<NodeResult>(std::move(ret), PSC::DataType::INTEGER);
+}

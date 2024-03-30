@@ -127,6 +127,30 @@ namespace PSC {
         void run(PSC::Context &ctx) override;
     };
 
+    struct BuiltinFnTIME : public Function {
+        BuiltinFnTIME();
+
+        void run(PSC::Context &ctx) override;
+    };
+
+    struct BuiltinFnHOURS : public Function {
+        BuiltinFnHOURS();
+
+        void run(PSC::Context &ctx) override;
+    };
+
+    struct BuiltinFnMINUTES : public Function {
+        BuiltinFnMINUTES();
+
+        void run(PSC::Context &ctx) override;
+    };
+
+    struct BuiltinFnSECONDS : public Function {
+        BuiltinFnSECONDS();
+
+        void run(PSC::Context &ctx) override;
+    };
+
 
     struct BuiltinFnRand : public Function {
         BuiltinFnRand();
