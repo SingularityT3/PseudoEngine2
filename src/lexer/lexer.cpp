@@ -60,6 +60,22 @@ const std::vector<Token*> Lexer::makeTokens() {
             }
             continue;
         } else if (currentChar == '(') {
+            if (idx > 0 && tokens.size() > 0 && (*expr)[idx-1] != ' ') {
+                TokenType t = tokens[tokens.size()-1]->type;
+                if (t == TokenType::INPUT) {
+                    throw PSC::LexerError(line, column, "Unexpected '('\n'INTPUT' is statement(not a function) used as 'INPUT <var>' where <var> is a variable to store the input");
+                } else if (t == TokenType::OUTPUT) {
+                    throw PSC::LexerError(line, column, "Unexpected '('\n'OUTPUT' is statement(not a function) used as 'OUTPUT <value>' or 'OUTPUT <value1>, <value2>, ...'");
+                } else if (t == TokenType::OPENFILE) {
+                    throw PSC::LexerError(line, column, "Unexpected '('\n'OPENFILE' is statement(not a function) used as 'OPENFILE <filename> FOR <mode>'");
+                } else if (t == TokenType::READFILE) {
+                    throw PSC::LexerError(line, column, "Unexpected '('\n'READFILE' is statement(not a function) used as 'READFILE <filename>, <var>'");
+                } else if (t == TokenType::WRITEFILE) {
+                    throw PSC::LexerError(line, column, "Unexpected '('\n'WRITEFILE' is statement(not a function) used as 'WRITEFILE <filename>, <line>'");
+                } else if (t == TokenType::CLOSEFILE) {
+                    throw PSC::LexerError(line, column, "Unexpected '('\n'CLOSEFILE' is statement(not a function) used as 'CLOSEFILE <filename>'");
+                }
+            }
             tokens.emplace_back(new Token(TokenType::LPAREN, line, column));
         } else if (currentChar == ')') {
             tokens.emplace_back(new Token(TokenType::RPAREN, line, column));
@@ -70,7 +86,7 @@ const std::vector<Token*> Lexer::makeTokens() {
         } else if (currentChar == '=') {
             advance();
             if (idx >= expr->size() || currentChar != '=') {
-                tokens.emplace_back(new Token(TokenType::EQUALS, line, column));
+                tokens.emplace_back(new Token(TokenType::EQUALS, line, column - 1));
                 continue;
             } else {
                 throw PSC::LexerError(line, column - 1, "Invalid token '=='\nIf you want to check for equality, use single '=' instead");

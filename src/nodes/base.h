@@ -6,10 +6,9 @@
 #include "nodes/nodeResult.h"
 
 class Node {
-protected:
+public:
     const Token &token;
 
-public:
     Node(const Token &token);
 
     virtual ~Node() = default;
@@ -22,21 +21,19 @@ public:
 };
 
 class UnaryNode : public Node {
-protected:
-    Node &node;
-
 public:
+    Node &node;
+    
     UnaryNode(const Token &token, Node &node);
 
     std::string toStr() const override;
 };
 
 class BinaryNode : public Node {
-protected:
+public:
     Node &left;
     Node &right;
 
-public:
     BinaryNode(const Token &token, Node &left, Node &right);
 
     std::string toStr() const override;

@@ -91,6 +91,13 @@ PSC::Block *Parser::parseBlock(BlockType blockType) {
             node = parseFunction();
         } else {
             node = parseExpression();
+            ComparisonNode *cn = dynamic_cast<ComparisonNode*>(node);
+            if (cn != nullptr) {
+                AccessNode *an = dynamic_cast<AccessNode*>(&(cn->left));
+                if (an != nullptr) {
+                    std::cout << "Warning on line " << cn->token.line << " column " << cn->token.column << ": Comparison result is ignored. Use '<-' instead of '=' if you wanted to assign." << std::endl;
+                }
+            }
         }
 
         block->addNode(node);
