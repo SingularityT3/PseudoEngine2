@@ -20,7 +20,7 @@ static const std::string multilineKeywords[] = {
 };
 
 bool startREPL() {
-    std::cout << "PseudoEngine2 v" << PseudoEngine2_VERSION_MAJOR << '.' << PseudoEngine2_VERSION_MINOR << '.' << PseudoEngine2_VERSION_PATCH << " REPL\nEnter 'EXIT' to quit\n";
+    std::cout << "PseudoEngine2 v" << PseudoEngine2_VERSION_MAJOR << '.' << PseudoEngine2_VERSION_MINOR << '.' << PseudoEngine2_VERSION_PATCH << " REPL\nEnter '?' for help, 'EXIT' to quit\n";
 
     Lexer lexer;
     Parser parser;
@@ -32,8 +32,12 @@ bool startREPL() {
 
         size_t size = code.size();
         if (size == 0) continue;
-        if (code == "EXIT") break;
-        if (code.starts_with("RUNFILE")) {
+        if (code == "?") {
+            std::cout << "Visit https://github.com/SingularityT3/PseudoEngine2 for syntax, examples and more info\nUse `RUNFILE <filename>` to run programs stored in files" << std::endl;
+            continue;
+        } else if (code == "EXIT") {
+            break;
+        } else if (code.starts_with("RUNFILE")) {
             if (size < 9) {
                 std::cerr << "Expected filename" << std::endl;
                 continue;
@@ -45,10 +49,10 @@ bool startREPL() {
             }
             REPLMode = false;
 
-            std::cout << "Running file " << psfilename << "\n";
+            std::cout << "==> Running file '" << psfilename << "'\n";
             std::string exit = runFile() ? "successfully" : "with an error";
-            std::cout << "\nProgram exited " << exit << "\n";
-            
+            std::cout << "\n==> Program exited " << exit << "\n";
+
             psfilename = "<stdin>";
             REPLMode = true;
             continue;
