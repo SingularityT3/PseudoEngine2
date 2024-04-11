@@ -159,7 +159,10 @@ std::unique_ptr<NodeResult> ArithmeticOperationNode::evaluate(PSC::Context &ctx)
     if ((leftRes->type != PSC::DataType::INTEGER && leftRes->type != PSC::DataType::REAL)
         || (rightRes->type != PSC::DataType::INTEGER && rightRes->type != PSC::DataType::REAL)
     ) {
-        throw PSC::InvalidUsageError(token, ctx, "'" + op + "' operator, operands must be of type Integer or Real");
+        if (leftRes->type == PSC::DataType::STRING || rightRes->type == PSC::DataType::STRING)
+            throw PSC::InvalidUsageError(token, ctx, "'" + op + "' operator, operands must be of type Integer or Real.\nUse the '&' operator if you want to concatenate.");
+        else
+            throw PSC::InvalidUsageError(token, ctx, "'" + op + "' operator, operands must be of type Integer or Real");
     }
 
     const PSC::Number &leftNum = leftRes->get<PSC::Number>();
