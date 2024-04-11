@@ -6,6 +6,8 @@
 
 #include "line_util.h"
 
+extern bool pedantic;
+
 OutputNode::OutputNode(const Token &token, std::vector<Node*> &&nodes)
     : Node(token), nodes(std::move(nodes))
 {}
@@ -74,6 +76,7 @@ std::unique_ptr<NodeResult> InputNode::evaluate(PSC::Context &ctx) {
         const SimpleVariableSource *simpleSource = dynamic_cast<const SimpleVariableSource*>(resolver.get());
         if (simpleSource == nullptr) throw e;
         if (ctx.isIdentifierType(simpleSource->getToken())) throw e;
+        if (pedantic) throw PSC::PedanticError(simpleSource->getToken(), "Reading input into undefined variable");
 
         var = new PSC::Variable(simpleSource->getName(), PSC::DataType::STRING, false, &ctx);
         ctx.addVariable(var);
