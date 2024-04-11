@@ -33,7 +33,7 @@ std::unique_ptr<NodeResult> ReadFileNode::evaluate(PSC::Context &ctx) {
     auto filenameRes = filename.evaluate(ctx);
     if (filenameRes->type != PSC::DataType::STRING)
         throw PSC::RuntimeError(token, ctx, "Expected string for file name");
-    
+
     PSC::Variable *var = ctx.getVariable(identifier.value);
     if (var == nullptr) {
         var = new PSC::Variable(identifier.value, PSC::DataType::STRING, false, &ctx);
@@ -46,6 +46,8 @@ std::unique_ptr<NodeResult> ReadFileNode::evaluate(PSC::Context &ctx) {
     PSC::File *file = ctx.getFileManager().getFile(filename);
     if (file == nullptr)
         throw PSC::FileNotOpenError(token, ctx, filename.value);
+    if (file->getMode() == PSC::FileMode::RANDOM)
+        throw PSC::RuntimeError(token, ctx, "Attempting to use 'READFILE' on random file. Use 'GETRECORD' instead.");
     
     PSC::String *data = new PSC::String;
     *data = file->read();
@@ -69,6 +71,8 @@ std::unique_ptr<NodeResult> WriteFileNode::evaluate(PSC::Context &ctx) {
         throw PSC::FileNotOpenError(token, ctx, filename.value);
     if (file->getMode() == PSC::FileMode::READ)
         throw PSC::RuntimeError(token, ctx, "File '" + filename.value + "' is opened as read-only");
+    else if (file->getMode() == PSC::FileMode::RANDOM)
+        throw PSC::RuntimeError(token, ctx, "Attempting to use 'WRITEFILE' on random file. Use 'PUTRECORD' instead.");
 
     auto nodeRes = data.evaluate(ctx);
     std::unique_ptr<PSC::String> data;
