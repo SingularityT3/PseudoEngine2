@@ -146,8 +146,20 @@ namespace PSC {
         void run(PSC::Context &ctx) override;
     };
 
+    struct BuiltinFnRandom : public Function {
+        BuiltinFnRandom();
+
+        void run(PSC::Context &ctx) override;
+    };
+
     struct BuiltinFnInt : public Function {
         BuiltinFnInt();
+
+        void run(PSC::Context &ctx) override;
+    };
+
+    struct BuiltinFnRound : public Function {
+        BuiltinFnRound();
 
         void run(PSC::Context &ctx) override;
     };

@@ -379,8 +379,15 @@ LN(x : REAL) RETURNS REAL
 // Returns the integer part of a real(floor)
 INT(x : REAL) RETURNS INTEGER
 
+// Rounds a real to the specified number of decimal places
+// Returns integer if places is 0
+ROUND(x : REAL, places : INTEGER) RETURNS REAL
+
 // Returns a random number from 0 to x inclusive
 RAND(x : INTEGER) RETURNS REAL
+
+// Returns a random number from 0 to 1
+RANDOM() RETURNS REAL
 
 // Checks if end of file is reached
 EOF(filename : STRING) RETURNS BOOLEAN

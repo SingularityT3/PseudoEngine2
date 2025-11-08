@@ -148,7 +148,7 @@ void Lexer::makeWord() {
         tokens.emplace_back(new Token(TokenType::WRITE, line, startColumn));
     } else if (word == "APPEND") {
         tokens.emplace_back(new Token(TokenType::APPEND, line, startColumn));
-    } else if (word == "RANDOM") {
+    } else if (word == "RANDOM" && currentChar != '(') { // Check current char for possible function call to RANDOM()
         tokens.emplace_back(new Token(TokenType::RANDOM, line, startColumn));
     }
 
