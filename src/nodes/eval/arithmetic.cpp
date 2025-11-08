@@ -148,12 +148,12 @@ std::unique_ptr<NodeResult> ArithmeticOperationNode::evaluate(PSC::Context &ctx)
 
         const PSC::EnumTypeDefinition &definition = enumVal.getDefinition(ctx);
         std::size_t enumSize = definition.values.size();
-        res %= enumSize;
+        res %= static_cast<std::make_signed_t<size_t>>(enumSize); // enumSize needs to be cast to signed type otherwise res will be cast to unsigned
         if (res < 0) res += enumSize;
 
         std::unique_ptr<PSC::Enum> resEnum = std::make_unique<PSC::Enum>(definition.name);
         resEnum->idx = res;
-        return std::make_unique<NodeResult>(std::move(resEnum), PSC::DataType::ENUM);
+        return std::make_unique<NodeResult>(std::move(resEnum), PSC::DataType(PSC::DataType::ENUM, &definition.name));
     }
 
     if ((leftRes->type != PSC::DataType::INTEGER && leftRes->type != PSC::DataType::REAL)
