@@ -83,7 +83,7 @@ std::unique_ptr<NodeResult> CallNode::evaluate(PSC::Context &ctx) {
         if (parameter.byRef) {
             AccessNode *accsNode = dynamic_cast<AccessNode*>(args[i]);
             if (!accsNode)
-                throw PSC::RuntimeError(token, ctx, "Only variables and array elements can be used as arguements when passing by reference");
+                throw PSC::RuntimeError(token, ctx, "Only variables and array elements can be used as arguments when passing by reference");
 
             auto &holder = accsNode->getResolver().resolve(ctx);
             if (holder.isArray())

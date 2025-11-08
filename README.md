@@ -5,9 +5,11 @@ A pseudocode interpreter designed to be compatible with the Cambridge IGCSE and 
 ![Demo](./HelloWorld.gif)
 
 ## The REPL
-The REPL stands for **R**ead **E**xecute **P**rint **L**oop and is an interface where pseudocode statements can be entered. The statement is immediately executed after it is entered and the result or potential errors are printed to the console to make it easy for debugging.
+The REPL stands for **R**ead **E**xecute **P**rint **L**oop. It's an interactive interface where you can type pseudocode statements one by one. Each statement is immediately run, and the result or any errors are shown right away. This is helpful for quickly testing small pieces of code and experimenting with syntax without needing to create a full file.
 
 ```
+> OUTPUT "Hello World!"
+Hello World!
 > 5 + 2 * 3
 11
 > LEFT("ABCD", 2)
@@ -25,7 +27,7 @@ Program, line 1, column 9
 ### Launching the REPL
 Lanuch the program directly by double clicking the [executable](https://github.com/SingularityT3/PseudoEngine2/releases) \
 **OR** \
-Run it in the terminal with no arguements
+Run it in the terminal with no arguments
 
 ### Running files in the REPL
 The REPL can be used to run files using `RUNFILE <file>`. \
@@ -33,9 +35,7 @@ For example, here is a simple hello world program stored in the file `hello.pseu
 ```
 OUTPUT "Hello World!"
 ```
-\
-Run it with `RUNFILE hello.pseudo` \
-Example output:
+You can run it like this:
 ```
 > RUNFILE hello.pseudo
 ==> Running file 'hello.pseudo'
@@ -44,31 +44,32 @@ Hello World!
 ==> Program exited successfully
 > 
 ```
-> Tip:
-> The program must be stored in the _same folder_ as the executable **or** the full path of the program has to be mentioned when using `RUNFILE`
+> **Tip:** For `RUNFILE` to work easily, place your `.pseudo` file in the same folder as the `PseudoEngine2` executable. Otherwise, you'll need to provide the full path to your file (e.g., `RUNFILE /path/to/your/hello.pseudo`).
 
 
-### Running files from the terminal
-Navigate to the executable and run it providing the path of the program file as an arguement similar to `RUNFILE`
+### Running files directly from the terminal
+You can also run a pseudocode file directly when you launch PseudoEngine2 from the terminal.
+
+Navigate to where your `PseudoEngine2` executable is, and provide the path to your pseudocode file as an argument:
 
 Windows:
 ```
-PseudoEngine2.exe <filepath>
+PseudoEngine2.exe <filepath/your_program.pseudo>
 ```
 Linux/Unix:
 ```
-./PseudoEngine2 <filepath>
+./PseudoEngine2 <filepath/your_program.pseudo>
 ```
 
 Make sure you replace `PseudoEngine2` with the actual name of the executable or rename the executable
 
-## Examples
+## Example programs
 See [examples](./examples)
 
-## Building
+## Building from source
 Make sure cmake and a c++ compiler is installed, then clone the repository and inside its folder run the following commands:
 ```
 cmake -B build -DCMAKE_BUILD_TYPE=Release
-cmake --build build --config Release
+cmake --build build
 ```
 The executable will be generated inside the build folder

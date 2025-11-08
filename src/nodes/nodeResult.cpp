@@ -13,13 +13,13 @@ NodeResult::NodeResult(std::unique_ptr<const PSC::Value> &&data, PSC::DataType t
 }
 
 void NodeResult::implicitCast(PSC::DataType target) {
-    // REAL -> INTEGER
+    // INTEGER -> REAL
     if (target == PSC::DataType::REAL && type == PSC::DataType::INTEGER) {
         type = PSC::DataType::REAL;
         data = static_cast<const PSC::Primitive*>(data.get())->toReal();
     }
 
-    // STRING -> CHAR
+    // STRING with length 1 -> CHAR
     else if (target == PSC::DataType::CHAR && type == PSC::DataType::STRING
         && ((const PSC::String*) data.get())->value.length() == 1
     ) {
