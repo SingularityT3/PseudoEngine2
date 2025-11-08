@@ -59,8 +59,8 @@ void PSC::BuiltinFnRight::run(PSC::Context &ctx) {
 }
 
 
-PSC::BuiltinFnMid::BuiltinFnMid()
-    : Function("MID", PSC::DataType::STRING)
+PSC::BuiltinFnMid::BuiltinFnMid(const char *name)
+    : Function(name, PSC::DataType::STRING)
 {
     parameters.reserve(3);
     parameters.emplace_back("String", PSC::DataType::STRING, false);
@@ -84,16 +84,17 @@ void PSC::BuiltinFnMid::run(PSC::Context &ctx) {
     size_t strLen = strVal.size();
 
     int_t xVal = x->get<PSC::Integer>().value - 1;
-    if (xVal < 0)
-        throw PSC::RuntimeError(PSC::errToken, ctx, "Index for 'MID' function cannot be less than 1");
-    if (static_cast<size_t>(xVal) >= strLen)
-        throw PSC::RuntimeError(PSC::errToken, ctx, "Index for 'MID' function cannot exceed string length");
-
     int_t yVal = y->get<PSC::Integer>().value;
+    
+    if (xVal < 0)
+        throw PSC::RuntimeError(PSC::errToken, ctx, "Index for '" + this->name + "' function cannot be less than 1");
+    if (static_cast<size_t>(xVal) >= strLen && yVal > 0)
+        throw PSC::RuntimeError(PSC::errToken, ctx, "Index for '" + this->name + "' function cannot exceed string length");
+
     if (yVal < 0)
-        throw PSC::RuntimeError(PSC::errToken, ctx, "Length for 'MID' function cannot be negative");
+        throw PSC::RuntimeError(PSC::errToken, ctx, "Length for '" + this->name + "' function cannot be negative");
     if (static_cast<size_t>(yVal + xVal) > strLen)
-        throw PSC::RuntimeError(PSC::errToken, ctx, "Substring length in 'MID' function cannot exceed string length");
+        throw PSC::RuntimeError(PSC::errToken, ctx, "Substring length in '" + this->name + "' function cannot exceed string length");
 
     ret->value = strVal.substr(xVal, yVal);
 

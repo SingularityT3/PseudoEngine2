@@ -265,6 +265,9 @@ RIGHT(s : STRING, n : INTEGER) RETURNS STRING
 // Returns a string of length y starting at x
 MID(s : STRING, x : INTEGER, y : INTEGER) RETURNS STRING
 
+// Identical to MID, specified in IGCSE syllabus
+SUBSTRING(s : STRING, x : INTEGER, y : INTEGER) RETURNS STRING
+
 // Converts all alphabetical characters into uppercase
 TO_UPPER(s : STRING) RETURNS STRING
 

@@ -17,7 +17,7 @@ namespace PSC {
     };
 
     struct BuiltinFnMid : public Function {
-        BuiltinFnMid();
+        BuiltinFnMid(const char *name = "MID");
 
         void run(PSC::Context &ctx) override;
     };

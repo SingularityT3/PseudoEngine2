@@ -55,11 +55,12 @@ Context::~Context() {
 std::unique_ptr<Context> Context::createGlobalContext() {
     auto ctx = std::make_unique<Context>(nullptr, "Program");
 
-    ctx->functions.reserve(38);
+    ctx->functions.reserve(39);
 
     ctx->addFunction(std::make_unique<PSC::BuiltinFnLength>());
     ctx->addFunction(std::make_unique<PSC::BuiltinFnRight>());
     ctx->addFunction(std::make_unique<PSC::BuiltinFnMid>());
+    ctx->addFunction(std::make_unique<PSC::BuiltinFnMid>("SUBSTRING"));
     ctx->addFunction(std::make_unique<PSC::BuiltinFnLeft>());
     ctx->addFunction(std::make_unique<PSC::BuiltinFnToUpper>());
     ctx->addFunction(std::make_unique<PSC::BuiltinFnToLower>());
