@@ -132,8 +132,8 @@ void PSC::BuiltinFnLeft::run(PSC::Context &ctx) {
 }
 
 
-PSC::BuiltinFnToUpper::BuiltinFnToUpper()
-    : Function("TO_UPPER", PSC::DataType::STRING)
+PSC::BuiltinFnToUpper::BuiltinFnToUpper(const char *name)
+    : Function(name, PSC::DataType::STRING)
 {
     parameters.emplace_back("String", PSC::DataType::STRING, false);
 }
@@ -151,8 +151,8 @@ void PSC::BuiltinFnToUpper::run(PSC::Context &ctx) {
 }
 
 
-PSC::BuiltinFnToLower::BuiltinFnToLower()
-    : Function("TO_LOWER", PSC::DataType::STRING)
+PSC::BuiltinFnToLower::BuiltinFnToLower(const char *name)
+    : Function(name, PSC::DataType::STRING)
 {
     parameters.emplace_back("String", PSC::DataType::STRING, false);
 }

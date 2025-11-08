@@ -29,13 +29,13 @@ namespace PSC {
     };
 
     struct BuiltinFnToUpper : public Function {
-        BuiltinFnToUpper();
+        BuiltinFnToUpper(const char *name = "TO_UPPER");
 
         void run(PSC::Context &ctx) override;
     };
 
     struct BuiltinFnToLower : public Function {
-        BuiltinFnToLower();
+        BuiltinFnToLower(const char *name = "TO_LOWER");
 
         void run(PSC::Context &ctx) override;
     };
@@ -65,18 +65,6 @@ namespace PSC {
         void run(PSC::Context &ctx) override;
     };
 
-
-    struct BuiltinFnLCase : public Function {
-        BuiltinFnLCase();
-
-        void run(PSC::Context &ctx) override;
-    };
-
-    struct BuiltinFnUCase : public Function {
-        BuiltinFnUCase();
-
-        void run(PSC::Context &ctx) override;
-    };
 
     struct BuiltinFnASC : public Function {
         BuiltinFnASC();

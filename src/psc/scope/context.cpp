@@ -70,8 +70,8 @@ std::unique_ptr<Context> Context::createGlobalContext() {
     ctx->addFunction(std::make_unique<PSC::BuiltinFnIsNum>());
     ctx->addFunction(std::make_unique<PSC::BuiltinFnEOF>());
 
-    ctx->addFunction(std::make_unique<PSC::BuiltinFnLCase>());
-    ctx->addFunction(std::make_unique<PSC::BuiltinFnUCase>());
+    ctx->addFunction(std::make_unique<PSC::BuiltinFnToLower>("LCASE"));
+    ctx->addFunction(std::make_unique<PSC::BuiltinFnToUpper>("UCASE"));
     ctx->addFunction(std::make_unique<PSC::BuiltinFnASC>());
     ctx->addFunction(std::make_unique<PSC::BuiltinFnCHR>());
 

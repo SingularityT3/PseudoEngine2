@@ -269,9 +269,11 @@ MID(s : STRING, x : INTEGER, y : INTEGER) RETURNS STRING
 SUBSTRING(s : STRING, x : INTEGER, y : INTEGER) RETURNS STRING
 
 // Converts all alphabetical characters into uppercase
+// UCASE() also works (IGCSE syllabus)
 TO_UPPER(s : STRING) RETURNS STRING
 
 // Converts all alphabetical characters into lowercase
+// LCASE() also works (IGCSE syllabus)
 TO_LOWER(s : STRING) RETURNS STRING
 
 // Converts a number into a string
@@ -287,11 +289,21 @@ IS_NUM(s : STRING) RETURNS BOOLEAN
 #### Char functions
 
 ```
+// A Level
 // Converts a character into lowercase if it is alphabetic
 LCASE(c : CHAR) RETURNS CHAR
 
+// IGCSE
+// Same as TO_LOWER
+LCASE(c : STRING) RETURNS STRING
+
+// A Level
 // Converts a character into uppercase if it is alphabetic
 UCASE(c : CHAR) RETURNS CHAR
+
+// IGCSE
+// Same as TO_UPPER
+UCASE(c : STRING) RETURNS STRING
 
 // Returns the ASCII value of a character
 ASC(c : CHAR) RETURNS INTEGER

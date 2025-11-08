@@ -5,40 +5,6 @@
 #include "psc/scope/context.h"
 #include "psc/builtinFunctions/functions.h"
 
-PSC::BuiltinFnLCase::BuiltinFnLCase()
-    : Function("LCASE", PSC::DataType::CHAR)
-{
-    parameters.emplace_back("Char", PSC::DataType::CHAR, false);
-}
-
-void PSC::BuiltinFnLCase::run(PSC::Context &ctx) {
-    PSC::Variable *ch = ctx.getVariable("Char");
-    if (ch == nullptr || ch->type != PSC::DataType::CHAR) std::abort();
-
-    auto ret = std::make_unique<PSC::Char>();
-    ret->value = (char) std::tolower(ch->get<PSC::Char>().value);
-
-    ctx.returnValue = std::make_unique<NodeResult>(std::move(ret), PSC::DataType::CHAR);
-}
-
-
-PSC::BuiltinFnUCase::BuiltinFnUCase()
-    : Function("UCASE", PSC::DataType::CHAR)
-{
-    parameters.emplace_back("Char", PSC::DataType::CHAR, false);
-}
-
-void PSC::BuiltinFnUCase::run(PSC::Context &ctx) {
-    PSC::Variable *ch = ctx.getVariable("Char");
-    if (ch == nullptr || ch->type != PSC::DataType::CHAR) std::abort();
-
-    auto ret = std::make_unique<PSC::Char>();
-    ret->value = (char) std::toupper(ch->get<PSC::Char>().value);
-
-    ctx.returnValue = std::make_unique<NodeResult>(std::move(ret), PSC::DataType::CHAR);
-}
-
-
 PSC::BuiltinFnASC::BuiltinFnASC()
     : Function("ASC", PSC::DataType::INTEGER)
 {
