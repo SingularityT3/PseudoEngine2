@@ -53,7 +53,7 @@ InvalidCharError::InvalidCharError(int line, int column, char c)
 {}
 
 ExpectedQuotesError::ExpectedQuotesError(int line, int column, bool doubleQuotes)
-    : LexerError(line, column, (std::string("Expected '") + (doubleQuotes ? "\"" : "'")) + "'")
+    : LexerError(line, column, (std::string("Expected closing quote(") + (doubleQuotes ? "\"" : "'")) + ")" + (doubleQuotes ? "" : ". Character literals('') are for single characters only. Use double quotes instead if you meant to use a string literal."))
 {}
 
 ExpectedTokenError::ExpectedTokenError(const Token &token, const std::string &expToken)
